@@ -1,0 +1,166 @@
+<div class="container mt-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/project/<%= ProjectID %>/terminal"><%= ProjectName %></a></li>
+            <li class="breadcrumb-item active" aria-current="page"><%= terminal.terminalName %></li>
+        </ol>
+    </nav>
+    <h2 align='center'><%= terminal.terminalName %></h2>
+    <form method="post" action="/project/<%= ProjectID %>/terminal/<%= terminal._id %>/calculation">
+        <% 
+            let contractDurationEJS = '';
+            let thruput = '';
+            let discountRate = '';
+            let priceUSD_IDR_EJS = 14500;
+            if (typeof contractDuration != 'undefined') {contractDurationEJS = contractDuration;}
+            if (typeof thruputDay != 'undefined') {thruput = thruputDay;}
+            if (typeof discountRateBody != 'undefined') {discountRate = discountRateBody;}
+            if (typeof priceUSD_IDR != 'undefined') {priceUSD_IDR_EJS = priceUSD_IDR;}
+        %> 
+        <div class="row">
+            <div class="col-md-8">
+                <label class="form-label">Contract Duration</label>
+                <div class="input-group mb-3">
+                    <input type="number" step="1" class="form-control" id="contractDuration" name="contractDuration" value="<%= contractDurationEJS %>" required>
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Year</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <label class="form-label">Thruput</label>
+                <div class="input-group mb-3">
+                    <input type="number" step="1" class="form-control" id="thruput" name="thruput" value="<%= thruput %>"required>
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">MT/Day</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <label class="form-label">Discount Rate</label>
+                <div class="input-group mb-3">
+                    <input type="number" step="1" class="form-control" id="discountRate" name="discountRate" value="<%= discountRate %>" required>
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <label class="form-label">Price USD - IDR</label>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Rp</span>
+                    </div>
+                    <input type="number" step="1" class="form-control" id="priceUSD_IDR" name="priceUSD_IDR" value="<%= priceUSD_IDR_EJS %>" required>
+                </div>
+            </div>
+        </div>
+    <br>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <br><br>
+    </form>
+    <br>
+    <% if (typeof datas != 'undefined' && typeof lastInvest != 'undefined') { %>
+        <input type="hidden" id="arrayDataInvest" value="<%= JSON.stringify(arrayDataInvest) %>">
+        <input type="hidden" id="arrayLabelInvest" value="<%= JSON.stringify(arrayLabelInvest) %>">
+        <table class="table">
+            <thead>
+              <tr style="white-space: nowrap;" align="center">
+                <th scope="col">#</th>
+                <th scope="col">Revenue</th>
+                <th scope="col">OPEX</th>
+                <th scope="col">Depreciation</th>
+                <th scope="col">EBT</th>
+                <th scope="col">Tax</th>
+                <th scope="col">Earning After Tax</th>
+                <th scope="col">Proceeds</th>
+                <th scope="col">Cumulative Proceeds</th>
+                <th scope="col">Unreturned Investment</th>
+                <th scope="col">Discount Rate <%= discountRate %>%</th>
+                <th scope="col">NPV</th>
+              </tr>
+            </thead>
+            <tbody>
+                <% for( let i = 0; i < datas.length; i++ ) { %>
+                <% const data = datas[i]; %> 
+                <% const invest = lastInvest.invests[i]; %> 
+                    <tr style="white-space: nowrap;">
+                      <th scope="row"><%= i+1 %> </th>
+                      <td><%= data.revenue.toFixed(2) %></td>
+                      <td><%= data.opex.toFixed(2) %></td>
+                      <td><%= data.depreciation.toFixed(2) %></td>
+                      <td><%= data.EBT.toFixed(2) %></td>
+                      <td><%= data.beforeTax.toFixed(2) %></td>
+                      <td><%= data.afterTax.toFixed(2) %></td>
+                      <td><%= data.proceeds.toFixed(2) %></td>
+                      <td><%= data.comulativeProceeds.toFixed(2) %></td>
+                      <td><%= data.unreturnedInvestment.toFixed(2) %></td>
+                      <td><%= invest.discountRate.toFixed(2) %></td>
+                      <td><%= invest.NPV.toFixed(2) %></td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+        <br>
+        <div class="row">
+            <div class="col-md-5">
+                <label class="form-label">Terminal LPG Cost</label>
+                <div class="input-group mb-3">
+                    <input type="number" step="1" class="form-control" value="<%= lastInvest.LPGCost.toFixed(2) %>" readonly>
+                    <div class="input-group-append">
+                        <span class="input-group-text">USD/MT</span>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="number" step="1" class="form-control" value="<%= Number((lastInvest.LPGCost/1000)*priceUSD_IDR).toFixed(2) %>" readonly>
+                    <div class="input-group-append">
+                        <span class="input-group-text">IDR/KG</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div>
+            <h3 align='center'>Payback Period</h3>
+            <canvas id="myChart" width="400" height="200"></canvas>
+        </div>
+    <% } %> 
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+<script>
+    // $(function(){
+        const arrayDataInvest = $('#arrayDataInvest').val();
+        const arrayDataInvestJSON = $.parseJSON(arrayDataInvest);
+        const arrayLabelInvest = $('#arrayLabelInvest').val();
+        const arrayLabelInvestJSON = $.parseJSON(arrayLabelInvest);
+        const data = {
+          labels: arrayLabelInvestJSON,
+          datasets: [{
+            label: 'Unreturned Investment / Year',
+            borderColor: 'rgb(0, 0, 255)',
+            borderWidth: 5,
+            data: arrayDataInvestJSON,
+          }]
+        };
+      
+        const config = {
+            type: 'line',
+            data: data,
+            options: {}
+        };
+      </script>
+      <script>
+        const myChart = new Chart(
+          document.getElementById('myChart'),
+          config
+        );
+    // });
+  </script>

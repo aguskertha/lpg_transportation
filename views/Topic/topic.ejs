@@ -1,0 +1,10 @@
+<div class="container mt-3">
+    <h4>Topic</h4>
+    <div class="list-group mt-4">
+        <% topics.forEach(topic => { %>
+            <a href="/topic/<%= topic._id %>" class="list-group-item list-group-item-action"><%= topic.name %></a>
+            <br>
+        <% }) %>
+    </div>
+
+</div>

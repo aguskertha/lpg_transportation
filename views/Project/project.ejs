@@ -1,0 +1,178 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<div class="container mt-3">
+    <div class="row">
+    <div class="col-md-2">
+        <!-- Button to trigger modal -->
+        <button class="btn btn-primary" data-toggle="modal" data-target="#modalFormCreate"><i class="fa fa-plus"></i> New Project</button>
+        
+    </div>
+      <div class="col-md-8">
+        <h4>List Project</h4>
+        <table class="table table-borderless">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+                <input type="hidden" id="lengthData" value="<%= projects.length %> ">
+                <input type="hidden" id="topicID" value="<%= topicID %>">
+                <% for( let i = 0; i < projects.length; i++ ) { %>
+                    <tr>
+                        <th scope="row"><%= i+1 %> </th>
+                        <td><%= projects[i].name %> </td>
+                        <td>
+                            <% 
+                                let link = '#';
+                                if(topicID == '61f52f4a901e1b0de87d6995'){
+                                    link = `/project/${projects[i]._id}/transportation`;
+                                }
+                                else if(topicID == '61f52f68c00a2e2d5c6ed7ee'){
+                                    link = `/project/${projects[i]._id}/terminal`;
+                                }
+                                else if(topicID == '61f52f76f7c18127007285a2'){
+
+                                }
+                            %> 
+                            <a class="btn btn-info btn-sm" href="<%= link %>" role="button"><i class="fa fa-list"></i> Info</a>
+                            <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modalForm" id="ID<%= i %>" value="<%= i %>"><i class="fa fa-edit"></i> Edit</button>
+                            <a class="btn btn-danger btn-sm" onclick="confirmDelete('<%= projects[i]._id %>')" role="button" id="ID<%= i %>" value="<%= i %>"><i class="fa fa-trash"></i> Delete</a>
+                            <input type="hidden" id="hideProjectName<%= i %>" value="<%= projects[i].name %>">
+                            <input type="hidden" id="hideProjectID<%= i %>" value="<%= projects[i]._id %>">
+                            <!-- Modal -->
+                            <div class="modal fade" id="modalForm" role="dialog">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <!-- Modal Header -->
+                                        <div class="modal-header">
+                                            <h4 class="modal-title" id="myModalLabel">Edit Project</h4>
+                                        </div>
+                                        
+                                        <!-- Modal Body -->
+                                        <div class="modal-body">
+                                            <p class="statusMsg"></p>
+                                            <form role="form">
+                                                <div class="form-group">
+                                                    <label for="inputName">Name</label>
+                                                    <input type="hidden" class="form-control" id="ProjectID" name="ProjectID"required>
+                                                    <input type="text" class="form-control" id="inputName" name="projectName" placeholder="Enter your name" required>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        
+                                        <!-- Modal Footer -->
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary submitBtn" onclick="submitContactForm()">SUBMIT</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                <% } %>
+            </tbody>
+          </table>
+      </div>
+      <div class="col-md-5">
+          
+      </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalFormCreate" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">New Project</h4>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <p class="statusMsg"></p>
+                <form role="form">
+                    <div class="form-group">
+                        <label for="inputName">Name</label>
+                        <input type="text" class="form-control" id="inputNameCreate" name="projectName" placeholder="Enter your name" required>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary submitBtn" onclick="submitContactFormCreate()">SUBMIT</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    
+
+    $(function(){
+       var length = $('#lengthData').val();
+       for (let i = 0; i < length; i++) {
+            $('#ID'+i).on('click', function () {
+                var name = $('#hideProjectName'+i).val();
+                var id = $('#hideProjectID'+i).val();
+                $('#inputName').val(name);
+                $('#ProjectID').val(id);
+            });
+       }
+    });
+
+    function confirmDelete(projectID){
+        var result = confirm('Are you sure you want to delete this project?');
+        if (result) {
+            var topicID = $('#topicID').val();
+            $.ajax({
+                type:'GET',
+                url:`/project/${projectID}/delete`,
+                data:'topicID='+topicID,
+            });
+            window.location = `/topic/${topicID}`;
+        }
+    }
+
+    function submitContactForm(){
+        var name = $('#inputName').val();
+        var ProjectID = $('#ProjectID').val();
+        var topicID = $('#topicID').val();
+        if(name.trim() == '' ){
+            alert('Please enter your name.');
+            $('#inputName').focus();
+            return false;
+        }else{
+            $.ajax({
+                type:'POST',
+                url:'/project/update',
+                data:'projectName='+name+'&ProjectID='+ProjectID+'&topicID='+topicID,
+            });
+            window.location = `/topic/${topicID}`; 
+        }
+    }
+    function submitContactFormCreate(){
+        var name = $('#inputNameCreate').val();
+        var topicID = $('#topicID').val();
+        if(name.trim() == '' ){
+            alert('Please enter your name.');
+            $('#inputNameCreate').focus();
+            return false;
+        }else{
+            $.ajax({
+                type:'POST',
+                url:'/project',
+                data:'projectName='+name+'&topicID='+topicID,
+            });
+            window.location = `/topic/${topicID}`; 
+        }
+    }
+</script>

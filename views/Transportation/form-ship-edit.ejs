@@ -1,0 +1,1092 @@
+
+
+
+<% if (typeof transportation != 'undefined') { %>
+<div class="container mt-3">
+  <h1 align="center"><%= title %> </h1>
+  <h3 align="center"><%= transportation.TypeFreight.name+' - '+transportation.TypeVoyage.name %></h3>
+  <form method="post" action="/project/<%= ProjectID %>/transportation/<%= transportation._id %>/update">
+  <input type="hidden" value="<%= transportation.TypeVoyage.slug %>" class="form-control" name="typeVoyageSlug">
+  <input type="hidden" value="<%= transportation.TypeFreight.slug %>" class="form-control" name="typeFreightSlug">
+  <input type="hidden" value="<%= transportation.ProjectID %>" class="form-control" name="ProjectID">
+  <input type="hidden" value="<%= currentYear %>" class="form-control" id="currentYear">
+  <input type="hidden" value="<%= CBMtoMT %>" class="form-control" id="CBMtoMT">
+  <input type="hidden" value="<%= transportation.id %>" class="form-control" name="TransportationID">
+  
+  <div class="row">
+    <div class="col-md-5">
+      <h2>Ship</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-5">
+        <div class="mb-3">
+          <label class="form-label">Ship Name</label>
+          <input type="text" class="form-control" id="shipName" name="shipName" value="<%= transportation.Ship.shipName %>" required>
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label">Ship Capacity</label>
+          <div class="input-group mb-3">
+            <input type="number" step="0.001" class="form-control" id="shipCapacityCBM" name="shipCapacityCBM" value="<%= transportation.Ship.shipCapacityCBM %>" required>
+            <div class="input-group-append">
+              <span class="input-group-text">CBM</span>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <input type="number" step="0.001" class="form-control" id="shipCapacityMT" name="shipCapacityMT" value="<%= transportation.Ship.shipCapacityMT %>" required>
+            <div class="input-group-append">
+              <span class="input-group-text">MT</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Type Vessel</label>
+          <input type="text" class="form-control" id="typeVessel" name="typeVessel" value="<%= transportation.Ship.typeVessel %>" required>
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label">IMO Number</label>
+          <input type="text" class="form-control" id="IMONumber" name="IMONumber" value="<%= transportation.Ship.IMONumber %>">
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label">MMSI Number</label>
+          <input type="text" class="form-control" id="MMSINumber" name="MMSINumber" value="<%= transportation.Ship.MMSINumber %>">
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label">Call Sign</label>
+          <input type="text" class="form-control" id="callSign" name="callSign" value="<%= transportation.Ship.callSign %>">
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label">Gross Tonnage</label>
+          <div class="input-group mb-3">
+            <input type="number" step="0.1" class="form-control" id="grossTonnage" name="grossTonnage" value="<%= transportation.Ship.grossTonnage %>">
+            <div class="input-group-append">
+              <span class="input-group-text">Ton</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label">Summer DWT</label>
+          <div class="input-group mb-3">
+            <input type="number" step="0.1" class="form-control" id="summerDWT" name="summerDWT" value="<%= transportation.Ship.summerDWT %>">
+            <div class="input-group-append">
+              <span class="input-group-text">Ton</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label">Length Overall x Breadth Extreme:</label>
+          <div class="input-group mb-3">
+            <input type="number" step="0.1" class="form-control" id="lengthOverall" name="lengthOverall" value="<%= transportation.Ship.lengthOverall %>">
+            <div class="input-group-append">
+              <span class="input-group-text">m</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label">Year Built</label>
+          <input type="number" step="0.1" class="form-control" id="yearBuilt" name="yearBuilt" value="<%= transportation.Ship.yearBuilt %>">
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label">Ship Age</label>
+          <div class="input-group mb-3">
+            <input type="number" step="0.1" class="form-control" id="shipAge" name="shipAge" value="<%= transportation.Ship.shipAge %>" required>
+            <div class="input-group-append">
+              <span class="input-group-text">years old</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label">crewNumber</label>
+          <div class="input-group mb-3">
+            <input type="number" step="0.1" class="form-control" id="crewNumber" name="crewNumber" value="<%= transportation.Ship.crewNumber %>" required>
+            <div class="input-group-append">
+              <span class="input-group-text">Person</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label">SFOC</label>
+          <div class="input-group mb-3">
+            <input type="number" step="0.1" class="form-control" id="SFOC" name="SFOC" value="<%= transportation.Ship.SFOC %>" required>
+            <div class="input-group-append">
+              <span class="input-group-text">gr/kWh</span>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-md-3">
+      <h2>Voyage</h2>
+    </div>
+    <div class="col-md-2" align="right">
+      <a class="btn btn-primary btn-sm" href="http://ports.com/sea-route/" role="button" target="_blank">Find Ports</a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-5">
+      <div class="mb-3">
+        <label class="form-label">Port of Loading (POL)</label>
+        <input type="text" class="form-control" id="POL" name="POL" value="<%= transportation.Voyage.POL %>" required>
+      </div>
+      
+      <div class="mb-3">
+        <label class="form-label">Port of Destination (POD)</label>
+        <input type="text" class="form-control" id="POD" name="POD" value="<%= transportation.Voyage.POD %>" required>
+      </div>
+      
+      <div class="mb-3">
+        <label class="form-label">Distance in Nautical Miles</label>
+        <div class="input-group mb-3">
+          <input type="number" step="0.1" class="form-control" id="distance" name="distance" value="<%= transportation.Voyage.distance %>" required>
+          <div class="input-group-append">
+            <span class="input-group-text">n.m</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="mb-3">
+        <label class="form-label">Service Speed of Vessel</label>
+        <div class="input-group mb-3">
+          <input type="number" step="0.1" class="form-control" id="serviceSpeedVessel" name="serviceSpeedVessel" value="<%= transportation.Voyage.serviceSpeedVessel %>" required>
+          <div class="input-group-append">
+            <span class="input-group-text">knot</span>
+          </div>
+        </div>
+      </div>        
+    </div>
+  </div>
+
+  <br>
+  <div class="row">
+    <div class="col-md-12">
+      <h2>SHIP'S CARGO TANK FULL CAPACITY</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-5">
+      <div class="mb-3">
+        <script>
+          var cargoTankJS = '<%- JSON.stringify(transportation.ShipCargoTankFullCapacity.cargoTank) %>'; // test is now a valid js object
+        </script>
+        <label class="form-label">Number of cargo tank</label>
+        <div class="input-group mb-3">
+          <input type="number" step="1" class="form-control" id="numberOfCargoTank" name="numberOfCargoTank" value="<%= transportation.ShipCargoTankFullCapacity.numberOfCargoTank %>" required>
+          <div class="input-group-append">
+            <button id="add_field_button" class="btn btn-primary input-group-text">Generate</button>
+          </div>
+        </div>
+      </div>
+      <div class="cargoTankWrapper">
+      </div>
+    </div>
+  </div>
+
+  <br>
+  <div class="row">
+    <div class="col-md-12">
+      <h2>TURNAROUND VOYAGE</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-5">
+      <h5>LOADING RATE</h5>
+      <script>
+        var pumpLoadingRateJS = '<%- JSON.stringify(transportation.TurnAroundVoyage.pumpLoadingRate) %>'; // test is now a valid js object
+      </script>
+      <div class="pumpLoadingRateWrapper">
+      </div>
+      <h5>DISCHARGE RATE</h5>
+      <script>
+        var pumpDischargeRateJS = '<%- JSON.stringify(transportation.TurnAroundVoyage.pumpDischargeRate) %>'; // test is now a valid js object
+      </script>
+      <div class="pumpDischareRateWrapper">
+      </div>
+    </div>
+  </div>
+
+  <br>
+  <div class="row">
+    <div class="col-md-5">
+      <h2>BUNKERING CALCULATION</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-5">
+      <button type="button" class="btn btn-primary" id="bunkerInput">Input Data</button>&nbsp;
+      <button type="button" class="btn btn-primary" id="bunkerEstimate" data-bs-toggle="modal" data-bs-target="#exampleModal" >Estimate</button>
+    </div>
+  </div>
+  <br>
+  <div class="bunkerWrapper" id="bunkerWrapper">
+  <div class="row">
+    <div class="col-md-5">
+      <div class="mb-3">
+        <label class="form-label">Port Idle MFO</label>
+        <div class="input-group mb-3">
+          <input type="number" step="0.001" class="form-control" id="portIdleMFO" name="portIdleMFO" value="<%= transportation.BunkeringCalculation.portIdleMFO %>" required>
+          <div class="input-group-append">
+            <span class="input-group-text">ton/day</span>
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Port Idle MDO</label>
+        <div class="input-group mb-3">
+          <input type="number" step="0.001" class="form-control" id="portIdleMDO" name="portIdleMDO" value="<%= transportation.BunkeringCalculation.portIdleMDO %>" required>
+          <div class="input-group-append">
+            <span class="input-group-text">ton/day</span>
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Port Idle MGO</label>
+        <div class="input-group mb-3">
+          <input type="number" step="0.001" class="form-control" id="portIdleMGO" name="portIdleMGO" value="<%= transportation.BunkeringCalculation.portIdleMGO %>" required>
+          <div class="input-group-append">
+            <span class="input-group-text">ton/day</span>
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Port Working MFO</label>
+        <div class="input-group mb-3">
+          <input type="number" step="0.001" class="form-control" id="portWorkingMFO" name="portWorkingMFO" value="<%= transportation.BunkeringCalculation.portWorkingMFO %>" required>
+          <div class="input-group-append">
+            <span class="input-group-text">ton/day</span>
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Port Working MDO</label>
+        <div class="input-group mb-3">
+          <input type="number" step="0.001" class="form-control" id="portWorkingMDO" name="portWorkingMDO" value="<%= transportation.BunkeringCalculation.portWorkingMDO %>" required>
+          <div class="input-group-append">
+            <span class="input-group-text">ton/day</span>
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Port Working MGO</label>
+        <div class="input-group mb-3">
+          <input type="number" step="0.001" class="form-control" id="portWorkingMGO" name="portWorkingMGO" value="<%= transportation.BunkeringCalculation.portWorkingMGO %>" required>
+          <div class="input-group-append">
+            <span class="input-group-text">ton/day</span>
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">At Sea MFO</label>
+        <div class="input-group mb-3">
+          <input type="number" step="0.001" class="form-control" id="atSeaMFO" name="atSeaMFO" value="<%= transportation.BunkeringCalculation.atSeaMFO %>" required>
+          <div class="input-group-append">
+            <span class="input-group-text">ton/day</span>
+          </div>
+        </div>
+      </div>
+    
+      <div class="mb-3">
+        <label class="form-label">At Sea MDO</label>
+        <div class="input-group mb-3">
+          <input type="number" step="0.001" class="form-control" id="atSeaMDO" name="atSeaMDO" value="<%= transportation.BunkeringCalculation.atSeaMDO %>" required>
+          <div class="input-group-append">
+            <span class="input-group-text">
+              ton/day
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">At Sea MGO</label>
+        <div class="input-group mb-3">
+          <input type="number" step="0.001" class="form-control" id="atSeaMGO" name="atSeaMGO" value="<%= transportation.BunkeringCalculation.atSeaMGO %>" required>
+          <div class="input-group-append">
+            <span class="input-group-text">ton/day</span>
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Bunker Price MFO</label>
+        <div class="input-group mb-3">
+          <input type="number" step="1" class="form-control" id="bunkerPriceIDRMFO" name="bunkerPriceIDRMFO" value="<%= transportation.BunkeringCalculation.bunkerPriceIDRMFO %>" required>
+          <div class="input-group-append">
+            <span class="input-group-text">IDR/MT</span>
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Bunker Price MDO</label>
+        <div class="input-group mb-3">
+          <input type="number" step="1" class="form-control" id="bunkerPriceIDRMDO" name="bunkerPriceIDRMDO" value="<%= transportation.BunkeringCalculation.bunkerPriceIDRMDO %>" required>
+          <div class="input-group-append">
+            <span class="input-group-text">IDR/MT</span>
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Bunker Price MGO</label>
+        <div class="input-group mb-3">
+          <input type="number" step="1" class="form-control" id="bunkerPriceIDRMGO" name="bunkerPriceIDRMGO" value="<%= transportation.BunkeringCalculation.bunkerPriceIDRMGO %>" required>
+          <div class="input-group-append">
+            <span class="input-group-text">IDR/MT</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-md-6">
+      <h2>MANNING/CREW COST</h2>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col-md-3"></div>
+    <div class="col-md-3">
+      <script>
+        var crewDatasJS = '<%- JSON.stringify(crewDatas) %>'; // test is now a valid js object
+      </script>
+      <select class="form-control border border-info" name="select1" id="dynamic_select">
+        <option value="" selected disabled>Select capacity</option>
+        <% for( let i = 0; i < crewDatas.length; i++ ) { %>
+          <% let crewData = crewDatas[i] %> 
+          <option value="<%= i %> "><%= crewData.name %> </option>
+        <% } %>
+      </select>
+    </div>
+  </div>
+  <div class="row d-flex align-items-center" id="rowData">
+    <div class="col-md-6">
+      <h5>Deck Dept</h5>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Unit Price (USD/Mo)</th>
+            <th scope="col">Total Cost</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Master</th>
+            <td>
+              <input type="number" step="1" class="form-control" value="0" id="deckMasterQty" required>
+            </td>
+            <td>
+              <input type="number" step="0.1" class="form-control" value="0" id="deckMasterPrice" required>
+            </td>
+            <td>
+              <input type="number" step="1" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckMaster %>" id="deckMaster" name="deckMaster" required>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Chief Officer</th>
+            <td>
+              <input type="number" step="1" class="form-control" value="0" id="deckChiefOfficerQty"  required>
+            </td>
+            <td>
+              <input type="number" step="0.1" class="form-control" value="0" id="deckChiefOfficerPrice"  required>
+            </td>
+            <td>
+              <input type="number" step="1" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckChiefOfficer %>" id="deckChiefOfficer" name="deckChiefOfficer" required>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Deck Officer</th>
+            <td>
+              <input type="number" step="1" class="form-control" value="0" id="deckOfficerQty" required>
+            </td>
+            <td>
+              <input type="number" step="0.1" class="form-control" value="0" id="deckOfficerPrice" required>
+            </td>
+            <td>
+              <input type="number" step="1" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckOfficer %>" id="deckOfficer" name="deckOfficer"  required>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Radio Operator</th>
+            <td>
+              <input type="number" step="1" class="form-control" value="0" id="deckRadioOperatorQty" required>
+            </td>
+            <td>
+              <input type="number" step="0.1" class="form-control" value="0" id="deckRadioOperatorPrice" required>
+            </td>
+            <td>
+              <input type="number" step="1" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckRadioOperator %>" id="deckRadioOperator" name="deckRadioOperator"  required>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Boatswain</th>
+            <td>
+              <input type="number" step="1" class="form-control" value="0" id="deckBoatswainQty" required>
+            </td>
+            <td>
+              <input type="number" step="0.1" class="form-control" value="0" id="deckBoatswainPrice" required>
+            </td>
+            <td>
+              <input type="number" step="1" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckBoatswain %>" id="deckBoatswain" name="deckBoatswain"  required>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Able Bodied</th>
+            <td>
+              <input type="number" step="1" class="form-control" value="0" id="deckAbleBodiedQty" required>
+            </td>
+            <td>
+              <input type="number" step="0.1" class="form-control" value="0" id="deckAbleBodiedPrice" required>
+            </td>
+            <td>
+              <input type="number" step="1" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckAbleBodied %>" id="deckAbleBodied" name="deckAbleBodied"  required>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Ordinary Seamen</th>
+            <td>
+              <input type="number" step="1" class="form-control" value="0" id="deckOrdinarySeamenQty" required>
+            </td>
+            <td>
+              <input type="number" step="0.1" class="form-control" value="0" id="deckOrdinarySeamenPrice" required>
+            </td>
+            <td>
+              <input type="number" step="1" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckOrdinarySeamen %>" id="deckOrdinarySeamen" name="deckOrdinarySeamen"  required>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Chef</th>
+            <td>
+              <input type="number" step="1" class="form-control" value="0" id="deckChefQty" required>
+            </td>
+            <td>
+              <input type="number" step="0.1" class="form-control" value="0" id="deckChefPrice" required>
+            </td>
+            <td>
+              <input type="number" step="1" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckChef %>" id="deckChef" name="deckChef"  required>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Assistant Chef</th>
+            <td>
+              <input type="number" step="1" class="form-control" value="0" id="deckAssistantChefQty" required>
+            </td>
+            <td>
+              <input type="number" step="0.1" class="form-control" value="0" id="deckAssistantChefPrice" required>
+            </td>
+            <td>
+              <input type="number" step="1" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckAssistantChef %>" id="deckAssistantChef" name="deckAssistantChef"  required>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Others</th>
+            <td>
+              <input type="number" step="1" class="form-control" value="0" id="deckOthersQty" required>
+            </td>
+            <td>
+              <input type="number" step="0.1" class="form-control" value="0" id="deckOthersPrice" required>
+            </td>
+            <td>
+              <input type="number" step="1" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckOthers %>" id="deckOthers" name="deckOthers"  required>
+            </td>
+          </tr>
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row d-flex align-items-center" id="rowData">
+    <div class="col-md-6">
+      <h5>Engine Dept</h5>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Unit Price (USD/Mo)</th>
+            <th scope="col">Total Cost</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Chief Engineer</th>
+            <td>
+              <input type="number" step="1" class="form-control" value="0" id="engineChiefEngineerQty" required>
+            </td>
+            <td>
+              <input type="number" step="0.1" class="form-control" value="0" id="engineChiefEngineerPrice" required>
+            </td>
+            <td>
+              <input type="number" step="1" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineChiefEngineer %>" id="engineChiefEngineer" name="engineChiefEngineer"  required>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Chief Machinist</th>
+            <td>
+              <input type="number" step="1" class="form-control" value="0" id="engineChiefMachinistQty" required>
+            </td>
+            <td>
+              <input type="number" step="0.1" class="form-control" value="0" id="engineChiefMachinistPrice" required>
+            </td>
+            <td>
+              <input type="number" step="1" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineChiefMachinist %>" id="engineChiefMachinist" name="engineChiefMachinist"  required>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Machinist</th>
+            <td>
+              <input type="number" step="1" class="form-control" value="0" id="engineMachinistQty" required>
+            </td>
+            <td>
+              <input type="number" step="0.1" class="form-control" value="0" id="engineMachinistPrice" required>
+            </td>
+            <td>
+              <input type="number" step="1" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineMachinist %>" id="engineMachinist" name="engineMachinist"  required>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Foremen</th>
+            <td>
+              <input type="number" step="1" class="form-control" value="0" id="engineForemenQty" required>
+            </td>
+            <td>
+              <input type="number" step="0.1" class="form-control" value="0" id="engineForemenPrice" required>
+            </td>
+            <td>
+              <input type="number" step="1" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineForemen %>" id="engineForemen" name="engineForemen"  required>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Oiler</th>
+            <td>
+              <input type="number" step="1" class="form-control" value="0" id="engineOilerQty" required>
+            </td>
+            <td>
+              <input type="number" step="0.1" class="form-control" value="0" id="engineOilerPrice" required>
+            </td>
+            <td>
+              <input type="number" step="1" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineOiler %>" id="engineOiler" name="engineOiler"  required>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Wiper</th>
+            <td>
+              <input type="number" step="1" class="form-control" value="0" id="engineWiperQty" required>
+            </td>
+            <td>
+              <input type="number" step="0.1" class="form-control" value="0" id="engineWiperPrice" required>
+            </td>
+            <td>
+              <input type="number" step="1" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineWiper %>" id="engineWiper" name="engineWiper"  required>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Others</th>
+            <td>
+              <input type="number" step="1" class="form-control" value="0" id="engineOthersQty" required>
+            </td>
+            <td>
+              <input type="number" step="0.1" class="form-control" value="0" id="engineOthersPrice" required>
+            </td>
+            <td>
+              <input type="number" step="1" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineOthers %>" id="engineOthers" name="engineOthers"  required>
+            </td>
+          </tr>
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <br>
+  <div class="row">
+    <div class="col-md-5">
+      <h2>Port Cost</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-5">
+      
+      <div class="mb-3">
+        <label class="form-label">Port charges per Round Trip</label>
+        <div class="input-group mb-3">
+          <input type="number" step="0.1" class="form-control" id="portChargesRoundTrip" name="portChargesRoundTrip" value="<%= transportation.PortCost.portChargesRoundTrip %>" required>
+          <div class="input-group-append">
+            <span class="input-group-text">USD/Trip</span>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <br>
+  <div class="row">
+    <div class="col-md-5">
+      <h2>Cargo Handling Cost</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-5">
+      
+      <div class="mb-3">
+        <label class="form-label">Lasing & unlasing POL Per Trip</label>
+        <div class="input-group mb-3">
+          <input type="number" step="0.1" class="form-control" id="lasingUnlasPOLTrip" name="lasingUnlasPOLTrip" value="<%= transportation.CargoHandlingCost.lasingUnlasPOLTrip %>" required>
+          <div class="input-group-append">
+            <span class="input-group-text">USD</span>
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Lasing & unlasing POD Per Trip</label>
+        <div class="input-group mb-3">
+          <input type="number" step="0.1" class="form-control" id="lasingUnlasPODTrip" name="lasingUnlasPODTrip" value="<%= transportation.CargoHandlingCost.lasingUnlasPODTrip %>" required>
+          <div class="input-group-append">
+            <span class="input-group-text">USD</span>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <br>
+  <div class="row">
+    <div class="col-md-5">
+      <h2>Vessel's Charter Cost</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-5">
+      
+      <div class="mb-3">
+        <label class="form-label">Charter Rate per Day</label>
+        <div class="input-group mb-3">
+          <input type="number" step="0.1" class="form-control" id="charterRateDay" name="charterRateDay" value="<%= transportation.VesselCharterCost.charterRateDay %>" required>
+          <div class="input-group-append">
+            <span class="input-group-text">USD</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <br>
+  <div class="row">
+    <div class="col-md-8">
+      <h2>Insurance Cost (if relevant with charter scheme)</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-5">
+      
+      <div class="mb-3">
+        <label class="form-label">Ship Insurance</label>
+        <div class="input-group mb-3">
+          <input type="number" step="0.1" class="form-control" id="shipInsurance" name="shipInsurance" value="<%= transportation.InsuranceCost.shipInsurance %>" required>
+          <div class="input-group-append">
+            <span class="input-group-text">USD/Year</span>
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Crew Insurance</label>
+        <div class="input-group mb-3">
+          <input type="number" step="0.1" class="form-control" id="crewInsurance" name="crewInsurance" value="<%= transportation.InsuranceCost.crewInsurance %>" required>
+          <div class="input-group-append">
+            <span class="input-group-text">USD/Year</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <br>
+  <div class="row">
+    <div class="col-md-8">
+      <h2>Docking, Repairs, and Maintenence Cost</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-5">
+      
+      <div class="mb-3">
+        <label class="form-label">Docking Cost</label>
+        <div class="input-group mb-3">
+          <input type="number" step="0.1" class="form-control" id="dockingCost" name="dockingCost" value="<%= transportation.DockingRepairMaintenanceCost.dockingCost %>" required>
+          <div class="input-group-append">
+            <span class="input-group-text">USD/Year</span>
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Repair and Stores Cost</label>
+        <div class="input-group mb-3">
+          <input type="number" step="0.1" class="form-control" id="repairStoreCost" name="repairStoreCost" value="<%= transportation.DockingRepairMaintenanceCost.repairStoreCost %>" required>
+          <div class="input-group-append">
+            <span class="input-group-text">USD/Year</span>
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Lube Oil Cost</label>
+        <div class="input-group mb-3">
+          <input type="number" step="0.1" class="form-control" id="lubeOilCost" name="lubeOilCost" value="<%= transportation.DockingRepairMaintenanceCost.lubeOilCost %>" required>
+          <div class="input-group-append">
+            <span class="input-group-text">USD/Year</span>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <br>
+  <div class="row">
+    <div class="col-md-8">
+      <h2>Other Cost</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-5">
+      
+      <div class="mb-3">
+        <label class="form-label">Victually</label>
+        <div class="input-group mb-3">
+          <input type="number" step="0.1" class="form-control" id="victually" name="victually" value="<%= transportation.OtherCost.victually %>" required>
+          <div class="input-group-append">
+            <span class="input-group-text">USD/Year</span>
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Administration and other cost</label>
+        <div class="input-group mb-3">
+          <input type="number" step="0.1" class="form-control" id="administrationCost" name="administrationCost" value="<%= transportation.OtherCost.administrationCost %>" required>
+          <div class="input-group-append">
+            <span class="input-group-text">USD/Year</span>
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Tax</label>
+        <div class="input-group mb-3">
+          <input type="number" step="0.1" class="form-control" id="tax" name="tax" value="<%= transportation.TotalCost.tax %>" required>
+          <div class="input-group-append">
+            <span class="input-group-text">%</span>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary">Update</button>
+  </form>
+</div>
+<br>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Formula Fuel Oil Consumption</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="atSeaEnginePower" class="col-form-label">Engine Power:</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="atSeaEnginePower">
+              <div class="input-group-append">
+                <span class="input-group-text">kW</span>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="atSeaSFOC" class="col-form-label">SFOC:</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="atSeaSFOC">
+              <div class="input-group-append">
+                <span class="input-group-text">kW/grH</span>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="bunkerModalFuel" onclick="submitFuel()">Estimate</button>
+      </div>
+    </div>
+  </div>
+</div>
+<% } %> 
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+  $(function() {
+    function convert(value) {
+        return value && value['$numberDecimal'] ? value['$numberDecimal'] : 0;
+    }
+
+    var wrapperCargoTank = $(".cargoTankWrapper"); //Fields wrapper
+    var wrapperPumpLoadingRate = $(".pumpLoadingRateWrapper"); //Fields wrapper
+    var wrapperPumpDischareRate = $(".pumpDischareRateWrapper"); //Fields wrapper
+    var add_button = $("#add_field_button"); //Add button ID
+    var cargoTankJSON = $.parseJSON(cargoTankJS);
+    var pumpLoadingRateJSON = $.parseJSON(pumpLoadingRateJS);
+    var pumpDischargeRateJSON = $.parseJSON(pumpDischargeRateJS);
+    var numberOfCargoTank = $("#numberOfCargoTank").val();
+    if(numberOfCargoTank !== ''){
+      for (let i = 0; i < numberOfCargoTank; i++) {
+        $(wrapperCargoTank).append(
+            `<div class="mb-3">
+          <label class="form-label">No ${i+1} Cargo Tank full capacity</label>
+          <div class="input-group mb-3">
+            <input type="number" step="0.1" class="form-control" id="cargoTank${i+1}" name="cargoTank${i+1}" value="${JSON.stringify(Number(convert(cargoTankJSON[i])))}" required>
+            <div class="input-group-append">
+              <span class="input-group-text">CBM</span>
+            </div>
+          </div>
+        </div>`
+          );
+          $(wrapperPumpLoadingRate).append(
+            `<div class="mb-3">
+          <label class="form-label">No ${i+1} Pump</label>
+          <div class="input-group mb-3">
+            <input type="number" step="0.1" class="form-control" id="pumpLoadingRate${i+1}" name="pumpLoadingRate${i+1}" value="${JSON.stringify(Number(convert(pumpLoadingRateJSON[i])))}" required>
+            <div class="input-group-append">
+              <span class="input-group-text">CBM/hr</span>
+            </div>
+          </div>
+        </div>`
+          );
+          $(wrapperPumpDischareRate).append(
+            `<div class="mb-3">
+          <label class="form-label">No ${i+1} Pump</label>
+          <div class="input-group mb-3">
+            <input type="number" step="0.1" class="form-control" id="pumpDischargeRate${i+1}" name="pumpDischargeRate${i+1}" value="${JSON.stringify(Number(convert(pumpDischargeRateJSON[i])))}" required>
+            <div class="input-group-append">
+              <span class="input-group-text">CBM/hr</span>
+            </div>
+          </div>
+        </div>`
+          );
+      }
+    }
+
+    $(add_button).click(function(e) {
+      var num = $('#numberOfCargoTank').val();
+      $(wrapperCargoTank).empty();
+      $(wrapperPumpLoadingRate).empty();
+      $(wrapperPumpDischareRate).empty();
+      e.preventDefault();
+        for (let i = 1; i <= num; i++) {
+          $(wrapperCargoTank).append(
+            `<div class="mb-3">
+          <label class="form-label">No ${i} Cargo Tank full capacity</label>
+          <div class="input-group mb-3">
+            <input type="number" step="0.1" class="form-control" id="cargoTank${i}" name="cargoTank${i}" required>
+            <div class="input-group-append">
+              <span class="input-group-text">CBM</span>
+            </div>
+          </div>
+        </div>`
+          );
+          $(wrapperPumpLoadingRate).append(
+            `<div class="mb-3">
+          <label class="form-label">No ${i} Pump</label>
+          <div class="input-group mb-3">
+            <input type="number" step="0.1" class="form-control" id="pumpLoadingRate${i}" name="pumpLoadingRate${i}" required>
+            <div class="input-group-append">
+              <span class="input-group-text">CBM/hr</span>
+            </div>
+          </div>
+        </div>`
+          );
+          $(wrapperPumpDischareRate).append(
+            `<div class="mb-3">
+          <label class="form-label">No ${i} Pump</label>
+          <div class="input-group mb-3">
+            <input type="number" step="0.1" class="form-control" id="pumpDischargeRate${i}" name="pumpDischargeRate${i}" required>
+            <div class="input-group-append">
+              <span class="input-group-text">CBM/hr</span>
+            </div>
+          </div>
+        </div>`
+          );
+          
+        }
+    });
+  });
+
+  $(function() {
+    function calculateTotal(qty, prc, total){
+      $(qty).on("change", function() {
+          calculatePrice();
+      });
+      $(prc).on("change", function() {
+          calculatePrice();
+      });
+
+      function calculatePrice(){
+          var quantity = $(qty).val();
+          var rate = $(prc).val();
+          if(quantity != "" && rate != ""){
+              var price = quantity * rate;
+          }
+          $(total).val(price.toFixed(1));
+      }
+    }
+    calculateTotal('#deckMasterQty', '#deckMasterPrice', '#deckMaster');
+    calculateTotal('#deckChiefOfficerQty', '#deckChiefOfficerPrice', '#deckChiefOfficer');
+    calculateTotal('#deckOfficerQty', '#deckOfficerPrice', '#deckOfficer');
+    calculateTotal('#deckRadioOperatorQty', '#deckRadioOperatorPrice', '#deckRadioOperator');
+    calculateTotal('#deckBoatswainQty', '#deckBoatswainPrice', '#deckBoatswain');
+    calculateTotal('#deckAbleBodiedQty', '#deckAbleBodiedPrice', '#deckAbleBodied');
+    calculateTotal('#deckOrdinarySeamenQty', '#deckOrdinarySeamenPrice', '#deckOrdinarySeamen');
+    calculateTotal('#deckChefQty', '#deckChefPrice', '#deckChef');
+    calculateTotal('#deckAssistantChefQty', '#deckAssistantChefPrice', '#deckAssistantChef');
+    calculateTotal('#deckOthersQty', '#deckOthersPrice', '#deckOthers');
+    calculateTotal('#engineChiefEngineerQty', '#engineChiefEngineerPrice', '#engineChiefEngineer');
+    calculateTotal('#engineChiefMachinistQty', '#engineChiefMachinistPrice', '#engineChiefMachinist');
+    calculateTotal('#engineMachinistQty', '#engineMachinistPrice', '#engineMachinist');
+    calculateTotal('#engineForemenQty', '#engineForemenPrice', '#engineForemen');
+    calculateTotal('#engineOilerQty', '#engineOilerPrice', '#engineOiler');
+    calculateTotal('#engineWiperQty', '#engineWiperPrice', '#engineWiper');
+    calculateTotal('#engineOthersQty', '#engineOthersPrice', '#engineOthers');
+});
+
+$(function(){
+  var CBMtoMT = $('#CBMtoMT').val();
+  $('#yearBuilt').on('change', () => {
+    var currentYear = $('#currentYear').val();
+    var yearBuilt = $('#yearBuilt').val();
+    var shipAge = currentYear - yearBuilt;
+    $('#shipAge').val(shipAge);
+  });
+  
+  $('#shipCapacityCBM').on('change', () => {
+    var shipCapacityCBM = $('#shipCapacityCBM').val();
+    $('#shipCapacityMT').val((shipCapacityCBM*CBMtoMT).toFixed(3));
+  });
+  
+  $('#shipCapacityMT').on('change', () => {
+    var shipCapacityMT = $('#shipCapacityMT').val();
+    $('#shipCapacityCBM').val((shipCapacityMT/CBMtoMT).toFixed(3));
+  });
+
+  $('#atSeaMDO').on('change', () => {
+    var atSeaMDO = $('#atSeaMDO').val();
+    var portWorkingMDO = Number(2/10*atSeaMDO).toFixed(3);
+    var portIdleMDO = Number(15/100*atSeaMDO).toFixed(3);
+    $('#portIdleMDO').val(portIdleMDO);
+    $('#portWorkingMDO').val(portWorkingMDO);
+  });
+  $('#shipInsurance').on('change', () => {
+    var shipInsurance = $('#shipInsurance').val();
+    $('#crewInsurance').val(((45/100)/(20/100)*shipInsurance).toFixed(3));
+  });
+  $('#bunkerInput').click(function(e){
+    if($("#bunkerWrapper").hasClass("d-none")){
+      $("#bunkerWrapper").removeClass('d-none');
+    }
+    else{
+      $("#bunkerWrapper").addClass('d-none');
+    }
+  });
+
+  $('#bunkerModalFuel').click(()=>{
+    console.log('HAAA')
+    if($(!"#bunkerWrapper").hasClass("d-none")){
+      $("#bunkerWrapper").addClass('d-none');
+    }
+  });
+});
+
+$(function(){
+    // bind change event to select
+    var type_voyage = "";
+    var type_freight = "";
+    var ProjectID = $('#ProjectID').val();
+    $('#type_freight_select').on('change', function () {
+      type_freight = $(this).val();
+      doit();
+    });
+    $('#type_voyage_select').on('change', function () {
+      type_voyage = $(this).val();
+      doit();
+    });
+    function doit(){
+      if(type_voyage !== '' && type_freight !== '' && ProjectID !== ''){
+        window.location = `/form/${ProjectID}/${type_freight}/${type_voyage}`; // redirect  
+        // console.log('Masuk eko');
+      }
+      return false;
+    }
+
+});
+
+function submitFuel(){
+    var name = $('#inputName').val();
+    var atSeaEnginePower = Number($('#atSeaEnginePower').val());
+    var atSeaSFOC = Number($('#atSeaSFOC').val());
+    var time = 24;
+    var constant = 0.000001;
+    var atSeaFuel = Number(atSeaEnginePower*atSeaSFOC*time*constant).toFixed(3);
+    $('#atSeaMDO').val(atSeaFuel);
+    var portWorkingMDO = Number(2/10*atSeaFuel).toFixed(3);
+    var portIdleMDO = Number(15/100*atSeaFuel).toFixed(3);
+    $('#portIdleMDO').val(portIdleMDO);
+    $('#portWorkingMDO').val(portWorkingMDO);
+}
+
+$(function(){
+      // bind change event to select
+      $('#dynamic_select').on('change', function () {
+          var index = $(this).val(); // get selected value
+          var crewDatasJSON = $.parseJSON(crewDatasJS);
+          for (let i = 0; i < crewDatasJSON.length; i++) {
+            var crewData = crewDatasJSON[i];
+            if(i == index){
+              $('#deckMasterQty').val(JSON.stringify(crewData.DeckDept.deckMaster));
+              $('#deckChiefOfficerQty').val(JSON.stringify(crewData.DeckDept.deckChiefOfficer));
+              $('#deckOfficerQty').val(JSON.stringify(crewData.DeckDept.deckOfficer));
+              $('#deckRadioOperatorQty').val(JSON.stringify(crewData.DeckDept.deckRadioOperator));
+              $('#deckBoatswainQty').val(JSON.stringify(crewData.DeckDept.deckBoatswain));
+              $('#deckAbleBodiedQty').val(JSON.stringify(crewData.DeckDept.deckAbleBodied));
+              $('#deckOrdinarySeamenQty').val(JSON.stringify(crewData.DeckDept.deckOrdinarySeamen));
+              $('#deckChefQty').val(JSON.stringify(crewData.DeckDept.deckChef));
+              $('#deckAssistantChefQty').val(JSON.stringify(crewData.DeckDept.deckAssistantChef));
+              $('#deckOthersQty').val(JSON.stringify(crewData.DeckDept.deckOthers));
+
+              $('#engineChiefEngineerQty').val(JSON.stringify(crewData.EngineDept.engineChiefEngineer));
+              $('#engineChiefMachinistQty').val(JSON.stringify(crewData.EngineDept.engineChiefMachinist));
+              $('#engineMachinistQty').val(JSON.stringify(crewData.EngineDept.engineMachinist));
+              $('#engineForemenQty').val(JSON.stringify(crewData.EngineDept.engineForemen));
+              $('#engineOilerQty').val(JSON.stringify(crewData.EngineDept.engineOiler));
+              $('#engineWiperQty').val(JSON.stringify(crewData.EngineDept.engineWiper));
+              $('#engineOthersQty').val(JSON.stringify(crewData.EngineDept.engineOthers));
+
+              break;
+            }
+          }
+          return false;
+      });
+    });
+</script>
