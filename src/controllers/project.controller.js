@@ -351,6 +351,7 @@ const createTerminalCalculation = async (req, res, next) => {
         }
         const priceUSD_IDR = req.body.priceUSD_IDR;
         const lastInvest = {invests, totalNPV: Number(sumNPV - capexTotal), LPGCost}
+        const project = await Project.findOne({_id: ObjectID(req.params.projectID)});
 
         res.render('Terminal/terminal-optimization', {
             layout: 'layouts/main-layout',
@@ -364,7 +365,8 @@ const createTerminalCalculation = async (req, res, next) => {
             thruputDay,
             priceUSD_IDR,
             arrayLabelInvest,
-            arrayDataInvest
+            arrayDataInvest,
+            ProjectName: project.name
         });
     } catch (error) {
         res.render('error', {
