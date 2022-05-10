@@ -1,0 +1,46 @@
+<div class="container mt-3">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/project/<%= projectID %>/transportation"><%= projectName %></a></li>
+        <li class="breadcrumb-item active" aria-current="page">Form Bunker Price Sensitivity</li>
+    </ol>
+  </nav>
+  <h1 align="center"><%= title %> </h1>
+  <form method="post" action="/project/<%= projectID %>/<%= transportationID %>/bunker-price-sensitivity">
+  
+  <div class="row">
+    <div class="col-md-5">
+        <div class="mb-3">
+          <label class="form-label">Start Price</label>
+          <div class="input-group mb-3">
+            <input type="number" step="0.001" class="form-control" id="startBunkerPrice" name="startBunkerPrice" required>
+            <div class="input-group-append">
+              <span class="input-group-text">IDR</span>
+            </div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">End Price</label>
+          <div class="input-group mb-3">
+            <input type="number" step="0.001" class="form-control" id="endBunkerPrice" name="endBunkerPrice" required>
+            <div class="input-group-append">
+              <span class="input-group-text">IDR</span>
+            </div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Interval Price</label>
+          <div class="input-group mb-3">
+            <input type="number" step="0.001" class="form-control" id="intervalBunkerPrice" name="intervalBunkerPrice" required>
+            <div class="input-group-append">
+              <span class="input-group-text">IDR</span>
+            </div>
+          </div>
+        </div>
+
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+<br>

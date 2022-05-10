@@ -5,6 +5,10 @@ const Transportation = mongoose.model('Transportation', {
         type: String,
         require: true
     },
+    status: {
+        type: Number,
+        require: true
+    },
     TypeFreight: {
         name: {
             type: String,
@@ -596,6 +600,9 @@ const Transportation = mongoose.model('Transportation', {
             type: "Decimal128",
             require: true
         },
+    },
+    bunkerPriceSensitivityID: {
+        type: String,
     }
 });
 

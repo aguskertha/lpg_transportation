@@ -41,16 +41,6 @@
           </tr>
         <tr style="white-space: nowrap;" align="center">
             <th>#</th>
-            <th>Ship Name
-                <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
-                    <i class="fa fa-eye-slash"></i>  
-                </button>
-            </th>
-            <th>Ship Capacity MT
-                <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
-                    <i class="fa fa-eye-slash"></i>  
-                </button>
-            </th>
             <th>POL
                 <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
                     <i class="fa fa-eye-slash"></i>  
@@ -61,7 +51,57 @@
                     <i class="fa fa-eye-slash"></i>  
                 </button>
             </th>
-            <th>Status
+            <th>Ship Name
+                <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
+                    <i class="fa fa-eye-slash"></i>  
+                </button>
+            </th>
+            <th>Type of Freight
+                <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
+                    <i class="fa fa-eye-slash"></i>  
+                </button>
+            </th>
+            <th>Type of Voyage
+                <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
+                    <i class="fa fa-eye-slash"></i>  
+                </button>
+            </th>
+            <th>Real Freight (USD/kg/nm)
+                <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
+                    <i class="fa fa-eye-slash"></i>  
+                </button>
+            </th>
+            <th>Real Freight (IDR/kg/nm)
+                <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
+                    <i class="fa fa-eye-slash"></i>  
+                </button>
+            </th>
+            <th>Proposed Freight (USD/kg/nm)
+                <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
+                    <i class="fa fa-eye-slash"></i>  
+                </button>
+            </th>
+            <th>Proposed Freight (IDR/kg/nm)
+                <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
+                    <i class="fa fa-eye-slash"></i>  
+                </button>
+            </th>
+            <th>Comparison Freight (USD/MT)
+                <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
+                    <i class="fa fa-eye-slash"></i>  
+                </button>
+            </th>
+            <th>Comparison Freight (IDR/kg)
+                <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
+                    <i class="fa fa-eye-slash"></i>  
+                </button>
+            </th>
+            <th>Operating Cost Formula (USD)
+                <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
+                    <i class="fa fa-eye-slash"></i>  
+                </button>
+            </th>
+            <th>Operating Cost Empirical (USD)
                 <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
                     <i class="fa fa-eye-slash"></i>  
                 </button>
@@ -78,25 +118,20 @@
         <% const filteredTransportation = filteredTransportations[i]; %> 
         <tr style="white-space: nowrap;" >
             <th scope="row"><%= i+1 %></th>
-            <td><%= filteredTransportation.shipName %></td>
-            <td><%= filteredTransportation.shipCapacityMT %></td>
             <td><%= filteredTransportation.POL %></td>
             <td><%= filteredTransportation.POD %></td>
-            <td><% if (filteredTransportation.status == 0) { %>
-                Bunker Sensivity On Progress
-                <% } else { %>
-                Done
-                <% } %>
-             
-            </td>
-            
-            
+            <td><%= filteredTransportation.shipName %></td>
+            <td><%= filteredTransportation.typeFreight %></td>
+            <td><%= filteredTransportation.typeVoyage %></td>
+            <td>$<%= filteredTransportation.realFreight_USD_KG_NM %></td>
+            <td>Rp<%= filteredTransportation.realFreight_IDR_KG_NM %></td>
+            <td>$<%= filteredTransportation.proposedFreight_USD_KG_NM %></td>
+            <td>Rp<%= filteredTransportation.proposedFreight_IDR_KG_NM %></td>
+            <td>$<%= filteredTransportation.comparisonFreight_USD_MT %></td>
+            <td>Rp<%= filteredTransportation.comparisonFreight_IDR_KG %></td>
+            <td>$<%= filteredTransportation.operatingCostFormula %></td>
+            <td>$<%= filteredTransportation.operatingCostEmpirical %></td>
             <td>
-                <% if (filteredTransportation.status == 0) { %>
-                    <a class="btn btn-secondary btn-sm" href="/project/<%= project._id %>/form/<%= filteredTransportation.id %>/bunker-price-sensitivity" role="button"><i class="fa fa-edit"></i>Bunker</a>
-                <% } else { %>
-                    <a class="btn btn-success btn-sm" href="/project/<%= project._id %>/transportation/<%= filteredTransportation.id %>/summary" role="button"><i class="fa fa-info"></i> Info</a>
-                <% } %>
                 <a class="btn btn-warning btn-sm" href="/project/<%= project._id %>/transportation/<%= filteredTransportation.id %>/edit" role="button"><i class="fa fa-edit"></i> Edit</a>
                 <a class="btn btn-info btn-sm" href="/project/<%= project._id %>/transportation/<%= filteredTransportation.id %>/duplicate" role="button"><i class="fa fa-files-o"></i> Duplicate</a>
                 <a class="btn btn-danger btn-sm" onclick="confirmDelete('<%= project._id %>','<%= filteredTransportation.id %>')" role="button"><i class="fa fa-trash"></i> Delete</a>

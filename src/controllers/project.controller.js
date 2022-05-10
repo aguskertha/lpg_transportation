@@ -8,6 +8,7 @@ const UnitConversion = require('./../models/unit_conversion.model');
 const Terminal = require('./../models/Terimnal/terminal');
 const Storage = require('./../models/Terimnal/storage');
 const Receiving = require('./../models/Terimnal/receiving');
+const BunkerPriceSensitivity = require('./../models/bunker-price-sensitivity');
 
 const createProject = async (req, res, next) => {
     try {
@@ -409,17 +410,9 @@ const getProjectTransportationByID = async (req, res, next) => {
                 id: transportation._id,
                 POL: transportation.Voyage.POL,
                 POD: transportation.Voyage.POD,
+                shipCapacityMT: transportation.Ship.shipCapacityMT,
                 shipName: transportation.Ship.shipName,
-                typeFreight: transportation.TypeFreight.name,
-                typeVoyage: transportation.TypeVoyage.name,
-                realFreight_USD_KG_NM: Number(Number(transportation.RealFreightRate.unitCostMassCargo_USD_KG_NM).toFixed(9)), 
-                realFreight_IDR_KG_NM: Number(Number(transportation.RealFreightRate.unitCostMassCargo_IDR_KG_NM).toFixed(5)), 
-                proposedFreight_USD_KG_NM: Number(Number(transportation.ProposedFreight.proposedFreight_USD_KG_NM).toFixed(9)),
-                proposedFreight_IDR_KG_NM: Number(Number(transportation.ProposedFreight.proposedFreight_IDR_KG_NM).toFixed(5)),
-                comparisonFreight_USD_MT: Number(Number(transportation.ProposedFreight.proposedFreight_USD_MT).toFixed(3)),
-                comparisonFreight_IDR_KG: Number(Number(transportation.ProposedFreight.proposedFreight_IDR_KG).toFixed(2)),
-                operatingCostFormula: Number(Number(transportation.TotalCost.totalCostAfterTax).toFixed(2)),
-                operatingCostEmpirical: 0,
+                status: transportation.status
             }
             filteredTransportations.push(filteredTransportation);
         });
@@ -479,13 +472,19 @@ const getFormTransportation = async (req, res, next) => {
         const typeVoyages = await TypeVoyage.find();
         const typeFreights = await TypeFreight.find();
         const ProjectID = req.params.projectID;
+        const project = await Project.findOne({_id: ObjectID(ProjectID)});
+        if(!project){
+            throw "project not found!";
+        }
+
         console.log(ProjectID)
         res.render('Transportation/form-ship', {
             layout: 'layouts/main-layout',
             title: 'Form LPG Transportation',
             typeVoyages,
             typeFreights,
-            ProjectID
+            ProjectID,
+            projectName: project.name
         });
     } catch (error) {
         res.render('error', {
@@ -509,6 +508,10 @@ const getFormTransportationFreightVoyage = async (req, res, next) => {
         const ProjectID = req.params.projectID;
         const unitConversion = await UnitConversion.find();
         const crewDatas = await CrewData.find().sort({'total':1});
+        const project = await Project.findOne({_id: ObjectID(ProjectID)});
+        if(!project){
+            throw "project not found!";
+        }
         res.render('Transportation/form-ship', {
             layout: 'layouts/main-layout',
             title: 'Form LPG Transportation',
@@ -519,7 +522,8 @@ const getFormTransportationFreightVoyage = async (req, res, next) => {
             ProjectID,
             currentYear: new Date().getFullYear(),
             CBMtoMT : convertToFloat(unitConversion[0].CBMtoMT),
-            crewDatas
+            crewDatas,
+            projectName: project.name
         });
     } catch (error) {
         res.render('error', {
@@ -539,6 +543,7 @@ const createTransportation = async (req, res, next) => {
         const typeVoyage = await TypeVoyage.findOne({slug: req.params.typeVoyageSlug});
 
         transportation.ProjectID = req.body.ProjectID;
+        transportation.status = 0;
 
         transportation.TypeFreight = {
             name: typeFreight.name,
@@ -600,7 +605,7 @@ const createTransportation = async (req, res, next) => {
 
         //ShipCargoTankOperationalCapacity
         let shipCargoTankOperationalCapacity = {};
-        const loadingFactor = 98;
+        const loadingFactor = 100;
         shipCargoTankOperationalCapacity.loadingFactor = loadingFactor;
         let cargoTankOp = [];
         for (let i = 0; i < cargoTank.length; i++) {
@@ -689,6 +694,9 @@ const createTransportation = async (req, res, next) => {
         const atSeaMFO = Number(req.body.atSeaMFO);
         const atSeaMDO = Number(req.body.atSeaMDO);
         const atSeaMGO = Number(req.body.atSeaMGO);
+        // const bunkerPriceIDRMFO = 0;
+        // const bunkerPriceIDRMDO = 0;
+        // const bunkerPriceIDRMGO = 0;
         const bunkerPriceIDRMFO = Number(req.body.bunkerPriceIDRMFO);
         const bunkerPriceIDRMDO = Number(req.body.bunkerPriceIDRMDO);
         const bunkerPriceIDRMGO = Number(req.body.bunkerPriceIDRMGO);
@@ -830,7 +838,8 @@ const createTransportation = async (req, res, next) => {
         const unitCostMassCargo_IDR_MT = unitCostMassCargo_IDR_KG*1000;
         const unitCost_USD_MMBTU = (totalCost.totalCostAfterTax/turnAroundVoyage.totalCargoCarryCapacityYearMMBTU);
         const unitCost_USD_MMBTU_NM = unitCost_USD_MMBTU/(turnAroundVoyage.numberRoundTripYear*voyage.distance*2);
-        const unitCostMassCargo_USD_KG_NM = unitCostMassCargo_USD_KG / (turnAroundVoyage.numberRoundTripYear*voyage.distance*2);
+        // const unitCostMassCargo_USD_KG_NM = unitCostMassCargo_USD_KG / (turnAroundVoyage.numberRoundTripYear*voyage.distance*2);
+        const unitCostMassCargo_USD_KG_NM = unitCostMassCargo_USD_KG / (voyage.distance*2);
         const unitCostMassCargo_IDR_KG_NM = unitCostMassCargo_USD_KG_NM * convertToFloat(unitConversion[0].USDtoIDR);
         const realFreightRate = {unitCostMassCargo_USD_KG, unitCostMassCargo_USD_MT, unitCostMassCargo_IDR_KG, unitCostMassCargo_IDR_MT, unitCost_USD_MMBTU, unitCost_USD_MMBTU_NM, unitCostMassCargo_USD_KG_NM, unitCostMassCargo_IDR_KG_NM};
         transportation.RealFreightRate = realFreightRate;
@@ -845,7 +854,8 @@ const createTransportation = async (req, res, next) => {
         const proposedFreight_USD_MMBTU_NM = realFreightRate.unitCost_USD_MMBTU_NM+(realFreightRate.unitCost_USD_MMBTU_NM*profitMargin);
         const proposedFreight_USD_KG_NM = realFreightRate.unitCostMassCargo_USD_KG_NM+(realFreightRate.unitCostMassCargo_USD_KG_NM*profitMargin);
         const proposedFreight_IDR_KG_NM = proposedFreight_USD_KG_NM*convertToFloat(unitConversion[0].USDtoIDR);
-        const revenue = proposedFreight_USD_KG_NM*turnAroundVoyage.totalCargoCarryCapacityYearKG*turnAroundVoyage.numberRoundTripYear*voyage.distance*2;
+        const revenue = proposedFreight_USD_KG_NM*turnAroundVoyage.totalCargoCarryCapacityYearKG*voyage.distance*2;
+        // const revenue = proposedFreight_USD_KG_NM*turnAroundVoyage.totalCargoCarryCapacityYearKG*turnAroundVoyage.numberRoundTripYear*voyage.distance*2;
         const netRevenue = revenue - totalCost.totalCostAfterTax;
         const ratioRevenue = revenue / totalCost.totalCostAfterTax - (100/100);
         const proposedFreight = {
@@ -866,7 +876,7 @@ const createTransportation = async (req, res, next) => {
 
         const newTransportation = new Transportation(transportation);
         await newTransportation.save();
-        res.redirect(`/project/${req.body.ProjectID}/transportation`);
+        res.redirect(`/project/${req.body.ProjectID}/form/${newTransportation._id}/bunker-price-sensitivity`);
     } catch (error) {
         res.render('error', {
             layout: 'layouts/main-layout',
@@ -882,7 +892,10 @@ const editTransportationByID = async (req, res, next) => {
         const unitConversion = await UnitConversion.find();
         const crewDatas = await CrewData.find().sort({'total':1});
         const ProjectID = req.params.projectID;
-        console.log(transportation)
+        const project = await Project.findOne({_id: ObjectID(ProjectID)});
+        if(!project){
+            throw "project not found!";
+        }
         res.render('Transportation/form-ship-edit', {
             layout: 'layouts/main-layout',
             title: 'Edit Form LPG Transportation',
@@ -890,7 +903,9 @@ const editTransportationByID = async (req, res, next) => {
             currentYear: new Date().getFullYear(),
             CBMtoMT : convertToFloat(unitConversion[0].CBMtoMT),
             crewDatas,
-            ProjectID
+            ProjectID,
+            projectName: project.name,
+            transportationName: transportation.Ship.shipName
         });
     } catch (error) {
         console.log(error)
@@ -969,10 +984,10 @@ const updateTransportationByID = async (req, res, next) => {
         shipCargoTankFullCapacity.totalCapacityLitre = totalCapacityLitre;
         shipCargoTankFullCapacity.totalCapacityKG = totalCapacityKG;
         transportation.ShipCargoTankFullCapacity = shipCargoTankFullCapacity;
-
+        
         //ShipCargoTankOperationalCapacity
         let shipCargoTankOperationalCapacity = {};
-        const loadingFactor = 98;
+        const loadingFactor = 100;
         shipCargoTankOperationalCapacity.loadingFactor = loadingFactor;
         let cargoTankOp = [];
         for (let i = 0; i < cargoTank.length; i++) {
@@ -1027,7 +1042,7 @@ const updateTransportationByID = async (req, res, next) => {
         const totalCargoCarryCapacityYearCBM = numberRoundTripYear * shipCargoTankOperationalCapacity.totalCapacityOpCBM;
         const totalCargoCarryCapacityYearKG = numberRoundTripYear * shipCargoTankOperationalCapacity.totalCapacityOpKG;
         const totalCargoCarryCapacityYearMMBTU = totalCargoCarryCapacityYearKG * convertToFloat(unitConversion[0].KGtoMMBTU);
-
+       
         const turnAroundVoyage = {
             ladenSailingTime,
             ballastSailingTime,
@@ -1061,9 +1076,12 @@ const updateTransportationByID = async (req, res, next) => {
         const atSeaMFO = Number(req.body.atSeaMFO);
         const atSeaMDO = Number(req.body.atSeaMDO);
         const atSeaMGO = Number(req.body.atSeaMGO);
-        const bunkerPriceIDRMFO = Number(req.body.bunkerPriceIDRMFO);
-        const bunkerPriceIDRMDO = Number(req.body.bunkerPriceIDRMDO);
-        const bunkerPriceIDRMGO = Number(req.body.bunkerPriceIDRMGO);
+        const bunkerPriceIDRMFO = 0;
+        const bunkerPriceIDRMDO = 0;
+        const bunkerPriceIDRMGO = 0;
+        // const bunkerPriceIDRMFO = Number(req.body.bunkerPriceIDRMFO);
+        // const bunkerPriceIDRMDO = Number(req.body.bunkerPriceIDRMDO);
+        // const bunkerPriceIDRMGO = Number(req.body.bunkerPriceIDRMGO);
         const bunkerConsumeTripMFO = (turnAroundVoyage.totalTurnRoundTime*atSeaMFO) + ((turnAroundVoyage.totalLoadingTime+turnAroundVoyage.totalDischargeTime)*portWorkingMFO) + ((turnAroundVoyage.enterWaitTimePOD+turnAroundVoyage.enterWaitTimePOL)*portIdleMFO);
         const bunkerConsumeTripMDO = (turnAroundVoyage.totalTurnRoundTime*atSeaMDO) + ((turnAroundVoyage.totalLoadingTime+turnAroundVoyage.totalDischargeTime)*portWorkingMDO) + ((turnAroundVoyage.enterWaitTimePOD+turnAroundVoyage.enterWaitTimePOL)*portIdleMDO);
         const bunkerConsumeTripMGO = (turnAroundVoyage.totalTurnRoundTime*atSeaMGO) + ((turnAroundVoyage.totalLoadingTime+turnAroundVoyage.totalDischargeTime)*portWorkingMGO) + ((turnAroundVoyage.enterWaitTimePOD+turnAroundVoyage.enterWaitTimePOL)*portIdleMGO);
@@ -1105,7 +1123,7 @@ const updateTransportationByID = async (req, res, next) => {
             totalBunkerCostYearUSD,
         }
         transportation.BunkeringCalculation = bunkeringCalculation;
-        
+        console.log(totalBunkerCostYearUSD)
         //CREW COST
         const deckMaster = Number(req.body.deckMaster);
         const deckChiefOfficer = Number(req.body.deckChiefOfficer);
@@ -1137,12 +1155,15 @@ const updateTransportationByID = async (req, res, next) => {
             totalCrewCostYear
         };
         transportation.CrewCost = crewCost;
+        console.log(totalCrewCostYear);
+        
 
         //PORT COST
         const portChargesRoundTrip = Number(req.body.portChargesRoundTrip);
         const totalPortChargesYear = portChargesRoundTrip * turnAroundVoyage.numberRoundTripYear;
         const portCost = {portChargesRoundTrip, totalPortChargesYear};
         transportation.PortCost = portCost;
+        console.log(totalPortChargesYear);
 
         //CARGO HANDLING COST
         const lasingUnlasPOLTrip = Number(req.body.lasingUnlasPOLTrip);
@@ -1150,12 +1171,14 @@ const updateTransportationByID = async (req, res, next) => {
         const totalCargoHandlingCostYear = (lasingUnlasPOLTrip*turnAroundVoyage.numberRoundTripYear)+(lasingUnlasPODTrip*turnAroundVoyage.numberRoundTripYear);
         const cargoHandlingCost = {lasingUnlasPOLTrip, lasingUnlasPODTrip, totalCargoHandlingCostYear};
         transportation.CargoHandlingCost = cargoHandlingCost;
-        
+        console.log(totalCargoHandlingCostYear);
+
         //VesselCharterCost
         const charterRateDay = Number(req.body.charterRateDay);
         const totalCharterRateYear = charterRateDay*turnAroundVoyage.calendarDaysYear;
         const vesselCharterCost = {charterRateDay, totalCharterRateYear};
         transportation.VesselCharterCost = vesselCharterCost;
+        console.log(totalCharterRateYear);
 
         //InsuranceCost
         const shipInsurance = Number(req.body.shipInsurance);
@@ -1163,6 +1186,7 @@ const updateTransportationByID = async (req, res, next) => {
         const totalInsuranceCostYear = shipInsurance + crewInsurance;
         const insuranceCost = {shipInsurance, crewInsurance, totalInsuranceCostYear};
         transportation.InsuranceCost = insuranceCost;
+        console.log(totalInsuranceCostYear);
 
         //DockingRepairMaintenanceCost
         const dockingCost = Number(req.body.dockingCost);
@@ -1171,6 +1195,7 @@ const updateTransportationByID = async (req, res, next) => {
         const totalDockingRepairMaintenanceCost = dockingCost+repairStoreCost+lubeOilCost;
         const dockingRepairMaintenanceCost = {dockingCost, repairStoreCost, lubeOilCost, totalDockingRepairMaintenanceCost};
         transportation.DockingRepairMaintenanceCost = dockingRepairMaintenanceCost;
+        console.log(totalDockingRepairMaintenanceCost);
 
         //OtherCost
         const victually = Number(req.body.victually);
@@ -1178,6 +1203,7 @@ const updateTransportationByID = async (req, res, next) => {
         const totalOtherCost = victually + administrationCost;
         const otherCost = {victually, administrationCost, totalOtherCost};
         transportation.OtherCost = otherCost;
+        console.log(totalOtherCost);
 
         //TotalCost
         const tax = Number(req.body.tax);
@@ -1202,11 +1228,12 @@ const updateTransportationByID = async (req, res, next) => {
         const unitCostMassCargo_IDR_MT = unitCostMassCargo_IDR_KG*1000;
         const unitCost_USD_MMBTU = (totalCost.totalCostAfterTax/turnAroundVoyage.totalCargoCarryCapacityYearMMBTU);
         const unitCost_USD_MMBTU_NM = unitCost_USD_MMBTU/(turnAroundVoyage.numberRoundTripYear*voyage.distance*2);
-        const unitCostMassCargo_USD_KG_NM = unitCostMassCargo_USD_KG / (turnAroundVoyage.numberRoundTripYear*voyage.distance*2);
+        // const unitCostMassCargo_USD_KG_NM = unitCostMassCargo_USD_KG / (turnAroundVoyage.numberRoundTripYear*voyage.distance*2);
+        const unitCostMassCargo_USD_KG_NM = unitCostMassCargo_USD_KG / (voyage.distance*2);
         const unitCostMassCargo_IDR_KG_NM = unitCostMassCargo_USD_KG_NM * convertToFloat(unitConversion[0].USDtoIDR);
         const realFreightRate = {unitCostMassCargo_USD_KG, unitCostMassCargo_USD_MT, unitCostMassCargo_IDR_KG, unitCostMassCargo_IDR_MT, unitCost_USD_MMBTU, unitCost_USD_MMBTU_NM, unitCostMassCargo_USD_KG_NM, unitCostMassCargo_IDR_KG_NM};
         transportation.RealFreightRate = realFreightRate;
-
+     
         //ProposedFreight
         const profitMargin = Number(20/100);
         const proposedFreight_USD_KG = (realFreightRate.unitCostMassCargo_USD_KG+(realFreightRate.unitCostMassCargo_USD_KG*profitMargin));
@@ -1217,7 +1244,8 @@ const updateTransportationByID = async (req, res, next) => {
         const proposedFreight_USD_MMBTU_NM = realFreightRate.unitCost_USD_MMBTU_NM+(realFreightRate.unitCost_USD_MMBTU_NM*profitMargin);
         const proposedFreight_USD_KG_NM = realFreightRate.unitCostMassCargo_USD_KG_NM+(realFreightRate.unitCostMassCargo_USD_KG_NM*profitMargin);
         const proposedFreight_IDR_KG_NM = proposedFreight_USD_KG_NM*convertToFloat(unitConversion[0].USDtoIDR);
-        const revenue = proposedFreight_USD_KG_NM*turnAroundVoyage.totalCargoCarryCapacityYearKG*turnAroundVoyage.numberRoundTripYear*voyage.distance*2;
+        const revenue = proposedFreight_USD_KG_NM*turnAroundVoyage.totalCargoCarryCapacityYearKG*voyage.distance*2;
+        // const revenue = proposedFreight_USD_KG_NM*turnAroundVoyage.totalCargoCarryCapacityYearKG*turnAroundVoyage.numberRoundTripYear*voyage.distance*2;
         const netRevenue = revenue - totalCost.totalCostAfterTax;
         const ratioRevenue = revenue / totalCost.totalCostAfterTax - (100/100);
         const proposedFreight = {
@@ -1235,6 +1263,7 @@ const updateTransportationByID = async (req, res, next) => {
             ratioRevenue
         }
         transportation.ProposedFreight = proposedFreight;
+        transportation.status = 0;
         await Transportation.updateOne(
             { _id: req.body.TransportationID},
             {
@@ -1284,6 +1313,266 @@ const deleteTransportationByID = async (req, res, next) => {
     }
 }
 
+const getFormTransportationBunkerPriceSensitivity = async (req, res, next) => {
+    try{
+        const transportationID = req.params.transportationID;
+        const projectID = req.params.projectID;
+        const project = await Project.findOne({_id: ObjectID(projectID)});
+        if(!project){
+            throw "project not found!";
+        }
+        res.render('Transportation/form-bunker-price-sensitivity', {
+            layout: 'layouts/main-layout',
+            title: 'Form Bunker Price Sensitivity',
+            transportationID,
+            projectID,
+            projectName: project.name
+        })
+    }
+    catch(error){
+        res.render('error', {
+            layout: 'layouts/main-layout',
+            message: error,
+            status: 400
+        });
+    }
+}
+
+const updateTransportationBunkerPriceSensitivity = async (transportation2, bunkerPrice) => {
+    try {
+        let transportation = await JSON.parse(JSON.stringify(transportation2));
+        const unitConversion = await UnitConversion.find();
+        //BUNKERING CALCULATION
+        const portIdleMFO = Number(transportation.BunkeringCalculation.portIdleMFO.$numberDecimal);
+        const portIdleMDO = Number(transportation.BunkeringCalculation.portIdleMDO.$numberDecimal);
+        const portIdleMGO = Number(transportation.BunkeringCalculation.portIdleMGO.$numberDecimal);
+        const portWorkingMFO = Number(transportation.BunkeringCalculation.portWorkingMFO.$numberDecimal);
+        const portWorkingMDO = Number(transportation.BunkeringCalculation.portWorkingMDO.$numberDecimal);
+        const portWorkingMGO = Number(transportation.BunkeringCalculation.portWorkingMGO.$numberDecimal);
+        const atSeaMFO = Number(transportation.BunkeringCalculation.atSeaMFO.$numberDecimal);
+        const atSeaMDO = Number(transportation.BunkeringCalculation.atSeaMDO.$numberDecimal);
+        const atSeaMGO = Number(transportation.BunkeringCalculation.atSeaMGO.$numberDecimal);
+        const bunkerPriceIDRMFO = Number(transportation.BunkeringCalculation.bunkerPriceIDRMFO.$numberDecimal);
+        const bunkerPriceIDRMDO = Number(bunkerPrice);
+        const bunkerPriceIDRMGO = Number(transportation.BunkeringCalculation.bunkerPriceIDRMGO.$numberDecimal);
+        const bunkerConsumeTripMFO = (Number(transportation.TurnAroundVoyage.totalTurnRoundTime.$numberDecimal)*atSeaMFO) + ((Number(transportation.TurnAroundVoyage.totalLoadingTime.$numberDecimal)+Number(transportation.TurnAroundVoyage.totalDischargeTime.$numberDecimal))*portWorkingMFO) + ((Number(transportation.TurnAroundVoyage.enterWaitTimePOD.$numberDecimal)+Number(transportation.TurnAroundVoyage.enterWaitTimePOL.$numberDecimal))*portIdleMFO);
+        const bunkerConsumeTripMDO = (Number(transportation.TurnAroundVoyage.totalTurnRoundTime.$numberDecimal)*atSeaMDO) + ((Number(transportation.TurnAroundVoyage.totalLoadingTime.$numberDecimal)+Number(transportation.TurnAroundVoyage.totalDischargeTime.$numberDecimal))*portWorkingMDO) + ((Number(transportation.TurnAroundVoyage.enterWaitTimePOD.$numberDecimal)+Number(transportation.TurnAroundVoyage.enterWaitTimePOL.$numberDecimal))*portIdleMDO);
+        const bunkerConsumeTripMGO = (Number(transportation.TurnAroundVoyage.totalTurnRoundTime.$numberDecimal)*atSeaMGO) + ((Number(transportation.TurnAroundVoyage.totalLoadingTime.$numberDecimal)+Number(transportation.TurnAroundVoyage.totalDischargeTime.$numberDecimal))*portWorkingMGO) + ((Number(transportation.TurnAroundVoyage.enterWaitTimePOD.$numberDecimal)+Number(transportation.TurnAroundVoyage.enterWaitTimePOL.$numberDecimal))*portIdleMGO);
+        const bunkerConsumeYearMFO = bunkerConsumeTripMFO*Number(transportation.TurnAroundVoyage.numberRoundTripYear.$numberDecimal);
+        const bunkerConsumeYearMDO = bunkerConsumeTripMDO*Number(transportation.TurnAroundVoyage.numberRoundTripYear.$numberDecimal);
+        const bunkerConsumeYearMGO = bunkerConsumeTripMGO*Number(transportation.TurnAroundVoyage.numberRoundTripYear.$numberDecimal);
+        const bunkerPriceUSDMFO = bunkerPriceIDRMFO / convertToFloat(unitConversion[0].USDtoIDR);
+        const bunkerPriceUSDMDO = bunkerPriceIDRMDO / convertToFloat(unitConversion[0].USDtoIDR);
+        const bunkerPriceUSDMGO = bunkerPriceIDRMGO / convertToFloat(unitConversion[0].USDtoIDR);
+        const totalBunkerCostTripIDR = (bunkerConsumeTripMFO*bunkerPriceIDRMFO)+(bunkerConsumeTripMDO*bunkerPriceIDRMDO)+(bunkerConsumeTripMGO*bunkerPriceIDRMGO);
+        const totalBunkerCostYearIDR = (bunkerConsumeYearMFO*bunkerPriceIDRMFO)+(bunkerConsumeYearMDO*bunkerPriceIDRMDO)+(bunkerConsumeYearMGO*bunkerPriceIDRMGO);
+        const totalBunkerCostTripUSD = (bunkerConsumeTripMFO*bunkerPriceUSDMFO)+(bunkerConsumeTripMDO*bunkerPriceUSDMDO)+(bunkerConsumeTripMGO*bunkerPriceUSDMGO);
+        const totalBunkerCostYearUSD = (bunkerConsumeYearMFO*bunkerPriceUSDMFO)+(bunkerConsumeYearMDO*bunkerPriceUSDMDO)+(bunkerConsumeYearMGO*bunkerPriceUSDMGO);
+        
+        const bunkeringCalculation = {
+            portIdleMFO,
+            portIdleMDO,
+            portIdleMGO,
+            portWorkingMFO,
+            portWorkingMDO,
+            portWorkingMGO,
+            atSeaMFO,
+            atSeaMDO,
+            atSeaMGO,
+            bunkerConsumeTripMFO,
+            bunkerConsumeTripMDO,
+            bunkerConsumeTripMGO,
+            bunkerConsumeYearMFO,
+            bunkerConsumeYearMDO,
+            bunkerConsumeYearMGO,
+            bunkerPriceIDRMFO,
+            bunkerPriceIDRMDO,
+            bunkerPriceIDRMGO,
+            bunkerPriceUSDMFO,
+            bunkerPriceUSDMDO,
+            bunkerPriceUSDMGO,
+            totalBunkerCostTripIDR,
+            totalBunkerCostYearIDR,
+            totalBunkerCostTripUSD,
+            totalBunkerCostYearUSD,
+        }
+        transportation.BunkeringCalculation = bunkeringCalculation;
+       
+        
+        //TotalCost
+        const tax = Number(transportation.TotalCost.tax.$numberDecimal)
+        const totalCostBeforeTax = 
+            (bunkeringCalculation.totalBunkerCostYearUSD
+                +Number(transportation.CrewCost.totalCrewCostYear.$numberDecimal)
+                +Number(transportation.PortCost.totalPortChargesYear.$numberDecimal)
+                +Number(transportation.CargoHandlingCost.lasingUnlasPOLTrip.$numberDecimal)
+                +Number(transportation.VesselCharterCost.totalCharterRateYear.$numberDecimal)
+                +Number(transportation.InsuranceCost.totalInsuranceCostYear.$numberDecimal)
+                +Number(transportation.DockingRepairMaintenanceCost.totalDockingRepairMaintenanceCost.$numberDecimal)
+                +Number(transportation.OtherCost.totalOtherCost.$numberDecimal));
+        const totalTax = totalCostBeforeTax * (tax/100);
+        const totalCostAfterTax = totalCostBeforeTax + totalTax;
+        const totalCost = {totalCostBeforeTax, totalCostAfterTax, totalTax, tax};
+        transportation.TotalCost = totalCost;
+        
+        //RealFreightRate
+        const unitCostMassCargo_USD_KG = (totalCost.totalCostAfterTax/Number(transportation.TurnAroundVoyage.totalCargoCarryCapacityYearKG.$numberDecimal));
+        const unitCostMassCargo_USD_MT = unitCostMassCargo_USD_KG*1000;
+        const unitCostMassCargo_IDR_KG = unitCostMassCargo_USD_KG * convertToFloat(unitConversion[0].USDtoIDR);
+        const unitCostMassCargo_IDR_MT = unitCostMassCargo_IDR_KG*1000;
+        const unitCost_USD_MMBTU = (totalCost.totalCostAfterTax/Number(transportation.TurnAroundVoyage.totalCargoCarryCapacityYearMMBTU.$numberDecimal));
+        const unitCost_USD_MMBTU_NM = unitCost_USD_MMBTU/(Number(transportation.TurnAroundVoyage.numberRoundTripYear.$numberDecimal)*Number(transportation.Voyage.distance.$numberDecimal)*2);
+        // const unitCostMassCargo_USD_KG_NM = unitCostMassCargo_USD_KG / (turnAroundVoyage.numberRoundTripYear*voyage.distance*2);
+        const unitCostMassCargo_USD_KG_NM = unitCostMassCargo_USD_KG / (Number(transportation.Voyage.distance.$numberDecimal)*2);
+        const unitCostMassCargo_IDR_KG_NM = unitCostMassCargo_USD_KG_NM * convertToFloat(unitConversion[0].USDtoIDR);
+        const realFreightRate = {unitCostMassCargo_USD_KG, unitCostMassCargo_USD_MT, unitCostMassCargo_IDR_KG, unitCostMassCargo_IDR_MT, unitCost_USD_MMBTU, unitCost_USD_MMBTU_NM, unitCostMassCargo_USD_KG_NM, unitCostMassCargo_IDR_KG_NM};
+        transportation.RealFreightRate = realFreightRate;
+
+        //ProposedFreight
+        const profitMargin = Number(20/100);
+        const proposedFreight_USD_KG = (realFreightRate.unitCostMassCargo_USD_KG+(realFreightRate.unitCostMassCargo_USD_KG*profitMargin));
+        const proposedFreight_USD_MT = proposedFreight_USD_KG*1000;
+        const proposedFreight_IDR_KG = proposedFreight_USD_KG*convertToFloat(unitConversion[0].USDtoIDR);
+        const proposedFreight_IDR_MT = proposedFreight_IDR_KG*1000;
+        const proposedFreight_USD_MMBTU = realFreightRate.unitCost_USD_MMBTU+(realFreightRate.unitCost_USD_MMBTU*profitMargin);
+        const proposedFreight_USD_MMBTU_NM = realFreightRate.unitCost_USD_MMBTU_NM+(realFreightRate.unitCost_USD_MMBTU_NM*profitMargin);
+        const proposedFreight_USD_KG_NM = realFreightRate.unitCostMassCargo_USD_KG_NM+(realFreightRate.unitCostMassCargo_USD_KG_NM*profitMargin);
+        const proposedFreight_IDR_KG_NM = proposedFreight_USD_KG_NM*convertToFloat(unitConversion[0].USDtoIDR);
+        const revenue = proposedFreight_USD_KG_NM* Number(transportation.TurnAroundVoyage.totalCargoCarryCapacityYearKG.$numberDecimal)*Number(transportation.Voyage.distance.$numberDecimal)*2;
+        const netRevenue = revenue - totalCost.totalCostAfterTax;
+        const ratioRevenue = revenue / totalCost.totalCostAfterTax - (100/100);
+        const proposedFreight = {
+            profitMargin,
+            proposedFreight_USD_KG,
+            proposedFreight_USD_MT,
+            proposedFreight_IDR_KG,
+            proposedFreight_IDR_MT,
+            proposedFreight_USD_MMBTU,
+            proposedFreight_USD_MMBTU_NM,
+            proposedFreight_USD_KG_NM,
+            proposedFreight_IDR_KG_NM,
+            revenue,
+            netRevenue,
+            ratioRevenue
+        }
+        transportation.ProposedFreight = proposedFreight;
+        return transportation;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const generateAutoTransportation = async (bunkerPriceSensitivity, transportation) => {
+
+    try{
+        const {start, end, interval} = bunkerPriceSensitivity;
+        let bunkerPrices = [];
+        for (let i = start; i <= end; i+=interval) {
+            bunkerPrices.push(i)
+        }
+        let promises = [];
+        bunkerPrices.forEach(bunkerPrice => {
+            promises.push(updateTransportationBunkerPriceSensitivity(transportation, bunkerPrice));
+        });
+
+        const transportationBunkerPriceSensitivitys = await Promise.all(promises);
+        return transportationBunkerPriceSensitivitys;
+    }
+    catch(error){
+        console.log(error)
+    }
+
+}
+
+
+const getSummaryTransportationBunkerPriceSensitivity = async (req, res, next) => {
+    try {
+        const projectID = req.params.projectID;
+        const transportationID = req.params.transportationID;
+        const project = await Project.findOne({_id: ObjectID(projectID)});
+        if(!project){
+            throw "project not found!";
+        }
+        const transportation = await Transportation.findOne({_id: ObjectID(transportationID)});
+        if(!transportation){
+            throw "transportation not found!";
+        }
+
+        const bunkerPriceSensitivityID = transportation.bunkerPriceSensitivityID;
+        const bunkerPriceSensitivity = await BunkerPriceSensitivity.findOne({_id: bunkerPriceSensitivityID});
+        if(!bunkerPriceSensitivity){
+            throw "Bunker not found!";
+        }
+
+        const transportationBunkerPriceSensitivitys = await generateAutoTransportation(bunkerPriceSensitivity, transportation);
+        
+        // transportationBunkerPriceSensitivitys.forEach(newTrans => {
+        //     console.log(convertToFloat(newTrans.BunkeringCalculation.totalBunkerCostTripIDR));
+        // });
+
+        // for (let index = 0; index < transportationBunkerPriceSensitivitys.length; index++) {
+        //     const transportation = transportationBunkerPriceSensitivitys[index];
+        //     console.log(convertToFloat(transportation.OtherCost.totalOtherCost));
+        //     console.log(convertToFloat(transportation.DockingRepairMaintenanceCost.totalDockingRepairMaintenanceCost));
+        //     console.log(convertToFloat(transportation.InsuranceCost.totalInsuranceCostYear));
+        //     console.log(convertToFloat(transportation.VesselCharterCost.totalCharterRateYear));
+        //     console.log(convertToFloat(transportation.CargoHandlingCost.totalCargoHandlingCostYear));
+        //     console.log(convertToFloat(transportation.CrewCost.totalCrewCostYear));
+        //     console.log(convertToFloat(transportation.BunkeringCalculation.totalBunkerCostYearUSD))
+        //     break
+        // }
+
+        res.render('Transportation/summary-transportation',{
+            layout: 'layouts/main-layout',
+            transportationBunkerPriceSensitivitys,
+            project,
+            title: 'Bunker Price Sensitivity'
+        })
+    } catch (error) {
+        res.render('error', {
+            layout: 'layouts/main-layout',
+            message: error,
+            status: 400
+        });
+    }
+}
+
+const createTransportationBunkerPriceSensitivity = async (req, res, next) => {
+    try{
+        const projectID = req.params.projectID;
+        const transportationID = req.params.transportationID;
+        const transportation = await Transportation.findOne({_id: ObjectID(transportationID)});
+        if(!transportation){
+            throw 'Transportation not found!';
+        }
+        const {startBunkerPrice, endBunkerPrice, intervalBunkerPrice} = req.body;
+        const bunkerPriceSensitivity = {
+            start: startBunkerPrice,
+            end: endBunkerPrice,
+            interval: intervalBunkerPrice,
+            transportationID
+        };
+        const newBunkerPriceSensitivity = new BunkerPriceSensitivity(bunkerPriceSensitivity);
+        await newBunkerPriceSensitivity.save();
+        transportation.status = 1;
+        transportation.bunkerPriceSensitivityID = newBunkerPriceSensitivity._id;
+        await Transportation.updateOne(
+            { _id: transportationID},
+            {
+                $set: transportation
+            }
+        );
+        res.redirect(`/project/${projectID}/transportation/${transportationID}/summary`);
+    }
+    catch(error){
+        res.render('error', {
+            layout: 'layouts/main-layout',
+            message: error,
+            status: 400
+        });
+    }
+}
+
 module.exports = {
     getProjectTerminalByID,
     getProjectTransportationByID,
@@ -1302,5 +1591,8 @@ module.exports = {
     createTerminalCalculation,
     getTerminalCalculation,
     deleteTerminalByID,
-    duplicateTerminalByID
+    duplicateTerminalByID,
+    getFormTransportationBunkerPriceSensitivity,
+    createTransportationBunkerPriceSensitivity,
+    getSummaryTransportationBunkerPriceSensitivity
 }

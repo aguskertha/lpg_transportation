@@ -27,80 +27,90 @@
   border: none !important;
 }
 </style>
-
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/project/<%= project._id %>/transportation"><%= project.name %></a></li>
+        <li class="breadcrumb-item active" aria-current="page">Bunker Price Sensitivity</li>
+    </ol>
+</nav>
 <h1 class="mt-3" align="center"><%= title %></h1>
 <h3 class="mt-3" align="center"><%= project.name %></h3>
 <div class="container-fluid mt-4">
-<a class="btn btn-primary" href="/project/<%= project._id %>/form " role="button"><i class="fa fa-plus"></i> LPG Transportation</a>
 <% var file_name = (project.name); %> 
 <button onclick="ExportToExcel('<%= file_name %>','.xlsx')" class="btn btn-success">Export Excel</button>
 <table id="table_data" class="table table-condensed table-hover table-bordered table-hideable">
     <thead>
+        <!-- transportationBunkerPriceSensitivitys -->
         <tr>
             <th colspan="4"><a class="restore-columns" href="#">Some columns hidden - click to show all</a></th>
           </tr>
         <tr style="white-space: nowrap;" align="center">
             <th>#</th>
-            <th>Ship Name
+            <th>Bunker Cost
                 <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
                     <i class="fa fa-eye-slash"></i>  
                 </button>
             </th>
-            <th>Ship Capacity MT
+            <th>Calculated Real Freight
+                USD/kg/nm
                 <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
                     <i class="fa fa-eye-slash"></i>  
                 </button>
             </th>
-            <th>POL
+            <th>Calculated Real Freight
+                IDR/kg/nm
                 <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
                     <i class="fa fa-eye-slash"></i>  
                 </button>
             </th>
-            <th>POD
+            <th>Proposed Freight
+                USD/kg/nm
                 <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
                     <i class="fa fa-eye-slash"></i>  
                 </button>
             </th>
-            <th>Status
+            <th>Proposed Freight
+                IDR/kg/nm
                 <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
                     <i class="fa fa-eye-slash"></i>  
                 </button>
             </th>
-            <th>Action
+            <th>Comparison Freight
+                USD/kg/nm
                 <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
                     <i class="fa fa-eye-slash"></i>  
                 </button>
             </th>
+            <th>Comparison Freight
+                IDR/kg/nm
+                <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
+                    <i class="fa fa-eye-slash"></i>  
+                </button>
+            </th>
+            <th>Total Operating Cost
+                USD
+                <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
+                    <i class="fa fa-eye-slash"></i>  
+                </button>
+            </th>
+           
         </tr>
     </thead>
     <tbody>
-        <% for( let i = 0; i < filteredTransportations.length; i++ ) { %>
-        <% const filteredTransportation = filteredTransportations[i]; %> 
+        <% for( let i = 0; i < transportationBunkerPriceSensitivitys.length; i++ ) { %>
+        <% const transportation = transportationBunkerPriceSensitivitys[i]; %> 
         <tr style="white-space: nowrap;" >
             <th scope="row"><%= i+1 %></th>
-            <td><%= filteredTransportation.shipName %></td>
-            <td><%= filteredTransportation.shipCapacityMT %></td>
-            <td><%= filteredTransportation.POL %></td>
-            <td><%= filteredTransportation.POD %></td>
-            <td><% if (filteredTransportation.status == 0) { %>
-                Bunker Sensivity On Progress
-                <% } else { %>
-                Done
-                <% } %>
-             
-            </td>
+            <td>Rp<%= transportation.BunkeringCalculation.bunkerPriceIDRMDO %></td>
+            <td>$<%= transportation.RealFreightRate.unitCostMassCargo_USD_KG_NM %></td>
+            <td>Rp<%= transportation.RealFreightRate.unitCostMassCargo_IDR_KG_NM %></td>
+            <td>$<%= transportation.ProposedFreight.proposedFreight_USD_KG_NM %></td>
+            <td>Rp<%= transportation.ProposedFreight.proposedFreight_IDR_KG_NM %></td>
+            <td>$<%= transportation.ProposedFreight.proposedFreight_USD_MT %></td>
+            <td>Rp<%= transportation.ProposedFreight.proposedFreight_IDR_MT %></td>
+            <td>$<%= transportation.TotalCost.totalCostAfterTax %></td>
             
-            
-            <td>
-                <% if (filteredTransportation.status == 0) { %>
-                    <a class="btn btn-secondary btn-sm" href="/project/<%= project._id %>/form/<%= filteredTransportation.id %>/bunker-price-sensitivity" role="button"><i class="fa fa-edit"></i>Bunker</a>
-                <% } else { %>
-                    <a class="btn btn-success btn-sm" href="/project/<%= project._id %>/transportation/<%= filteredTransportation.id %>/summary" role="button"><i class="fa fa-info"></i> Info</a>
-                <% } %>
-                <a class="btn btn-warning btn-sm" href="/project/<%= project._id %>/transportation/<%= filteredTransportation.id %>/edit" role="button"><i class="fa fa-edit"></i> Edit</a>
-                <a class="btn btn-info btn-sm" href="/project/<%= project._id %>/transportation/<%= filteredTransportation.id %>/duplicate" role="button"><i class="fa fa-files-o"></i> Duplicate</a>
-                <a class="btn btn-danger btn-sm" onclick="confirmDelete('<%= project._id %>','<%= filteredTransportation.id %>')" role="button"><i class="fa fa-trash"></i> Delete</a>
-            </td>
+          
         </tr>
         <% } %>
     </tbody>
