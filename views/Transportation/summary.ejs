@@ -104,11 +104,10 @@
             
             
             <td>
-                <% if (filteredTransportation.status == 0) { %>
-                    <a class="btn btn-secondary btn-sm" href="/project/<%= project._id %>/form/<%= filteredTransportation.id %>/bunker-price-sensitivity" role="button"><i class="fa fa-edit"></i>Bunker</a>
-                <% } else { %>
+                <% if (filteredTransportation.status == 1) { %>
                     <a class="btn btn-success btn-sm" href="/project/<%= project._id %>/transportation/<%= filteredTransportation.id %>/summary" role="button"><i class="fa fa-info"></i> Info</a>
-                <% } %>
+                <% }%>
+                <a class="btn btn-secondary btn-sm" href="/project/<%= project._id %>/form/<%= filteredTransportation.id %>/bunker-price-sensitivity" role="button"><i class="fa fa-edit"></i>Bunker</a>
                 <a class="btn btn-warning btn-sm" href="/project/<%= project._id %>/transportation/<%= filteredTransportation.id %>/edit" role="button"><i class="fa fa-edit"></i> Edit</a>
                 <a class="btn btn-info btn-sm" href="/project/<%= project._id %>/transportation/<%= filteredTransportation.id %>/duplicate" role="button"><i class="fa fa-files-o"></i> Duplicate</a>
                 <a class="btn btn-danger btn-sm" onclick="confirmDelete('<%= project._id %>','<%= filteredTransportation.id %>')" role="button"><i class="fa fa-trash"></i> Delete</a>
