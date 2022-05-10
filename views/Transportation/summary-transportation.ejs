@@ -15,6 +15,17 @@
   box-shadow: none;
 }
 
+.modal-content {
+  position: relative;
+  color: black;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  width: auto;
+  display: table;
+}
+
 
 /* use class to have a little animation */
 .hide-col {
@@ -27,6 +38,9 @@
   border: none !important;
 }
 </style>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/project/<%= project._id %>/transportation"><%= project.name %></a></li>
@@ -93,6 +107,11 @@
                     <i class="fa fa-eye-slash"></i>  
                 </button>
             </th>
+            <th>Freight Cost Ship Age
+                <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
+                    <i class="fa fa-eye-slash"></i>  
+                </button>
+            </th>
            
         </tr>
     </thead>
@@ -109,16 +128,121 @@
             <td>$<%= transportation.ProposedFreight.proposedFreight_USD_MT %></td>
             <td>Rp<%= transportation.ProposedFreight.proposedFreight_IDR_MT %></td>
             <td>$<%= transportation.TotalCost.totalCostAfterTax %></td>
-            
+            <td>
+                <!-- <a class="btn btn-warning btn-sm" href="" role="button"><i class="fa fa-edit"></i> Info</a> -->
+                <button class="btn btn-info" data-toggle="modal" id="buttonCostShipAge" data-target="#modalFormCreate" value='<%= JSON.stringify(transportation) %>'><i class="fa fa-eye"></i> Info</button>
+            </td>
           
         </tr>
         <% } %>
     </tbody>
 </table>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalFormCreate" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Freight Cost Based on Ship Age</h4>
+            </div>
+            
+            <!-- Modal Body -->
+            <table id="table_data" class="table table-condensed table-hover table-bordered table-hideable">
+                <thead>
+                    <!-- transportationBunkerPriceSensitivitys -->
+                    <tr>
+                        <th colspan="4"><a class="restore-columns" href="#">Some columns hidden - click to show all</a></th>
+                      </tr>
+                    <tr style="white-space: nowrap;" align="center">
+                        <th>#</th>
+                        <th>Comparison Freight
+                            <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
+                                <i class="fa fa-eye-slash"></i>  
+                            </button>
+                        </th>
+                        <th>Ship Age
+                            <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
+                                <i class="fa fa-eye-slash"></i>  
+                            </button>
+                        </th>
+                        
+                        <th>Constant Factor
+                            <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
+                                <i class="fa fa-eye-slash"></i>  
+                            </button>
+                        </th>
+                        
+                        <th>Fee
+                            <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
+                                <i class="fa fa-eye-slash"></i>  
+                            </button>
+                        </th>
+                        
+                       
+                    </tr>
+                </thead>
+                <tbody id="costAgeShip">
+                    
+                </tbody>
+            </table>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+               
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 <script>
+    $(function() {
+        var button = $("#buttonCostShipAge"); //Add button ID
+        const transportation =  JSON.parse(button.val());
+        var wrapperCostAgeShip = $("#costAgeShip"); //Fields wrapper
+        $(button).click(function(e) {
+            console.log(transportation.freightCostShipAges)
+            $(wrapperCostAgeShip).empty();
+            e.preventDefault();
+                for( let i = 0; i < transportation.freightCostShipAges.length; i++ ) {
+                    const freightCostShipAge = transportation.freightCostShipAges[i];
+                    $(wrapperCostAgeShip).append(
+                    `
+                    <tr style="white-space: nowrap;" >
+                        <th scope="row">${i+1}</th>
+                        <td>Rp${transportation.ProposedFreight.proposedFreight_IDR_MT}</td>
+                        <td>${freightCostShipAge.shipAge}</td>
+                        <td>${freightCostShipAge.constantFactor}%</td>
+                        <td>Rp${freightCostShipAge.feeOnShipAge_IDR_MT}</td>
+                    
+                    </tr>
+                    `
+                    );
+                }
+        })
+    })
+    // function createCostShipAge(strTransportation){
+    //     const transportation = JSON.parse(strTransportation);
+    //     var wrapperCostAgeShip = $("#costAgeShip"); //Fields wrapper
+    //     $(wrapperCostAgeShip).empty();
+    //     e.preventDefault();
+    //     for( let i = 0; i < transportation.freightCostShipAges.length; i++ ) {
+    //     $(wrapperCostAgeShip).append(
+    //     `
+    //     <tr style="white-space: nowrap;" >
+    //         <th scope="row">${i+1}</th>
+    //         <td>Rp</td>
+    //         <td></td>
+    //         <td></td>
+          
+    //     </tr>
+    //     `
+    //     );
+    //     }
+    // }
     function confirmDelete(projectID, transportationID){
         var result = confirm('Are you sure you want to delete this project?');
         if (result) {

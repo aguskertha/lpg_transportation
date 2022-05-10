@@ -10,6 +10,7 @@ const Storage = require('./../models/Terimnal/storage');
 const Receiving = require('./../models/Terimnal/receiving');
 const BunkerPriceSensitivity = require('./../models/bunker-price-sensitivity');
 const Topic = require('./../models/topic.model');
+const CostShipAge = require('./../models/cost-ship-age');
 
 const createProject = async (req, res, next) => {
     try {
@@ -1463,6 +1464,20 @@ const updateTransportationBunkerPriceSensitivity = async (transportation2, bunke
             ratioRevenue
         }
         transportation.ProposedFreight = proposedFreight;
+
+        const costShipAges = await CostShipAge.find().sort({"constantFactor": -1});
+        const freightCostShipAges = [];
+        costShipAges.forEach(costShipAge => {
+            const result = (proposedFreight_IDR_MT * Number(costShipAge.constantFactor/100))+proposedFreight_IDR_MT;
+            const freightCostShipAge = {
+                shipAge: costShipAge.shipAge,
+                constantFactor: costShipAge.constantFactor,
+                feeOnShipAge_IDR_MT: result
+            };
+            freightCostShipAges.push(freightCostShipAge);
+        });
+        transportation.freightCostShipAges = freightCostShipAges;
+
         return transportation;
     } catch (error) {
         console.log(error)
@@ -1580,6 +1595,46 @@ const createTransportationBunkerPriceSensitivity = async (req, res, next) => {
     }
 }
 
+const createCostShipAge = async (req, res, next) => {
+    try{
+        const costShipAges = [
+            {
+                shipAge: '0-5',
+                constantFactor: 12.28
+            },
+            {
+                shipAge: '6-10',
+                constantFactor: 4.42
+            },
+            {
+                shipAge: '11-15',
+                constantFactor: 3.29
+            },
+            {
+                shipAge: '16-20',
+                constantFactor: -3.29
+            },
+            {
+                shipAge: '21-25',
+                constantFactor: -4.42
+            },
+            {
+                shipAge: '26-30',
+                constantFactor: -12.28
+            },
+        ];
+
+        const result = await CostShipAge.insertMany(costShipAges);
+        if(result){
+            res.send({success: true});
+        }
+        
+    }
+    catch(err){
+
+    }
+}
+
 module.exports = {
     getProjectTerminalByID,
     getProjectTransportationByID,
@@ -1601,5 +1656,6 @@ module.exports = {
     duplicateTerminalByID,
     getFormTransportationBunkerPriceSensitivity,
     createTransportationBunkerPriceSensitivity,
-    getSummaryTransportationBunkerPriceSensitivity
+    getSummaryTransportationBunkerPriceSensitivity,
+    createCostShipAge
 }

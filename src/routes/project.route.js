@@ -22,6 +22,7 @@ const {
     getFormTransportationBunkerPriceSensitivity,
     createTransportationBunkerPriceSensitivity,
     getSummaryTransportationBunkerPriceSensitivity,
+    createCostShipAge,
 
 } = require('./../controllers/project.controller');
 
@@ -47,5 +48,5 @@ router.get('/:projectID/transportation/:transportationID/delete', deleteTranspor
 router.get('/:projectID/delete', deleteProjectByID);
 
 router.get('/:projectID/transportation/:transportationID/summary', getSummaryTransportationBunkerPriceSensitivity);
-
+router.get('/create/costShipAge', createCostShipAge);
 module.exports = router;
