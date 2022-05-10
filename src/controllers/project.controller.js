@@ -9,6 +9,7 @@ const Terminal = require('./../models/Terimnal/terminal');
 const Storage = require('./../models/Terimnal/storage');
 const Receiving = require('./../models/Terimnal/receiving');
 const BunkerPriceSensitivity = require('./../models/bunker-price-sensitivity');
+const Topic = require('./../models/topic.model');
 
 const createProject = async (req, res, next) => {
     try {
@@ -17,9 +18,15 @@ const createProject = async (req, res, next) => {
             name: req.body.projectName,
             topicID
         }
+        const topics = await Topic.findOne({_id: ObjectID(topicID)});
         const newProject = new Project(project);
         await newProject.save();
         res.redirect('/topic/'+topicID);
+        res.render('Topic/topic',{
+            layout: 'layouts/main-layout',
+            topicID,
+            topics
+        })
 
     } catch (error) {
         res.render('error', {

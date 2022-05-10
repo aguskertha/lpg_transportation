@@ -4,7 +4,10 @@ const ObjectID = require('mongodb').ObjectId;
 
 const createTopic = async (req, res, next) => {
     try{
-        throw "ahahha";
+        const {name, slug} = req.body;
+        const topic = new Topic({name, slug});
+        await topic.save();
+        res.redirect('/topic');
     }
     catch(error){
         res.render('error', {
@@ -33,13 +36,15 @@ const getTopics = async (req, res, next) => {
 const getTopicByID = async (req, res, next) => {
     try {
         const topicID = req.params.topicID;
+        const topic = await Topic.findOne({_id: ObjectID(topicID)});
         const projects = await Project.find({
             topicID: topicID
         });
         res.render('Project/project', {
             layout: 'layouts/main-layout',
             projects,
-            topicID
+            topicID,
+            topic
         });
     } catch (error) {
         res.render('error', {

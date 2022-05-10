@@ -28,10 +28,10 @@
                         <td>
                             <% 
                                 let link = '#';
-                                if(topicID == '61f52f4a901e1b0de87d6995'){
+                                if(topic.slug == 'transportation'){
                                     link = `/project/${projects[i]._id}/transportation`;
                                 }
-                                else if(topicID == '61f52f68c00a2e2d5c6ed7ee'){
+                                else if(topic.slug == 'terminal'){
                                     link = `/project/${projects[i]._id}/terminal`;
                                 }
                                 else if(topicID == '61f52f76f7c18127007285a2'){

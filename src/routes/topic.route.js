@@ -8,7 +8,7 @@ const {
     
 } = require('./../controllers/topic.controller');
 
-router.post('/', createTopic);
+router.post('/create/', createTopic);
 router.get('/', getTopics);
 router.get('/:topicID', getTopicByID);
 
