@@ -61,6 +61,16 @@
                     <i class="fa fa-eye-slash"></i>  
                 </button>
             </th>
+            <th>Type of Freight
+                <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
+                    <i class="fa fa-eye-slash"></i>  
+                </button>
+            </th>
+            <th>Type of Voyage
+                <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
+                    <i class="fa fa-eye-slash"></i>  
+                </button>
+            </th>
             <th>Status
                 <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
                     <i class="fa fa-eye-slash"></i>  
@@ -82,6 +92,8 @@
             <td><%= filteredTransportation.shipCapacityMT %></td>
             <td><%= filteredTransportation.POL %></td>
             <td><%= filteredTransportation.POD %></td>
+            <td><%= filteredTransportation.typeFreight %></td>
+            <td><%= filteredTransportation.typeVoyage %></td>
             <td><% if (filteredTransportation.status == 0) { %>
                 Bunker Sensivity On Progress
                 <% } else { %>

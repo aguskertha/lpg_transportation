@@ -121,13 +121,13 @@
         <tr style="white-space: nowrap;" >
             <th scope="row"><%= i+1 %></th>
             <td>Rp<%= transportation.BunkeringCalculation.bunkerPriceIDRMDO %></td>
-            <td>$<%= transportation.RealFreightRate.unitCostMassCargo_USD_KG_NM %></td>
-            <td>Rp<%= transportation.RealFreightRate.unitCostMassCargo_IDR_KG_NM %></td>
-            <td>$<%= transportation.ProposedFreight.proposedFreight_USD_KG_NM %></td>
-            <td>Rp<%= transportation.ProposedFreight.proposedFreight_IDR_KG_NM %></td>
-            <td>$<%= transportation.ProposedFreight.proposedFreight_USD_MT %></td>
-            <td>Rp<%= transportation.ProposedFreight.proposedFreight_IDR_MT %></td>
-            <td>$<%= transportation.TotalCost.totalCostAfterTax %></td>
+            <td>$<%= transportation.RealFreightRate.unitCostMassCargo_USD_KG_NM.toFixed(7) %></td>
+            <td>Rp<%= transportation.RealFreightRate.unitCostMassCargo_IDR_KG_NM.toFixed(4) %></td>
+            <td>$<%= transportation.ProposedFreight.proposedFreight_USD_KG_NM.toFixed(7) %></td>
+            <td>Rp<%= transportation.ProposedFreight.proposedFreight_IDR_KG_NM.toFixed(4) %></td>
+            <td>$<%= transportation.ProposedFreight.proposedFreight_USD_MT.toFixed(4) %></td>
+            <td>Rp<%= transportation.ProposedFreight.proposedFreight_IDR_MT.toFixed(4) %></td>
+            <td>$<%= transportation.TotalCost.totalCostAfterTax.toFixed(4) %></td>
             <td>
                 <!-- <a class="btn btn-warning btn-sm" href="" role="button"><i class="fa fa-edit"></i> Info</a> -->
                 <button class="btn btn-info" data-toggle="modal" id="buttonCostShipAge" data-target="#modalFormCreate" value='<%= JSON.stringify(transportation) %>'><i class="fa fa-eye"></i> Info</button>
@@ -213,10 +213,10 @@
                     `
                     <tr style="white-space: nowrap;" >
                         <th scope="row">${i+1}</th>
-                        <td>Rp${transportation.ProposedFreight.proposedFreight_IDR_MT}</td>
+                        <td>Rp${transportation.ProposedFreight.proposedFreight_IDR_MT.toFixed(4)}</td>
                         <td>${freightCostShipAge.shipAge}</td>
                         <td>${freightCostShipAge.constantFactor}%</td>
-                        <td>Rp${freightCostShipAge.feeOnShipAge_IDR_MT}</td>
+                        <td>Rp${freightCostShipAge.feeOnShipAge_IDR_MT.toFixed(4)}</td>
                     
                     </tr>
                     `

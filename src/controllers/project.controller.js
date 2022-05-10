@@ -420,6 +420,8 @@ const getProjectTransportationByID = async (req, res, next) => {
                 POD: transportation.Voyage.POD,
                 shipCapacityMT: transportation.Ship.shipCapacityMT,
                 shipName: transportation.Ship.shipName,
+                typeVoyage: transportation.TypeVoyage.name,
+                typeFreight: transportation.TypeFreight.name,
                 status: transportation.status
             }
             filteredTransportations.push(filteredTransportation);
