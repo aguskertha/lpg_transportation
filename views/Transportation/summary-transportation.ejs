@@ -120,6 +120,7 @@
         <% const transportation = transportationBunkerPriceSensitivitys[i]; %> 
         <tr style="white-space: nowrap;" >
             <th scope="row"><%= i+1 %></th>
+            <input type="hidden" name="" id="transportation<%= i %>" value="<%= JSON.stringify(transportation) %>">
             <td>Rp<%= transportation.BunkeringCalculation.bunkerPriceIDRMDO %></td>
             <td>$<%= transportation.RealFreightRate.unitCostMassCargo_USD_KG_NM.toFixed(7) %></td>
             <td>Rp<%= transportation.RealFreightRate.unitCostMassCargo_IDR_KG_NM.toFixed(4) %></td>
@@ -130,7 +131,7 @@
             <td>$<%= transportation.TotalCost.totalCostAfterTax.toFixed(4) %></td>
             <td>
                 <!-- <a class="btn btn-warning btn-sm" href="" role="button"><i class="fa fa-edit"></i> Info</a> -->
-                <button class="btn btn-info" data-toggle="modal" id="buttonCostShipAge" data-target="#modalFormCreate" value='<%= JSON.stringify(transportation) %>'><i class="fa fa-eye"></i> Info</button>
+                <button class="btn btn-info" data-toggle="modal" id="buttonCostShipAge" data-target="#modalFormCreate" onclick="doSomething('<%= i %>')"> <i class="fa fa-eye"></i> Info</button>
             </td>
           
         </tr>
@@ -199,14 +200,12 @@
 <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 <script>
-    $(function() {
-        var button = $("#buttonCostShipAge"); //Add button ID
-        const transportation =  JSON.parse(button.val());
+    function doSomething(i){
+        var data = `#transportation${i}`;
+        var transportationStr = $(data).val();
+        var transportation =  JSON.parse(transportationStr);
         var wrapperCostAgeShip = $("#costAgeShip"); //Fields wrapper
-        $(button).click(function(e) {
-            console.log(transportation.freightCostShipAges)
-            $(wrapperCostAgeShip).empty();
-            e.preventDefault();
+        $(wrapperCostAgeShip).empty();
                 for( let i = 0; i < transportation.freightCostShipAges.length; i++ ) {
                     const freightCostShipAge = transportation.freightCostShipAges[i];
                     $(wrapperCostAgeShip).append(
@@ -222,27 +221,8 @@
                     `
                     );
                 }
-        })
-    })
-    // function createCostShipAge(strTransportation){
-    //     const transportation = JSON.parse(strTransportation);
-    //     var wrapperCostAgeShip = $("#costAgeShip"); //Fields wrapper
-    //     $(wrapperCostAgeShip).empty();
-    //     e.preventDefault();
-    //     for( let i = 0; i < transportation.freightCostShipAges.length; i++ ) {
-    //     $(wrapperCostAgeShip).append(
-    //     `
-    //     <tr style="white-space: nowrap;" >
-    //         <th scope="row">${i+1}</th>
-    //         <td>Rp</td>
-    //         <td></td>
-    //         <td></td>
-          
-    //     </tr>
-    //     `
-    //     );
-    //     }
-    // }
+    }
+   
     function confirmDelete(projectID, transportationID){
         var result = confirm('Are you sure you want to delete this project?');
         if (result) {
