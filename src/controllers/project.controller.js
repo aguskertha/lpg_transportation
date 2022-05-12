@@ -920,9 +920,9 @@ const createTransportation = async (req, res, next) => {
         transportation.ProposedFreight = proposedFreight;
 
         // console.log(transportation.BunkeringCalculation)
-        // const newTransportation = new Transportation(transportation);
-        // await newTransportation.save();
-        // res.redirect(`/project/${req.body.ProjectID}/form/${newTransportation._id}/bunker-price-sensitivity`);
+        const newTransportation = new Transportation(transportation);
+        await newTransportation.save();
+        res.redirect(`/project/${req.body.ProjectID}/form/${newTransportation._id}/bunker-price-sensitivity`);
     } catch (error) {
         res.render('error', {
             layout: 'layouts/main-layout',
@@ -969,6 +969,18 @@ const editTransportationByID = async (req, res, next) => {
 
 const updateTransportationByID = async (req, res, next) => {
     try {
+        const transportationID = req.body.TransportationID;
+        const transportationDB = await Transportation.findOne({_id: ObjectID(transportationID)});
+        if(!transportationDB){
+            throw "Transportation not found!"
+        }
+        if(transportationDB.bunkerPriceSensitivityID){
+            const bunkerPriceSensitivity = await BunkerPriceSensitivity.findOne({_id: ObjectID(transportationDB.bunkerPriceSensitivityID)});
+            if(!bunkerPriceSensitivity){
+                throw "Bunker not found!"
+            }
+            await BunkerPriceSensitivity.deleteOne({_id : ObjectID(transportationDB.bunkerPriceSensitivityID)});
+        }
         const unitConversion = await UnitConversion.find();
         const transportation = {};
 
