@@ -33,7 +33,7 @@
             <label class="form-label">Jetty Type
             </label>
             <div class="mb-3">
-                <select class="form-control" id="jettyTypeSelect1" required>
+                <select class="form-control" id="jettyTypeSelect1">
                     <option value="" selected disabled>Select a Jetty Type</option>
                     <% jettyType.facilityTypes.forEach(jettyTypeFacilityType => { %>
                         <option value="<%= JSON.stringify(jettyTypeFacilityType) %>"><%= jettyTypeFacilityType.facilityName %></option>
@@ -47,7 +47,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="text" class="form-control" id="jettyTypeUnitCost1" value="" readonly>
+                <input type="text" class="form-control" id="jettyTypeUnitCost1" value="0">
             </div>
         </div>
         <div class="col-md-1">
@@ -65,7 +65,7 @@
         <div class="col-md-1">
             <label class="form-label">Qty</label>
             <div class="mb-3">
-                <input type="number" step="1" class="form-control" value="0" id="jettyTypeQty1" required>
+                <input type="number" step="1" class="form-control" value="0" id="jettyTypeQty1" >
             </div>
         </div>
         <div class="col-md-2">
@@ -74,7 +74,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="number" step="1" class="form-control" id="jettyTypeTotal1" name="jettyTypeTotal1" readonly required>
+                <input type="number" step="1" class="form-control" id="jettyTypeTotal1" name="jettyTypeTotal1" value="0" readonly >
             </div>
         </div>
     </div>
@@ -91,7 +91,7 @@
         <div class="col-md-3">
             <label class="form-label">Jetty Connection</label>
             <div class="mb-3">
-                <select class="form-control" id="jettyConnectionSelect" required>
+                <select class="form-control" id="jettyConnectionSelect" >
                     <option value="" selected disabled>Select a Jetty Connection</option>
                     <% jettyConnection.facilityTypes.forEach(jettyConnectionFacilityType => { %>
                         <option value="<%= JSON.stringify(jettyConnectionFacilityType) %>"><%= jettyConnectionFacilityType.facilityName %></option>
@@ -105,7 +105,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="text" class="form-control" id="jettyConnectionUnitCost" value="" readonly>
+                <input type="text" class="form-control" id="jettyConnectionUnitCost" value="0">
             </div>
         </div>
         <div class="col-md-1">
@@ -123,7 +123,7 @@
         <div class="col-md-1">
             <label class="form-label">Qty</label>
             <div class="mb-3">
-                <input type="number" step="1" class="form-control" value="0" id="jettyConnectionQty" required>
+                <input type="number" step="1" class="form-control" value="0" id="jettyConnectionQty">
             </div>
         </div>
         <div class="col-md-2">
@@ -132,7 +132,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="number" step="1" class="form-control" id="jettyConnectionTotal" name="jettyConnectionTotal" readonly required>
+                <input type="number" step="1" class="form-control" id="jettyConnectionTotal" name="jettyConnectionTotal" value="0" readonly >
             </div>
         </div>
     </div>
@@ -140,7 +140,7 @@
         <div class="col-md-3">
             <label class="form-label">Unloading Facility</label>
             <div class="mb-3">
-                <select class="form-control" id="unloadingFacilitySelect" required>
+                <select class="form-control" id="unloadingFacilitySelect" >
                     <option value="" selected disabled>Select a Unloading Facility</option>
                     <% unloadingFacility.facilityTypes.forEach(unloadingFacilityFacilityType => { %>
                         <option value="<%= JSON.stringify(unloadingFacilityFacilityType) %>"><%= unloadingFacilityFacilityType.facilityName %></option>
@@ -154,7 +154,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="text" class="form-control" id="unloadingFacilityUnitCost" value="" readonly>
+                <input type="text" class="form-control" id="unloadingFacilityUnitCost" value="0">
             </div>
         </div>
         <div class="col-md-1">
@@ -172,7 +172,7 @@
         <div class="col-md-1">
             <label class="form-label">Qty</label>
             <div class="mb-3">
-                <input type="number" step="1" class="form-control" value="0" id="unloadingFacilityQty" required>
+                <input type="number" step="1" class="form-control" value="0" id="unloadingFacilityQty" >
             </div>
         </div>
         <div class="col-md-2">
@@ -181,7 +181,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="number" step="1" class="form-control" id="unloadingFacilityTotal" name="unloadingFacilityTotal" readonly required>
+                <input type="number" step="1" class="form-control" id="unloadingFacilityTotal" name="unloadingFacilityTotal" value="0" readonly >
             </div>
         </div>
     </div>
@@ -189,7 +189,7 @@
         <div class="col-md-3">
             <label class="form-label">Pipeline Installation</label>
             <div class="mb-3">
-                <select class="form-control" id="pipelineInstallationSelect" required>
+                <select class="form-control" id="pipelineInstallationSelect" >
                     <option value="" selected disabled>Select a Pipeline Installation</option>
                     <% pipelineInstallation.facilityTypes.forEach(pipelineInstallationFacilityType => { %>
                         <option value="<%= JSON.stringify(pipelineInstallationFacilityType) %>"><%= pipelineInstallationFacilityType.facilityName %></option>
@@ -203,7 +203,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="text" class="form-control" id="pipelineInstallationUnitCost" value="" readonly>
+                <input type="text" class="form-control" id="pipelineInstallationUnitCost" value="0">
             </div>
         </div>
         <div class="col-md-1">
@@ -221,7 +221,7 @@
         <div class="col-md-1">
             <label class="form-label">Qty</label>
             <div class="mb-3">
-                <input type="number" step="1" class="form-control" value="0" id="pipelineInstallationQty" required>
+                <input type="number" step="1" class="form-control" value="0" id="pipelineInstallationQty" >
             </div>
         </div>
         <div class="col-md-2">
@@ -230,7 +230,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="number" step="1" class="form-control" id="pipelineInstallationTotal" name="pipelineInstallationTotal" readonly required>
+                <input type="number" step="1" class="form-control" id="pipelineInstallationTotal" name="pipelineInstallationTotal" value="0" readonly >
             </div>
         </div>
     </div>
@@ -241,7 +241,7 @@
             <label class="form-label">Mooring Facilities
             </label>
             <div class="mb-3">
-                <select class="form-control" id="mooringFacilitiesSelect1" required>
+                <select class="form-control" id="mooringFacilitiesSelect1" >
                     <option value="" selected disabled>Select a Mooring Facilities</option>
                     <% mooringFacilities.facilityTypes.forEach(mooringFacilitiesFacilityType => { %>
                         <option value="<%= JSON.stringify(mooringFacilitiesFacilityType) %>"><%= mooringFacilitiesFacilityType.facilityName %></option>
@@ -255,7 +255,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="text" class="form-control" id="mooringFacilitiesUnitCost1" value="" readonly>
+                <input type="text" class="form-control" id="mooringFacilitiesUnitCost1" value="0">
             </div>
         </div>
         <div class="col-md-1">
@@ -273,7 +273,7 @@
         <div class="col-md-1">
             <label class="form-label">Qty</label>
             <div class="mb-3">
-                <input type="number" step="1" class="form-control" value="0" id="mooringFacilitiesQty1" required>
+                <input type="number" step="1" class="form-control" value="0" id="mooringFacilitiesQty1" >
             </div>
         </div>
         <div class="col-md-2">
@@ -282,7 +282,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="number" step="1" class="form-control" id="mooringFacilitiesTotal1" name="mooringFacilitiesTotal1" readonly required>
+                <input type="number" step="1" class="form-control" id="mooringFacilitiesTotal1" name="mooringFacilitiesTotal1" value="0" readonly >
             </div>
         </div>
     </div>
@@ -299,7 +299,7 @@
         <div class="col-md-3">
             <label class="form-label">Metering</label>
             <div class="mb-3">
-                <select class="form-control" id="meteringSelect" required>
+                <select class="form-control" id="meteringSelect" >
                     <option value="" selected disabled>Select a Metering</option>
                     <% metering.facilityTypes.forEach(meteringFacilityType => { %>
                         <option value="<%= JSON.stringify(meteringFacilityType) %>"><%= meteringFacilityType.facilityName %></option>
@@ -313,7 +313,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="text" class="form-control" id="meteringUnitCost" value="" readonly>
+                <input type="text" class="form-control" id="meteringUnitCost" value="0">
             </div>
         </div>
         <div class="col-md-1">
@@ -331,7 +331,7 @@
         <div class="col-md-1">
             <label class="form-label">Qty</label>
             <div class="mb-3">
-                <input type="number" step="1" class="form-control" value="0" id="meteringQty" required>
+                <input type="number" step="1" class="form-control" value="0" id="meteringQty" >
             </div>
         </div>
         <div class="col-md-2">
@@ -340,7 +340,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="number" step="1" class="form-control" id="meteringTotal" name="meteringTotal" readonly required>
+                <input type="number" step="1" class="form-control" id="meteringTotal" name="meteringTotal" value="0" readonly >
             </div>
         </div>
     </div>
@@ -387,7 +387,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="number" step="1" class="form-control" id="receivingOthersTotal1" name="receivingOthersTotal1" readonly>
+                <input type="number" step="1" class="form-control" id="receivingOthersTotal1" name="receivingOthersTotal1" value="0" readonly>
             </div>
         </div>
     </div>
@@ -413,7 +413,7 @@
         <div class="col-md-3">
             <label class="form-label">Propane Storage Tank</label>
             <div class="mb-3">
-                <select class="form-control" id="propaneStorageTankSelect1" required>
+                <select class="form-control" id="propaneStorageTankSelect1" >
                     <option value="" selected disabled>Select a Propane Storage Tank</option>
                     <% propaneStorageTank.facilityTypes.forEach(jettyTypeFacilityType => { %>
                         <option value="<%= JSON.stringify(jettyTypeFacilityType) %>"><%= jettyTypeFacilityType.facilityName %></option>
@@ -425,7 +425,7 @@
             <label class="form-label">Specification</label>
             <div class="mb-3">
                 <div class="propaneStorageTankWrapperSpec">
-                    <select class="form-control" id="propaneStorageTankSpecSelect1" required>
+                    <select class="form-control" id="propaneStorageTankSpecSelect1" >
                         <option value="" selected disabled>Select a Specification</option>
                             
                     </select>
@@ -438,7 +438,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="text" class="form-control" id="propaneStorageTankUnitCost1" value="" readonly>
+                <input type="text" class="form-control" id="propaneStorageTankUnitCost1" value="0">
             </div>
         </div>
         <div class="col-md-1">
@@ -450,7 +450,7 @@
         <div class="col-md-1">
             <label class="form-label">Qty</label>
             <div class="mb-3">
-                <input type="number" step="1" class="form-control" value="0" id="propaneStorageTankQty1" required>
+                <input type="number" step="1" class="form-control" value="0" id="propaneStorageTankQty1" >
             </div>
         </div>
         <div class="col-md-2">
@@ -459,7 +459,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="number" step="1" class="form-control" id="propaneStorageTankTotal1" name="propaneStorageTankTotal1" readonly required>
+                <input type="number" step="1" class="form-control" id="propaneStorageTankTotal1" name="propaneStorageTankTotal1" value="0" readonly >
             </div>
         </div>
     </div>
@@ -478,7 +478,7 @@
         <div class="col-md-3">
             <label class="form-label">Butane Storage Tank</label>
             <div class="mb-3">
-                <select class="form-control" id="butaneStorageTankSelect1" required>
+                <select class="form-control" id="butaneStorageTankSelect1" >
                     <option value="" selected disabled>Select a Butane Storage Tank</option>
                     <% butaneStorageTank.facilityTypes.forEach(jettyTypeFacilityType => { %>
                         <option value="<%= JSON.stringify(jettyTypeFacilityType) %>"><%= jettyTypeFacilityType.facilityName %></option>
@@ -490,7 +490,7 @@
             <label class="form-label">Specification</label>
             <div class="mb-3">
                 <div class="butaneStorageTankWrapperSpec">
-                    <select class="form-control" id="butaneStorageTankSpecSelect1" required>
+                    <select class="form-control" id="butaneStorageTankSpecSelect1" >
                         <option value="" selected disabled>Select a Specification</option>
                             
                     </select>
@@ -503,7 +503,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="text" class="form-control" id="butaneStorageTankUnitCost1" value="" readonly>
+                <input type="text" class="form-control" id="butaneStorageTankUnitCost1" value="0">
             </div>
         </div>
         <div class="col-md-1">
@@ -515,7 +515,7 @@
         <div class="col-md-1">
             <label class="form-label">Qty</label>
             <div class="mb-3">
-                <input type="number" step="1" class="form-control" value="0" id="butaneStorageTankQty1" required>
+                <input type="number" step="1" class="form-control" value="0" id="butaneStorageTankQty1" >
             </div>
         </div>
         <div class="col-md-2">
@@ -524,7 +524,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="number" step="1" class="form-control" id="butaneStorageTankTotal1" name="butaneStorageTankTotal1" readonly required>
+                <input type="number" step="1" class="form-control" id="butaneStorageTankTotal1" name="butaneStorageTankTotal1" value="0" readonly >
             </div>
         </div>
     </div>
@@ -543,7 +543,7 @@
         <div class="col-md-3">
             <label class="form-label">Mixed LPG Storage Tank</label>
             <div class="mb-3">
-                <select class="form-control" id="mixedStorageTankSelect1" required>
+                <select class="form-control" id="mixedStorageTankSelect1" >
                     <option value="" selected disabled>Select a Mixed Storage Tank</option>
                     <% mixedStorageTank.facilityTypes.forEach(jettyTypeFacilityType => { %>
                         <option value="<%= JSON.stringify(jettyTypeFacilityType) %>"><%= jettyTypeFacilityType.facilityName %></option>
@@ -555,7 +555,7 @@
             <label class="form-label">Specification</label>
             <div class="mb-3">
                 <div class="mixedStorageTankWrapperSpec">
-                    <select class="form-control" id="mixedStorageTankSpecSelect1" required>
+                    <select class="form-control" id="mixedStorageTankSpecSelect1" >
                         <option value="" selected disabled>Select a Specification</option>
                             
                     </select>
@@ -568,7 +568,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="text" class="form-control" id="mixedStorageTankUnitCost1" value="" readonly>
+                <input type="text" class="form-control" id="mixedStorageTankUnitCost1" value="0">
             </div>
         </div>
         <div class="col-md-1">
@@ -580,7 +580,7 @@
         <div class="col-md-1">
             <label class="form-label">Qty</label>
             <div class="mb-3">
-                <input type="number" step="1" class="form-control" value="0" id="mixedStorageTankQty1" required>
+                <input type="number" step="1" class="form-control" value="0" id="mixedStorageTankQty1" >
             </div>
         </div>
         <div class="col-md-2">
@@ -589,7 +589,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="number" step="1" class="form-control" id="mixedStorageTankTotal1" name="mixedStorageTankTotal1" readonly required>
+                <input type="number" step="1" class="form-control" id="mixedStorageTankTotal1" name="mixedStorageTankTotal1" value="0" readonly >
             </div>
         </div>
     </div>
@@ -616,7 +616,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="text" class="form-control" id="pipelineStorageUnitCost" value="">
+                <input type="text" class="form-control" id="pipelineStorageUnitCost" value="0">
             </div>
         </div>
         <div class="col-md-1">
@@ -643,7 +643,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="number" step="1" class="form-control" id="pipelineStorageTotal" name="pipelineStorageTotal" readonly required>
+                <input type="number" step="1" class="form-control" id="pipelineStorageTotal" name="pipelineStorageTotal" value="0" readonly >
             </div>
         </div>
     </div>
@@ -654,7 +654,7 @@
             <label class="form-label">Loading Pump
             </label>
             <div class="mb-3">
-                <select class="form-control" id="loadingPumpSelect1" required>
+                <select class="form-control" id="loadingPumpSelect1" >
                     <option value="" selected disabled>Select a Loading Pump</option>
                     <% loadingPump.facilityTypes.forEach(jettyTypeFacilityType => { %>
                         <option value="<%= JSON.stringify(jettyTypeFacilityType) %>"><%= jettyTypeFacilityType.facilityName %></option>
@@ -668,7 +668,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="text" class="form-control" id="loadingPumpUnitCost1" value="" readonly>
+                <input type="text" class="form-control" id="loadingPumpUnitCost1" value="0">
             </div>
         </div>
         <div class="col-md-1">
@@ -686,7 +686,7 @@
         <div class="col-md-1">
             <label class="form-label">Qty</label>
             <div class="mb-3">
-                <input type="number" step="1" class="form-control" value="0" id="loadingPumpQty1" required>
+                <input type="number" step="1" class="form-control" value="0" id="loadingPumpQty1" >
             </div>
         </div>
         <div class="col-md-2">
@@ -695,7 +695,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="number" step="1" class="form-control" id="loadingPumpTotal1" name="loadingPumpTotal1" readonly required>
+                <input type="number" step="1" class="form-control" id="loadingPumpTotal1" name="loadingPumpTotal1" value="0" readonly >
             </div>
         </div>
     </div>
@@ -714,7 +714,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="text" class="form-control" id="heatExhargerUnitCost" value="">
+                <input type="text" class="form-control" id="heatExhargerUnitCost" value="0">
             </div>
         </div>
         <div class="col-md-1">
@@ -741,7 +741,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="number" step="1" class="form-control" id="heatExhargerTotal" name="heatExhargerTotal" readonly required>
+                <input type="number" step="1" class="form-control" id="heatExhargerTotal" name="heatExhargerTotal" value="0" readonly >
             </div>
         </div>
     </div>
@@ -759,7 +759,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="text" class="form-control" id="boosterPumpUnitCost" value="">
+                <input type="text" class="form-control" id="boosterPumpUnitCost" value="0">
             </div>
         </div>
         <div class="col-md-1">
@@ -786,7 +786,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="number" step="1" class="form-control" id="boosterPumpTotal" name="boosterPumpTotal" readonly required>
+                <input type="number" step="1" class="form-control" id="boosterPumpTotal" name="boosterPumpTotal" value="0" readonly >
             </div>
         </div>
     </div>
@@ -806,7 +806,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="text" class="form-control" id="storageOthersUnitCost1" value="">
+                <input type="text" class="form-control" id="storageOthersUnitCost1" value="0">
             </div>
         </div>
         <div class="col-md-1">
@@ -833,7 +833,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="number" step="1" class="form-control" id="storageOthersTotal1" name="storageOthersTotal1" readonly>
+                <input type="number" step="1" class="form-control" id="storageOthersTotal1" name="storageOthersTotal1" value="0" readonly>
             </div>
         </div>
     </div>
@@ -856,7 +856,7 @@
         <div class="col-md-3">
             <label class="form-label">Loading Skid</label>
             <div class="mb-3">
-                <select class="form-control" id="loadingSkidSelect" required>
+                <select class="form-control" id="loadingSkidSelect" >
                     <option value="" selected disabled>Select a Loading Skid</option>
                     <% loadingSkid.facilityTypes.forEach(jettyTypeFacilityType => { %>
                         <option value="<%= JSON.stringify(jettyTypeFacilityType) %>"><%= jettyTypeFacilityType.facilityName %></option>
@@ -868,7 +868,7 @@
             <label class="form-label">Specification</label>
             <div class="mb-3">
                 <div class="loadingSkidNumberWrapperSpec">
-                    <select class="form-control" id="loadingSkidSpecSelect" required>
+                    <select class="form-control" id="loadingSkidSpecSelect" >
                         <option value="" selected disabled>Select a Specification</option>
                             
                     </select>
@@ -881,7 +881,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="text" class="form-control" id="loadingSkidUnitCost" value="" readonly>
+                <input type="text" class="form-control" id="loadingSkidUnitCost" value="0">
             </div>
         </div>
         <div class="col-md-1">
@@ -893,7 +893,7 @@
         <div class="col-md-1">
             <label class="form-label">Qty</label>
             <div class="mb-3">
-                <input type="number" step="1" class="form-control" value="0" id="loadingSkidQty" required>
+                <input type="number" step="1" class="form-control" value="0" id="loadingSkidQty" >
             </div>
         </div>
         <div class="col-md-2">
@@ -902,7 +902,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="number" step="1" class="form-control" id="loadingSkidTotal" name="loadingSkidTotal" readonly required>
+                <input type="number" step="1" class="form-control" id="loadingSkidTotal" name="loadingSkidTotal" value="0" readonly >
             </div>
         </div>
     </div>
@@ -920,7 +920,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="text" class="form-control" id="bufferTankUnitCost" value="">
+                <input type="text" class="form-control" id="bufferTankUnitCost" value="0">
             </div>
         </div>
         <div class="col-md-1">
@@ -947,7 +947,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="number" step="1" class="form-control" id="bufferTankTotal" name="bufferTankTotal" readonly required>
+                <input type="number" step="1" class="form-control" id="bufferTankTotal" name="bufferTankTotal" value="0" readonly >
             </div>
         </div>
     </div>
@@ -955,7 +955,7 @@
         <div class="col-md-3">
             <label class="form-label">Weightbridge and weightronic</label>
             <div class="mb-3">
-                <select class="form-control" id="weightbridgeSelect" required>
+                <select class="form-control" id="weightbridgeSelect" >
                     <option value="" selected disabled>Select a Weighrbridge</option>
                     <% weightbridge.facilityTypes.forEach(jettyConnectionFacilityType => { %>
                         <option value="<%= JSON.stringify(jettyConnectionFacilityType) %>"><%= jettyConnectionFacilityType.facilityName %></option>
@@ -969,7 +969,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="text" class="form-control" id="weightbridgeUnitCost" value="" readonly>
+                <input type="text" class="form-control" id="weightbridgeUnitCost" value="0">
             </div>
         </div>
         <div class="col-md-1">
@@ -987,7 +987,7 @@
         <div class="col-md-1">
             <label class="form-label">Qty</label>
             <div class="mb-3">
-                <input type="number" step="1" class="form-control" value="0" id="weightbridgeQty" required>
+                <input type="number" step="1" class="form-control" value="0" id="weightbridgeQty" >
             </div>
         </div>
         <div class="col-md-2">
@@ -996,7 +996,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="number" step="1" class="form-control" id="weightbridgeTotal" name="weightbridgeTotal" readonly required>
+                <input type="number" step="1" class="form-control" id="weightbridgeTotal" name="weightbridgeTotal" value="0" readonly >
             </div>
         </div>
     </div>
@@ -1014,7 +1014,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="text" class="form-control" id="loadingBayUnitCost" value="">
+                <input type="text" class="form-control" id="loadingBayUnitCost" value="0">
             </div>
         </div>
         <div class="col-md-1">
@@ -1041,7 +1041,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="number" step="1" class="form-control" id="loadingBayTotal" name="loadingBayTotal" readonly required>
+                <input type="number" step="1" class="form-control" id="loadingBayTotal" name="loadingBayTotal" value="0" readonly >
             </div>
         </div>
     </div>
@@ -1061,7 +1061,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="text" class="form-control" id="carouselFillingUnitCost1" value="">
+                <input type="text" class="form-control" id="carouselFillingUnitCost1" value="0">
             </div>
         </div>
         <div class="col-md-1">
@@ -1088,7 +1088,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="number" step="1" class="form-control" id="carouselFillingTotal1" name="carouselFillingTotal1" readonly required>
+                <input type="number" step="1" class="form-control" id="carouselFillingTotal1" name="carouselFillingTotal1" value="0" readonly >
             </div>
         </div>
     </div>
@@ -1117,7 +1117,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="text" class="form-control" id="fillingStationOthersUnitCost1" value="">
+                <input type="text" class="form-control" id="fillingStationOthersUnitCost1" value="0">
             </div>
         </div>
         <div class="col-md-1">
@@ -1144,7 +1144,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="number" step="1" class="form-control" id="fillingStationOthersTotal1" name="fillingStationOthersTotal1" readonly>
+                <input type="number" step="1" class="form-control" id="fillingStationOthersTotal1" name="fillingStationOthersTotal1" value="0" readonly>
             </div>
         </div>
     </div>
@@ -1183,7 +1183,7 @@
         <div class="col-md-1">
             <label class="form-label">Unit</label>
             <div class="mb-3">
-                <input type="text" class="form-control" id="terminalAutomationUnit" value="">
+                <input type="text" class="form-control" id="terminalAutomationUnit" value="0">
             </div>
         </div>
         <div class="col-md-3">
@@ -1204,7 +1204,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="number" step="1" class="form-control" id="terminalAutomationTotal" name="terminalAutomationTotal" readonly required>
+                <input type="number" step="1" class="form-control" id="terminalAutomationTotal" name="terminalAutomationTotal" value="0" readonly >
             </div>
         </div>
     </div>
@@ -1228,7 +1228,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="text" class="form-control" id="fireWaterPumpUnitCost" value="">
+                <input type="text" class="form-control" id="fireWaterPumpUnitCost" value="0">
             </div>
         </div>
         <div class="col-md-1">
@@ -1255,7 +1255,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="number" step="1" class="form-control" id="fireWaterPumpTotal" name="fireWaterPumpTotal" readonly required>
+                <input type="number" step="1" class="form-control" id="fireWaterPumpTotal" name="fireWaterPumpTotal" value="0" readonly >
             </div>
         </div>
     </div>
@@ -1273,7 +1273,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="text" class="form-control" id="fireHydrantsUnitCost" value="">
+                <input type="text" class="form-control" id="fireHydrantsUnitCost" value="0">
             </div>
         </div>
         <div class="col-md-1">
@@ -1300,7 +1300,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="number" step="1" class="form-control" id="fireHydrantsTotal" name="fireHydrantsTotal" readonly required>
+                <input type="number" step="1" class="form-control" id="fireHydrantsTotal" name="fireHydrantsTotal" value="0" readonly >
             </div>
         </div>
     </div>
@@ -1318,7 +1318,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="text" class="form-control" id="fireExtinguisersUnitCost" value="">
+                <input type="text" class="form-control" id="fireExtinguisersUnitCost" value="0">
             </div>
         </div>
         <div class="col-md-1">
@@ -1345,7 +1345,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="number" step="1" class="form-control" id="fireExtinguisersTotal" name="fireExtinguisersTotal" readonly required>
+                <input type="number" step="1" class="form-control" id="fireExtinguisersTotal" name="fireExtinguisersTotal" value="0" readonly >
             </div>
         </div>
     </div>
@@ -1363,7 +1363,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="text" class="form-control" id="fireGasDetectorUnitCost" value="">
+                <input type="text" class="form-control" id="fireGasDetectorUnitCost" value="0">
             </div>
         </div>
         <div class="col-md-1">
@@ -1390,7 +1390,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="number" step="1" class="form-control" id="fireGasDetectorTotal" name="fireGasDetectorTotal" readonly required>
+                <input type="number" step="1" class="form-control" id="fireGasDetectorTotal" name="fireGasDetectorTotal" value="0" readonly >
             </div>
         </div>
     </div>
@@ -1414,7 +1414,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="text" class="form-control" id="flareUnitCost" value="">
+                <input type="text" class="form-control" id="flareUnitCost" value="0">
             </div>
         </div>
         <div class="col-md-1">
@@ -1441,7 +1441,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="number" step="1" class="form-control" id="flareTotal" name="flareTotal" readonly required>
+                <input type="number" step="1" class="form-control" id="flareTotal" name="flareTotal" value="0" readonly >
             </div>
         </div>
     </div>
@@ -1459,7 +1459,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="text" class="form-control" id="instrumentAirUnitCost" value="">
+                <input type="text" class="form-control" id="instrumentAirUnitCost" value="0">
             </div>
         </div>
         <div class="col-md-1">
@@ -1486,7 +1486,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="number" step="1" class="form-control" id="instrumentAirTotal" name="instrumentAirTotal" readonly required>
+                <input type="number" step="1" class="form-control" id="instrumentAirTotal" name="instrumentAirTotal" value="0" readonly >
             </div>
         </div>
     </div>
@@ -1504,7 +1504,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="text" class="form-control" id="emergencyPowerUnitCost" value="">
+                <input type="text" class="form-control" id="emergencyPowerUnitCost" value="0">
             </div>
         </div>
         <div class="col-md-1">
@@ -1531,7 +1531,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="number" step="1" class="form-control" id="emergencyPowerTotal" name="emergencyPowerTotal" readonly required>
+                <input type="number" step="1" class="form-control" id="emergencyPowerTotal" name="emergencyPowerTotal" value="0" readonly >
             </div>
         </div>
     </div>
@@ -1549,7 +1549,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="text" class="form-control" id="dieselOilPumpUnitCost" value="">
+                <input type="text" class="form-control" id="dieselOilPumpUnitCost" value="0">
             </div>
         </div>
         <div class="col-md-1">
@@ -1576,7 +1576,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="number" step="1" class="form-control" id="dieselOilPumpTotal" name="dieselOilPumpTotal" readonly required>
+                <input type="number" step="1" class="form-control" id="dieselOilPumpTotal" name="dieselOilPumpTotal" value="0" readonly >
             </div>
         </div>
     </div>
@@ -1594,7 +1594,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="text" class="form-control" id="freshWaterPumpUnitCost" value="">
+                <input type="text" class="form-control" id="freshWaterPumpUnitCost" value="0">
             </div>
         </div>
         <div class="col-md-1">
@@ -1621,7 +1621,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="number" step="1" class="form-control" id="freshWaterPumpTotal" name="freshWaterPumpTotal" readonly required>
+                <input type="number" step="1" class="form-control" id="freshWaterPumpTotal" name="freshWaterPumpTotal" value="0" readonly >
             </div>
         </div>
     </div>
@@ -1639,7 +1639,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="text" class="form-control" id="oilPumpUnitCost" value="">
+                <input type="text" class="form-control" id="oilPumpUnitCost" value="0">
             </div>
         </div>
         <div class="col-md-1">
@@ -1666,7 +1666,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="number" step="1" class="form-control" id="oilPumpTotal" name="oilPumpTotal" readonly required>
+                <input type="number" step="1" class="form-control" id="oilPumpTotal" name="oilPumpTotal" value="0" readonly >
             </div>
         </div>
     </div>
@@ -1684,7 +1684,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="text" class="form-control" id="dieselOilTankUnitCost" value="">
+                <input type="text" class="form-control" id="dieselOilTankUnitCost" value="0">
             </div>
         </div>
         <div class="col-md-1">
@@ -1711,7 +1711,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="number" step="1" class="form-control" id="dieselOilTankTotal" name="dieselOilTankTotal" readonly required>
+                <input type="number" step="1" class="form-control" id="dieselOilTankTotal" name="dieselOilTankTotal" value="0" readonly >
             </div>
         </div>
     </div>
@@ -1729,7 +1729,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="text" class="form-control" id="freshWaterTankUnitCost" value="">
+                <input type="text" class="form-control" id="freshWaterTankUnitCost" value="0">
             </div>
         </div>
         <div class="col-md-1">
@@ -1756,7 +1756,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="number" step="1" class="form-control" id="freshWaterTankTotal" name="freshWaterTankTotal" readonly required>
+                <input type="number" step="1" class="form-control" id="freshWaterTankTotal" name="freshWaterTankTotal" value="0" readonly >
             </div>
         </div>
     </div>
@@ -1774,7 +1774,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="text" class="form-control" id="oilTankUnitCost" value="">
+                <input type="text" class="form-control" id="oilTankUnitCost" value="0">
             </div>
         </div>
         <div class="col-md-1">
@@ -1801,7 +1801,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="number" step="1" class="form-control" id="oilTankTotal" name="oilTankTotal" readonly required>
+                <input type="number" step="1" class="form-control" id="oilTankTotal" name="oilTankTotal" value="0" readonly >
             </div>
         </div>
     </div>
@@ -1825,7 +1825,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="text" class="form-control" id="buildingUnitCost" value="">
+                <input type="text" class="form-control" id="buildingUnitCost" value="0">
             </div>
         </div>
         <div class="col-md-1">
@@ -1852,7 +1852,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="number" step="1" class="form-control" id="buildingTotal" name="buildingTotal" readonly required>
+                <input type="number" step="1" class="form-control" id="buildingTotal" name="buildingTotal" value="0" readonly >
             </div>
         </div>
     </div>
@@ -1876,7 +1876,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="text" class="form-control" id="landRentUnitCost" value="">
+                <input type="text" class="form-control" id="landRentUnitCost" value="0">
             </div>
         </div>
         <div class="col-md-1">
@@ -1903,7 +1903,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input type="number" step="1" class="form-control" id="landRentTotal" name="landRentTotal" readonly required>
+                <input type="number" step="1" class="form-control" id="landRentTotal" name="landRentTotal" value="0" readonly >
             </div>
         </div>
     </div>
@@ -1921,12 +1921,13 @@
     </div>
     <br>
     <div class="d-none" id="opexInputWrapper">
+    
     <div class="row">
         <div class="col-md-6">
             <div class="mb-3">
                 <label class="form-label">Storage Capacity</label>
                 <div class="input-group mb-3">
-                  <input type="number" step="0.1" class="form-control" id="opexInput" name="opexInput" value="0" required>
+                  <input type="number" step="0.1" class="form-control" id="opexInput" name="opexInput" value="0" >
                   <div class="input-group-append">
                     <span class="input-group-text">MT</span>
                   </div>
@@ -1934,6 +1935,43 @@
             </div>
         </div>
     </div>
+    <br>
+    <div class="row">
+        <div class="col-md-5">
+            <h2>Jetty Rent</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="mb-3">
+            <label class="form-label">Capacity</label>
+            <div class="input-group mb-3">
+                <input type="number" step="any" class="form-control" id="jettyRentCapacity" name="jettyRentCapacity" value="0" required>
+                <div class="input-group-append">
+                <span class="input-group-text">MT</span>
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Unloading Frequency</label>
+            <div class="input-group mb-3">
+                <input type="number" step="any" class="form-control" id="jettyRentUnloading" name="jettyRentUnloading" value="0" required>
+                <div class="input-group-append">
+                <span class="input-group-text">Year</span>
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Cost</label>
+            <div class="input-group mb-3">
+                <input type="number" step="any" class="form-control" id="jettyRentCost" name="jettyRentCost" value="0" required>
+                <div class="input-group-append">
+                <span class="input-group-text">Rp/Kg</span>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
     </div>
     <div class="d-none" id="opexResultWrapper">
         <div class="row">
@@ -1941,7 +1979,7 @@
                 <div class="mb-3">
                     <label class="form-label">OPEX</label>
                     <div class="input-group mb-3">
-                      <input type="number" step="0.1" class="form-control" id="opexResult" name="opexResult" required readonly>
+                      <input type="number" step="0.1" class="form-control" id="opexResult" name="opexResult"  readonly>
                       <div class="input-group-append">
                         <span class="input-group-text">USD/year</span>
                       </div>
@@ -1967,7 +2005,7 @@
             <div class="mb-3">
               <label for="manPower" class="col-form-label">Man Power:</label>
               <div class="input-group">
-                <input type="number" class="form-control" id="manPower" required>
+                <input type="number" class="form-control" id="manPower" >
                 <div class="input-group-append">
                   <span class="input-group-text">Year</span>
                 </div>
@@ -1977,7 +2015,7 @@
             <div class="mb-3">
               <label for="depreciation" class="col-form-label">Depreciation:</label>
               <div class="input-group">
-                <input type="number" class="form-control" id="depreciation" required>
+                <input type="number" class="form-control" id="depreciation" >
                 <div class="input-group-append">
                   <span class="input-group-text">Year</span>
                 </div>
@@ -1987,7 +2025,7 @@
             <div class="mb-3">
               <label for="maintenance" class="col-form-label">Maintenance:</label>
               <div class="input-group">
-                <input type="number" class="form-control" id="maintenance" required>
+                <input type="number" class="form-control" id="maintenance" >
                 <div class="input-group-append">
                   <span class="input-group-text">Year</span>
                 </div>
@@ -1997,7 +2035,7 @@
             <div class="mb-3">
               <label for="financialCosts" class="col-form-label">Financial costs:</label>
               <div class="input-group">
-                <input type="number" class="form-control" id="financialCosts" required>
+                <input type="number" class="form-control" id="financialCosts" >
                 <div class="input-group-append">
                   <span class="input-group-text">Year</span>
                 </div>
@@ -2007,7 +2045,7 @@
             <div class="mb-3">
               <label for="othersDataModal" class="col-form-label">Others:</label>
               <div class="input-group">
-                <input type="number" class="form-control" id="othersDataModal" required>
+                <input type="number" class="form-control" id="othersDataModal" >
                 <div class="input-group-append">
                   <span class="input-group-text">Year</span>
                 </div>
@@ -2055,8 +2093,46 @@
 
         $('#opexInput').on('change', function () {
             const value = $('#opexInput').val();
+            const capacity = $('#jettyRentCapacity').val();
+            const unloading = $('#jettyRentUnloading').val();
+            const cost = $('#jettyRentCost').val();
+            const jettyRent = (Number(capacity) * Number(unloading) * Number(cost) * 1000) / 14500;
             const result = Number(value) * (348965/500);
-            $('#opexResult').val(result);
+            const totalOpex = jettyRent + result;
+            $('#opexResult').val(totalOpex);
+        });
+
+        $('#jettyRentCapacity').on('change', function () {
+            const value = $('#opexInput').val();
+            const capacity = $('#jettyRentCapacity').val();
+            const unloading = $('#jettyRentUnloading').val();
+            const cost = $('#jettyRentCost').val();
+            const jettyRent = (Number(capacity) * Number(unloading) * Number(cost) * 1000) / 14500;
+            const result = Number(value) * (348965/500);
+            const totalOpex = jettyRent + result;
+            $('#opexResult').val(totalOpex);
+        });
+
+        $('#jettyRentUnloading').on('change', function () {
+            const value = $('#opexInput').val();
+            const capacity = $('#jettyRentCapacity').val();
+            const unloading = $('#jettyRentUnloading').val();
+            const cost = $('#jettyRentCost').val();
+            const jettyRent = (Number(capacity) * Number(unloading) * Number(cost) * 1000) / 14500;
+            const result = Number(value) * (348965/500);
+            const totalOpex = jettyRent + result;
+            $('#opexResult').val(totalOpex);
+        });
+
+        $('#jettyRentCost').on('change', function () {
+            const value = $('#opexInput').val();
+            const capacity = $('#jettyRentCapacity').val();
+            const unloading = $('#jettyRentUnloading').val();
+            const cost = $('#jettyRentCost').val();
+            const jettyRent = (Number(capacity) * Number(unloading) * Number(cost) * 1000) / 14500;
+            const result = Number(value) * (348965/500);
+            const totalOpex = jettyRent + result;
+            $('#opexResult').val(totalOpex);
         });
     });
     $(function(){
@@ -2105,7 +2181,7 @@
                 <div class="row">
                 <div class="col-md-3">
                     <div class="mb-3">
-                        <select class="form-control" id="${select}${jettyTypeNumber}" required>
+                        <select class="form-control" id="${select}${jettyTypeNumber}">
                             <option value="" selected disabled>Select a ${label}</option>
                             ${facilities}
                         </select>
@@ -2114,7 +2190,7 @@
                 <div class="col-md-3">
                     <div class="mb-3">
                         <div class="propaneStorageTankWrapperSpec">
-                            <select class="form-control" id="${specSelect}${jettyTypeNumber}" required>
+                            <select class="form-control" id="${specSelect}${jettyTypeNumber}">
                                 <option value="" selected disabled>Select a Specifications</option>
                                     
                             </select>
@@ -2126,7 +2202,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text">$</span>
                         </div>
-                        <input type="text" class="form-control" id="${unitCost}${jettyTypeNumber}" value="" readonly>
+                        <input type="text" class="form-control" id="${unitCost}${jettyTypeNumber}" value="">
                     </div>
                 </div>
                 <div class="col-md-1">
@@ -2136,7 +2212,7 @@
                 </div>
                 <div class="col-md-1">
                     <div class="mb-3">
-                        <input type="number" step="1" class="form-control" value="0" id="${qty}${jettyTypeNumber}" required>
+                        <input type="number" step="1" class="form-control" value="0" id="${qty}${jettyTypeNumber}" >
                     </div>
                 </div>
                 <div class="col-md-2">
@@ -2144,7 +2220,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text">$</span>
                         </div>
-                        <input type="number" step="1" class="form-control" id="${lastTotal}${jettyTypeNumber}" name="${lastTotal}${jettyTypeNumber}" readonly>
+                        <input type="number" step="1" class="form-control" id="${lastTotal}${jettyTypeNumber}" name="${lastTotal}${jettyTypeNumber}" value="0" readonly>
                     </div>
                 </div>
             </div>
@@ -2228,7 +2304,7 @@
                     <div class="col-md-3">
                         
                         <div class="mb-3">
-                            <select class="form-control" id="${select}${jettyTypeNumber}" required>
+                            <select class="form-control" id="${select}${jettyTypeNumber}">
                                 <option value="" selected disabled>Select a ${label}</option>
                                 ${facilities}
                             </select>
@@ -2239,7 +2315,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text">$</span>
                             </div>
-                            <input type="text" class="form-control" id="${unitCost}${jettyTypeNumber}" value="" readonly>
+                            <input type="text" class="form-control" id="${unitCost}${jettyTypeNumber}" value="0">
                         </div>
                     </div>
                     <div class="col-md-1">
@@ -2254,7 +2330,7 @@
                     </div>
                     <div class="col-md-1">
                         <div class="mb-3">
-                            <input type="number" step="1" class="form-control" value="0" id="${qty}${jettyTypeNumber}" required>
+                            <input type="number" step="1" class="form-control" value="0" id="${qty}${jettyTypeNumber}">
                         </div>
                     </div>
                     <div class="col-md-2">
@@ -2262,7 +2338,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text">$</span>
                             </div>
-                            <input type="number" step="1" class="form-control" id="${lastTotal}${jettyTypeNumber}" name="${lastTotal}${jettyTypeNumber}" readonly>
+                            <input type="number" step="1" class="form-control" id="${lastTotal}${jettyTypeNumber}" name="${lastTotal}${jettyTypeNumber}" value="0" readonly>
                         </div>
                     </div>
                 </div>
@@ -2362,7 +2438,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text">$</span>
                             </div>
-                            <input type="number" step="1" class="form-control" id="${lastTotal}${jettyTypeNumber}" name="${lastTotal}${jettyTypeNumber}" readonly>
+                            <input type="number" step="1" class="form-control" id="${lastTotal}${jettyTypeNumber}" name="${lastTotal}${jettyTypeNumber}" value="0" readonly>
                         </div>
                     </div>
                 </div>
