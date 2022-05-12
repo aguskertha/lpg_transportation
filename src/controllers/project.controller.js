@@ -1150,7 +1150,7 @@ const updateTransportationByID = async (req, res, next) => {
         const atSeaMDO = Number(req.body.atSeaMDO);
         const atSeaMGO = Number(req.body.atSeaMGO);
         const bunkerPriceIDRMFO = 0;
-        const bunkerPriceIDRMDO = 6500000;
+        const bunkerPriceIDRMDO = 0;
         const bunkerPriceIDRMGO = 0;
         console.log(portIdleMDO)
         console.log(portWorkingMDO)
