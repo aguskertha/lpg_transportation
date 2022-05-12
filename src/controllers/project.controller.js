@@ -776,7 +776,7 @@ const createTransportation = async (req, res, next) => {
             totalBunkerCostYearUSD,
         }
         transportation.BunkeringCalculation = bunkeringCalculation;
-        
+        console.log(transportation.BunkeringCalculation)
         //CREW COST
         const deckMaster = Number(req.body.deckMaster);
         const deckChiefOfficer = Number(req.body.deckChiefOfficer);
@@ -920,9 +920,9 @@ const createTransportation = async (req, res, next) => {
         transportation.ProposedFreight = proposedFreight;
 
         // console.log(transportation.BunkeringCalculation)
-        const newTransportation = new Transportation(transportation);
-        await newTransportation.save();
-        res.redirect(`/project/${req.body.ProjectID}/form/${newTransportation._id}/bunker-price-sensitivity`);
+        // const newTransportation = new Transportation(transportation);
+        // await newTransportation.save();
+        // res.redirect(`/project/${req.body.ProjectID}/form/${newTransportation._id}/bunker-price-sensitivity`);
     } catch (error) {
         res.render('error', {
             layout: 'layouts/main-layout',

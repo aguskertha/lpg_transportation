@@ -1109,14 +1109,29 @@ $(function(){
     var shipCapacityMT = $('#shipCapacityMT').val();
     $('#shipCapacityCBM').val((shipCapacityMT/CBMtoMT).toFixed(3));
   });
-
-  $('#atSeaMDO').on('change', () => {
-    var atSeaMDO = $('#atSeaMDO').val();
-    var portWorkingMDO = Number(2/10*atSeaMDO).toFixed(3);
-    var portIdleMDO = Number(15/100*atSeaMDO).toFixed(3);
-    $('#portIdleMDO').val(portIdleMDO);
-    $('#portWorkingMDO').val(portWorkingMDO);
+  
+  $('#SFOC_tugboat').on('change', () => {
+    var SFOC_tugboat = $('#SFOC_tugboat').val();
+    var SFOC = $('#SFOC').val();
+    $('#atSeaMDO').val(SFOC_tugboat);
+    $('#portWorkingMDO').val(Number(SFOC)+Number((SFOC_tugboat*0.2)));
+    $('#portIdleMDO').val((SFOC_tugboat*0.1));
   });
+
+  $('#SFOC').on('change', () => {
+    var SFOC_tugboat = $('#SFOC_tugboat').val();
+    var SFOC = $('#SFOC').val();
+    $('#portWorkingMDO').val(Number(SFOC)+Number((SFOC_tugboat*0.2)));
+  });
+
+
+  // $('#atSeaMDO').on('change', () => {
+  //   var atSeaMDO = $('#atSeaMDO').val();
+  //   var portWorkingMDO = Number(2/10*atSeaMDO).toFixed(3);
+  //   var portIdleMDO = Number(15/100*atSeaMDO).toFixed(3);
+  //   $('#portIdleMDO').val(portIdleMDO);
+  //   $('#portWorkingMDO').val(portWorkingMDO);
+  // });
 
   $('#shipInsurance').on('change', () => {
     var shipInsurance = $('#shipInsurance').val();
