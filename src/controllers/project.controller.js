@@ -522,7 +522,11 @@ const getFormTransportationFreightVoyage = async (req, res, next) => {
         if(!project){
             throw "project not found!";
         }
-        res.render('Transportation/form-ship', {
+        let form = 'Transportation/form-ship';
+        if(req.params.typeFreightSlug === 'barge' && req.params.typeVoyageSlug === 'single_trip'){
+            form = 'Transportation/form-barge';
+        }
+        res.render(form, {
             layout: 'layouts/main-layout',
             title: 'Form LPG Transportation',
             typeVoyages,
@@ -584,6 +588,24 @@ const createTransportation = async (req, res, next) => {
         }
         transportation.Ship = ship;
 
+        if(req.params.typeFreightSlug === 'barge' && req.params.typeVoyageSlug === 'single_trip'){
+            let tugboat = {
+                shipName: req.body.shipName_tugboat,
+                typeVessel: req.body.typeVessel_tugboat,
+                IMONumber: req.body.IMONumber_tugboat,
+                MMSINumber: req.body.MMSINumber_tugboat,
+                callSign: req.body.callSign_tugboat,
+                grossTonnage: req.body.grossTonnage_tugboat,
+                summerDWT: req.body.summerDWT_tugboat,
+                lengthOverall: req.body.lengthOverall_tugboat,
+                yearBuilt: req.body.yearBuilt_tugboat,
+                shipAge: req.body.shipAge_tugboat,
+                crewNumber: req.body.crewNumber_tugboat,
+                SFOC: req.body.SFOC_tugboat,
+            }
+            transportation.Tugboat = tugboat;
+        }
+
         //voyage
         let voyage = {
             POL: req.body.POL,
@@ -612,7 +634,7 @@ const createTransportation = async (req, res, next) => {
         shipCargoTankFullCapacity.totalCapacityLitre = totalCapacityLitre;
         shipCargoTankFullCapacity.totalCapacityKG = totalCapacityKG;
         transportation.ShipCargoTankFullCapacity = shipCargoTankFullCapacity;
-
+        
         //ShipCargoTankOperationalCapacity
         let shipCargoTankOperationalCapacity = {};
         const loadingFactor = 100;
@@ -632,7 +654,7 @@ const createTransportation = async (req, res, next) => {
         shipCargoTankOperationalCapacity.totalCapacityOpLitre = totalCapacityOpLitre;
         shipCargoTankOperationalCapacity.totalCapacityOpKG = totalCapacityOpKG;
         transportation.ShipCargoTankOperationalCapacity = shipCargoTankOperationalCapacity;
-
+        
         //TURNAROUND VOYAGE
         const ladenSailingTime = voyage.distance/voyage.serviceSpeedVessel/24;
         const ballastSailingTime = voyage.distance/voyage.serviceSpeedVessel/24;
@@ -647,7 +669,7 @@ const createTransportation = async (req, res, next) => {
             sumLoadingTime += Number(Number(shipCargoTankOperationalCapacity.cargoTankOp[i])/Number(pumpLoadingRate[i]));
         }
         const totalLoadingTime = sumLoadingTime/24;
-        const enterWaitTimePOL = 1;
+        let enterWaitTimePOL = 1;
 
         let pumpDischargeRate = [];
         for (let i = 1; i <= req.body.numberOfCargoTank; i++) {
@@ -658,8 +680,11 @@ const createTransportation = async (req, res, next) => {
             sumDischargeRate += Number(Number(shipCargoTankOperationalCapacity.cargoTankOp[i])/Number(pumpDischargeRate[i]));
         }
         const totalDischargeTime = sumDischargeRate/24;
-        const enterWaitTimePOD = 1;
-
+        let enterWaitTimePOD = 1;
+        if(transportation.TypeFreight.slug === 'barge' && transportation.TypeVoyage.slug === 'single_trip'){
+            enterWaitTimePOD = 0;
+            enterWaitTimePOL = 0;
+        }
         const totalTurnRoundTime = ladenSailingTime+ballastSailingTime+totalLoadingTime+enterWaitTimePOL+totalDischargeTime+enterWaitTimePOD;
         const calendarDaysYear = 360;
         const docking = 30;
@@ -693,7 +718,7 @@ const createTransportation = async (req, res, next) => {
             totalCargoCarryCapacityYearMMBTU,
         }
         transportation.TurnAroundVoyage = turnAroundVoyage;
-
+        
         //BUNKERING CALCULATION
         const portIdleMFO = Number(req.body.portIdleMFO);
         const portIdleMDO = Number(req.body.portIdleMDO);
@@ -704,12 +729,12 @@ const createTransportation = async (req, res, next) => {
         const atSeaMFO = Number(req.body.atSeaMFO);
         const atSeaMDO = Number(req.body.atSeaMDO);
         const atSeaMGO = Number(req.body.atSeaMGO);
-        // const bunkerPriceIDRMFO = 0;
-        // const bunkerPriceIDRMDO = 0;
-        // const bunkerPriceIDRMGO = 0;
-        const bunkerPriceIDRMFO = Number(req.body.bunkerPriceIDRMFO);
-        const bunkerPriceIDRMDO = Number(req.body.bunkerPriceIDRMDO);
-        const bunkerPriceIDRMGO = Number(req.body.bunkerPriceIDRMGO);
+        const bunkerPriceIDRMFO = 0;
+        const bunkerPriceIDRMDO = 0;
+        const bunkerPriceIDRMGO = 0;
+        // const bunkerPriceIDRMFO = Number(req.body.bunkerPriceIDRMFO);
+        // const bunkerPriceIDRMDO = Number(req.body.bunkerPriceIDRMDO);
+        // const bunkerPriceIDRMGO = Number(req.body.bunkerPriceIDRMGO);
         const bunkerConsumeTripMFO = (turnAroundVoyage.totalTurnRoundTime*atSeaMFO) + ((turnAroundVoyage.totalLoadingTime+turnAroundVoyage.totalDischargeTime)*portWorkingMFO) + ((turnAroundVoyage.enterWaitTimePOD+turnAroundVoyage.enterWaitTimePOL)*portIdleMFO);
         const bunkerConsumeTripMDO = (turnAroundVoyage.totalTurnRoundTime*atSeaMDO) + ((turnAroundVoyage.totalLoadingTime+turnAroundVoyage.totalDischargeTime)*portWorkingMDO) + ((turnAroundVoyage.enterWaitTimePOD+turnAroundVoyage.enterWaitTimePOL)*portIdleMDO);
         const bunkerConsumeTripMGO = (turnAroundVoyage.totalTurnRoundTime*atSeaMGO) + ((turnAroundVoyage.totalLoadingTime+turnAroundVoyage.totalDischargeTime)*portWorkingMGO) + ((turnAroundVoyage.enterWaitTimePOD+turnAroundVoyage.enterWaitTimePOL)*portIdleMGO);
@@ -776,12 +801,22 @@ const createTransportation = async (req, res, next) => {
         const sumEngineDept = (engineChiefEngineer+ engineChiefMachinist+ engineMachinist+ engineForemen+ engineOiler+ engineWiper+ engineOthers);
         const totalCrewCostMonth = sumDeckDept + sumEngineDept;
         const totalCrewCostYear = totalCrewCostMonth * 13;
+
         const crewCost = {
             DeckDept : deckDept,
             EngineDept : engineDept,
             totalCrewCostMonth,
             totalCrewCostYear
         };
+        if(req.params.typeFreightSlug === 'barge' && req.params.typeVoyageSlug === 'single_trip'){
+            const barge = {
+                bargeLoadingMaster: req.body.bargeLoadingMaster,
+                bargeBoatswain: req.body.bargeBoatswain
+            }
+            crewCost.Barge = barge;
+            crewCost.totalCrewCostMonth += (Number(barge.bargeLoadingMaster) + Number(barge.bargeBoatswain));
+            crewCost.totalCrewCostYear = crewCost.totalCrewCostMonth * 13;
+        }
         transportation.CrewCost = crewCost;
 
         //PORT COST
@@ -884,6 +919,7 @@ const createTransportation = async (req, res, next) => {
         }
         transportation.ProposedFreight = proposedFreight;
 
+        // console.log(transportation.BunkeringCalculation)
         const newTransportation = new Transportation(transportation);
         await newTransportation.save();
         res.redirect(`/project/${req.body.ProjectID}/form/${newTransportation._id}/bunker-price-sensitivity`);
@@ -906,7 +942,11 @@ const editTransportationByID = async (req, res, next) => {
         if(!project){
             throw "project not found!";
         }
-        res.render('Transportation/form-ship-edit', {
+        let form = 'Transportation/form-ship-edit';
+        if(transportation.TypeFreight.slug === 'barge' && transportation.TypeVoyage.slug === 'single_trip'){
+            form = 'Transportation/form-barge-edit';
+        }
+        res.render(form, {
             layout: 'layouts/main-layout',
             title: 'Edit Form LPG Transportation',
             transportation,
@@ -966,6 +1006,24 @@ const updateTransportationByID = async (req, res, next) => {
         }
         transportation.Ship = ship;
 
+        if(transportation.TypeFreight.slug === 'barge' && transportation.TypeVoyage.slug === 'single_trip'){
+            let tugboat = {
+                shipName: req.body.shipName_tugboat,
+                typeVessel: req.body.typeVessel_tugboat,
+                IMONumber: req.body.IMONumber_tugboat,
+                MMSINumber: req.body.MMSINumber_tugboat,
+                callSign: req.body.callSign_tugboat,
+                grossTonnage: req.body.grossTonnage_tugboat,
+                summerDWT: req.body.summerDWT_tugboat,
+                lengthOverall: req.body.lengthOverall_tugboat,
+                yearBuilt: req.body.yearBuilt_tugboat,
+                shipAge: req.body.shipAge_tugboat,
+                crewNumber: req.body.crewNumber_tugboat,
+                SFOC: req.body.SFOC_tugboat,
+            }
+            transportation.Tugboat = tugboat;
+        }
+
         //voyage
         let voyage = {
             POL: req.body.POL,
@@ -1014,6 +1072,7 @@ const updateTransportationByID = async (req, res, next) => {
         shipCargoTankOperationalCapacity.totalCapacityOpLitre = totalCapacityOpLitre;
         shipCargoTankOperationalCapacity.totalCapacityOpKG = totalCapacityOpKG;
         transportation.ShipCargoTankOperationalCapacity = shipCargoTankOperationalCapacity;
+        
 
         //TURNAROUND VOYAGE
         const ladenSailingTime = voyage.distance/voyage.serviceSpeedVessel/24;
@@ -1029,7 +1088,7 @@ const updateTransportationByID = async (req, res, next) => {
             sumLoadingTime += Number(Number(shipCargoTankOperationalCapacity.cargoTankOp[i])/Number(pumpLoadingRate[i]));
         }
         const totalLoadingTime = sumLoadingTime/24;
-        const enterWaitTimePOL = 1;
+        let enterWaitTimePOL = 1;
 
         let pumpDischargeRate = [];
         for (let i = 1; i <= req.body.numberOfCargoTank; i++) {
@@ -1040,7 +1099,11 @@ const updateTransportationByID = async (req, res, next) => {
             sumDischargeRate += Number(Number(shipCargoTankOperationalCapacity.cargoTankOp[i])/Number(pumpDischargeRate[i]));
         }
         const totalDischargeTime = sumDischargeRate/24;
-        const enterWaitTimePOD = 1;
+        let enterWaitTimePOD = 1;
+        if(transportation.TypeFreight.slug === 'barge' && transportation.TypeVoyage.slug === 'single_trip'){
+            enterWaitTimePOD = 0;
+            enterWaitTimePOL = 0;
+        }
 
         const totalTurnRoundTime = ladenSailingTime+ballastSailingTime+totalLoadingTime+enterWaitTimePOL+totalDischargeTime+enterWaitTimePOD;
         const calendarDaysYear = 360;
@@ -1075,7 +1138,7 @@ const updateTransportationByID = async (req, res, next) => {
             totalCargoCarryCapacityYearMMBTU,
         }
         transportation.TurnAroundVoyage = turnAroundVoyage;
-
+        
         //BUNKERING CALCULATION
         const portIdleMFO = Number(req.body.portIdleMFO);
         const portIdleMDO = Number(req.body.portIdleMDO);
@@ -1087,8 +1150,11 @@ const updateTransportationByID = async (req, res, next) => {
         const atSeaMDO = Number(req.body.atSeaMDO);
         const atSeaMGO = Number(req.body.atSeaMGO);
         const bunkerPriceIDRMFO = 0;
-        const bunkerPriceIDRMDO = 0;
+        const bunkerPriceIDRMDO = 6500000;
         const bunkerPriceIDRMGO = 0;
+        console.log(portIdleMDO)
+        console.log(portWorkingMDO)
+        console.log(atSeaMDO)
         // const bunkerPriceIDRMFO = Number(req.body.bunkerPriceIDRMFO);
         // const bunkerPriceIDRMDO = Number(req.body.bunkerPriceIDRMDO);
         // const bunkerPriceIDRMGO = Number(req.body.bunkerPriceIDRMGO);
@@ -1133,7 +1199,7 @@ const updateTransportationByID = async (req, res, next) => {
             totalBunkerCostYearUSD,
         }
         transportation.BunkeringCalculation = bunkeringCalculation;
-        console.log(totalBunkerCostYearUSD)
+        
         //CREW COST
         const deckMaster = Number(req.body.deckMaster);
         const deckChiefOfficer = Number(req.body.deckChiefOfficer);
@@ -1164,9 +1230,17 @@ const updateTransportationByID = async (req, res, next) => {
             totalCrewCostMonth,
             totalCrewCostYear
         };
+        if(transportation.TypeFreight.slug === 'barge' && transportation.TypeVoyage.slug === 'single_trip'){
+            const barge = {
+                bargeLoadingMaster: req.body.bargeLoadingMaster,
+                bargeBoatswain: req.body.bargeBoatswain
+            }
+            crewCost.Barge = barge;
+            crewCost.totalCrewCostMonth += (Number(barge.bargeLoadingMaster) + Number(barge.bargeBoatswain));
+            crewCost.totalCrewCostYear = crewCost.totalCrewCostMonth * 13;
+        }
         transportation.CrewCost = crewCost;
         console.log(totalCrewCostYear);
-        
 
         //PORT COST
         const portChargesRoundTrip = Number(req.body.portChargesRoundTrip);
@@ -1274,6 +1348,8 @@ const updateTransportationByID = async (req, res, next) => {
         }
         transportation.ProposedFreight = proposedFreight;
         transportation.status = 0;
+
+        // console.log(transportation.BunkeringCalculation)
         await Transportation.updateOne(
             { _id: req.body.TransportationID},
             {

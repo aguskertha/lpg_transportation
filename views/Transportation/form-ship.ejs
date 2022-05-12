@@ -56,13 +56,13 @@
         <div class="mb-3">
           <label class="form-label">Ship Capacity</label>
           <div class="input-group mb-3">
-            <input type="number" step="0.001" class="form-control" id="shipCapacityCBM" name="shipCapacityCBM" required>
+            <input type="number" step="any" class="form-control" id="shipCapacityCBM" name="shipCapacityCBM" required>
             <div class="input-group-append">
               <span class="input-group-text">CBM</span>
             </div>
           </div>
           <div class="input-group mb-3">
-            <input type="number" step="0.001" class="form-control" id="shipCapacityMT" name="shipCapacityMT" required>
+            <input type="number" step="any" class="form-control" id="shipCapacityMT" name="shipCapacityMT" required>
             <div class="input-group-append">
               <span class="input-group-text">MT</span>
             </div>
@@ -92,7 +92,7 @@
         <div class="mb-3">
           <label class="form-label">Gross Tonnage</label>
           <div class="input-group mb-3">
-            <input type="number" step="0.1" class="form-control" value="0" id="grossTonnage" name="grossTonnage">
+            <input type="number" step="any" class="form-control" value="0" id="grossTonnage" name="grossTonnage">
             <div class="input-group-append">
               <span class="input-group-text">Ton</span>
             </div>
@@ -102,7 +102,7 @@
         <div class="mb-3">
           <label class="form-label">Summer DWT</label>
           <div class="input-group mb-3">
-            <input type="number" step="0.1" class="form-control" value="0" id="summerDWT" name="summerDWT">
+            <input type="number" step="any" class="form-control" value="0" id="summerDWT" name="summerDWT">
             <div class="input-group-append">
               <span class="input-group-text">Ton</span>
             </div>
@@ -112,7 +112,7 @@
         <div class="mb-3">
           <label class="form-label">Length Overall x Breadth Extreme:</label>
           <div class="input-group mb-3">
-            <input type="number" step="0.1" class="form-control" value="0" id="lengthOverall" name="lengthOverall">
+            <input type="text" class="form-control" value="0" id="lengthOverall" name="lengthOverall">
             <div class="input-group-append">
               <span class="input-group-text">m</span>
             </div>
@@ -121,13 +121,13 @@
         
         <div class="mb-3">
           <label class="form-label">Year Built</label>
-          <input type="number" step="0.1" class="form-control" value="0" id="yearBuilt" name="yearBuilt">
+          <input type="number" step="any" class="form-control" value="0" id="yearBuilt" name="yearBuilt">
         </div>
         
         <div class="mb-3">
           <label class="form-label">Ship Age</label>
           <div class="input-group mb-3">
-            <input type="number" step="0.1" class="form-control" id="shipAge" name="shipAge" required>
+            <input type="number" step="any" class="form-control" id="shipAge" name="shipAge" required>
             <div class="input-group-append">
               <span class="input-group-text">years old</span>
             </div>
@@ -137,7 +137,7 @@
         <div class="mb-3">
           <label class="form-label">crewNumber</label>
           <div class="input-group mb-3">
-            <input type="number" step="0.1" class="form-control" id="crewNumber" name="crewNumber" required>
+            <input type="number" step="any" class="form-control" id="crewNumber" name="crewNumber" required>
             <div class="input-group-append">
               <span class="input-group-text">Person</span>
             </div>
@@ -147,7 +147,7 @@
         <div class="mb-3">
           <label class="form-label">SFOC</label>
           <div class="input-group mb-3">
-            <input type="number" step="0.1" class="form-control" id="SFOC" name="SFOC" required>
+            <input type="number" step="any" class="form-control" id="SFOC" name="SFOC" required>
             <div class="input-group-append">
               <span class="input-group-text">gr/kWh</span>
             </div>
@@ -179,7 +179,7 @@
       <div class="mb-3">
         <label class="form-label">Distance in Nautical Miles</label>
         <div class="input-group mb-3">
-          <input type="number" step="0.1" class="form-control" id="distance" name="distance" required>
+          <input type="number" step="any" class="form-control" id="distance" name="distance" required>
           <div class="input-group-append">
             <span class="input-group-text">n.m</span>
           </div>
@@ -189,7 +189,7 @@
       <div class="mb-3">
         <label class="form-label">Service Speed of Vessel</label>
         <div class="input-group mb-3">
-          <input type="number" step="0.1" class="form-control" id="serviceSpeedVessel" name="serviceSpeedVessel" required>
+          <input type="number" step="any" class="form-control" id="serviceSpeedVessel" name="serviceSpeedVessel" required>
           <div class="input-group-append">
             <span class="input-group-text">knot</span>
           </div>
@@ -209,7 +209,7 @@
       <div class="mb-3">
         <label class="form-label">Number of cargo tank</label>
         <div class="input-group mb-3">
-          <input type="number" step="1" class="form-control" id="numberOfCargoTank" name="numberOfCargoTank" required>
+          <input type="number" step="any" class="form-control" id="numberOfCargoTank" name="numberOfCargoTank" required>
           <div class="input-group-append">
             <button id="add_field_button" class="btn btn-primary input-group-text">Generate</button>
           </div>
@@ -256,7 +256,7 @@
       <div class="mb-3">
         <label class="form-label">Port Idle MFO</label>
         <div class="input-group mb-3">
-          <input type="number" step="0.001" class="form-control" value="0" id="portIdleMFO" name="portIdleMFO" required>
+          <input type="number" step="any" class="form-control" value="0" id="portIdleMFO" name="portIdleMFO" required>
           <div class="input-group-append">
             <span class="input-group-text">ton/day</span>
           </div>
@@ -265,7 +265,7 @@
       <div class="mb-3">
         <label class="form-label">Port Idle MDO</label>
         <div class="input-group mb-3">
-          <input type="number" step="0.001" class="form-control" value="0" id="portIdleMDO" name="portIdleMDO" required>
+          <input type="number" step="any" class="form-control" value="0" id="portIdleMDO" name="portIdleMDO" required>
           <div class="input-group-append">
             <span class="input-group-text">ton/day</span>
           </div>
@@ -274,7 +274,7 @@
       <div class="mb-3">
         <label class="form-label">Port Idle MGO</label>
         <div class="input-group mb-3">
-          <input type="number" step="0.001" class="form-control" value="0" id="portIdleMGO" name="portIdleMGO" required>
+          <input type="number" step="any" class="form-control" value="0" id="portIdleMGO" name="portIdleMGO" required>
           <div class="input-group-append">
             <span class="input-group-text">ton/day</span>
           </div>
@@ -283,7 +283,7 @@
       <div class="mb-3">
         <label class="form-label">Port Working MFO</label>
         <div class="input-group mb-3">
-          <input type="number" step="0.001" class="form-control" value="0" id="portWorkingMFO" name="portWorkingMFO" required>
+          <input type="number" step="any" class="form-control" value="0" id="portWorkingMFO" name="portWorkingMFO" required>
           <div class="input-group-append">
             <span class="input-group-text">ton/day</span>
           </div>
@@ -292,7 +292,7 @@
       <div class="mb-3">
         <label class="form-label">Port Working MDO</label>
         <div class="input-group mb-3">
-          <input type="number" step="0.001" class="form-control" value="0" id="portWorkingMDO" name="portWorkingMDO" required>
+          <input type="number" step="any" class="form-control" value="0" id="portWorkingMDO" name="portWorkingMDO" required>
           <div class="input-group-append">
             <span class="input-group-text">ton/day</span>
           </div>
@@ -301,7 +301,7 @@
       <div class="mb-3">
         <label class="form-label">Port Working MGO</label>
         <div class="input-group mb-3">
-          <input type="number" step="0.001" class="form-control" value="0" id="portWorkingMGO" name="portWorkingMGO" required>
+          <input type="number" step="any" class="form-control" value="0" id="portWorkingMGO" name="portWorkingMGO" required>
           <div class="input-group-append">
             <span class="input-group-text">ton/day</span>
           </div>
@@ -310,7 +310,7 @@
       <div class="mb-3">
         <label class="form-label">At Sea MFO</label>
         <div class="input-group mb-3">
-          <input type="number" step="0.001" class="form-control" value="0" id="atSeaMFO" name="atSeaMFO" required>
+          <input type="number" step="any" class="form-control" value="0" id="atSeaMFO" name="atSeaMFO" required>
           <div class="input-group-append">
             <span class="input-group-text">ton/day</span>
           </div>
@@ -320,7 +320,7 @@
       <div class="mb-3">
         <label class="form-label">At Sea MDO</label>
         <div class="input-group mb-3">
-          <input type="number" step="0.001" class="form-control" value="0" id="atSeaMDO" name="atSeaMDO" required>
+          <input type="number" step="any" class="form-control" value="0" id="atSeaMDO" name="atSeaMDO" required>
           <div class="input-group-append">
             <span class="input-group-text">
               ton/day
@@ -331,7 +331,7 @@
       <div class="mb-3">
         <label class="form-label">At Sea MGO</label>
         <div class="input-group mb-3">
-          <input type="number" step="0.001" class="form-control" value="0" id="atSeaMGO" name="atSeaMGO" required>
+          <input type="number" step="any" class="form-control" value="0" id="atSeaMGO" name="atSeaMGO" required>
           <div class="input-group-append">
             <span class="input-group-text">ton/day</span>
           </div>
@@ -340,7 +340,7 @@
       <!-- <div class="mb-3">
         <label class="form-label">Bunker Price MFO</label>
         <div class="input-group mb-3">
-          <input type="number" step="1" class="form-control" value="0" id="bunkerPriceIDRMFO" name="bunkerPriceIDRMFO" required>
+          <input type="number" step="any" class="form-control" value="0" id="bunkerPriceIDRMFO" name="bunkerPriceIDRMFO" required>
           <div class="input-group-append">
             <span class="input-group-text">IDR/MT</span>
           </div>
@@ -349,7 +349,7 @@
       <div class="mb-3">
         <label class="form-label">Bunker Price MDO</label>
         <div class="input-group mb-3">
-          <input type="number" step="1" class="form-control" value="0" id="bunkerPriceIDRMDO" name="bunkerPriceIDRMDO" required>
+          <input type="number" step="any" class="form-control" value="0" id="bunkerPriceIDRMDO" name="bunkerPriceIDRMDO" required>
           <div class="input-group-append">
             <span class="input-group-text">IDR/MT</span>
           </div>
@@ -358,7 +358,7 @@
       <div class="mb-3">
         <label class="form-label">Bunker Price MGO</label>
         <div class="input-group mb-3">
-          <input type="number" step="1" class="form-control" value="0" id="bunkerPriceIDRMGO" name="bunkerPriceIDRMGO" required>
+          <input type="number" step="any" class="form-control" value="0" id="bunkerPriceIDRMGO" name="bunkerPriceIDRMGO" required>
           <div class="input-group-append">
             <span class="input-group-text">IDR/MT</span>
           </div>
@@ -405,121 +405,121 @@
           <tr>
             <th scope="row">Master</th>
             <td>
-              <input type="number" step="1" class="form-control" value="0" id="deckMasterQty" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckMasterQty" required>
             </td>
             <td>
-              <input type="number" step="0.1" class="form-control" value="0" id="deckMasterPrice" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckMasterPrice" required>
             </td>
             <td>
-              <input type="number" step="1" class="form-control" value="0" id="deckMaster" name="deckMaster" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckMaster" name="deckMaster" required>
             </td>
           </tr>
           <tr>
             <th scope="row">Chief Officer</th>
             <td>
-              <input type="number" step="1" class="form-control" value="0" id="deckChiefOfficerQty"  required>
+              <input type="number" step="any" class="form-control" value="0" id="deckChiefOfficerQty"  required>
             </td>
             <td>
-              <input type="number" step="0.1" class="form-control" value="0" id="deckChiefOfficerPrice"  required>
+              <input type="number" step="any" class="form-control" value="0" id="deckChiefOfficerPrice"  required>
             </td>
             <td>
-              <input type="number" step="1" class="form-control" value="0" id="deckChiefOfficer" name="deckChiefOfficer" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckChiefOfficer" name="deckChiefOfficer" required>
             </td>
           </tr>
           <tr>
             <th scope="row">Deck Officer</th>
             <td>
-              <input type="number" step="1" class="form-control" value="0" id="deckOfficerQty" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckOfficerQty" required>
             </td>
             <td>
-              <input type="number" step="0.1" class="form-control" value="0" id="deckOfficerPrice" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckOfficerPrice" required>
             </td>
             <td>
-              <input type="number" step="1" class="form-control" value="0" id="deckOfficer" name="deckOfficer"  required>
+              <input type="number" step="any" class="form-control" value="0" id="deckOfficer" name="deckOfficer"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Radio Operator</th>
             <td>
-              <input type="number" step="1" class="form-control" value="0" id="deckRadioOperatorQty" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckRadioOperatorQty" required>
             </td>
             <td>
-              <input type="number" step="0.1" class="form-control" value="0" id="deckRadioOperatorPrice" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckRadioOperatorPrice" required>
             </td>
             <td>
-              <input type="number" step="1" class="form-control" value="0" id="deckRadioOperator" name="deckRadioOperator"  required>
+              <input type="number" step="any" class="form-control" value="0" id="deckRadioOperator" name="deckRadioOperator"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Boatswain</th>
             <td>
-              <input type="number" step="1" class="form-control" value="0" id="deckBoatswainQty" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckBoatswainQty" required>
             </td>
             <td>
-              <input type="number" step="0.1" class="form-control" value="0" id="deckBoatswainPrice" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckBoatswainPrice" required>
             </td>
             <td>
-              <input type="number" step="1" class="form-control" value="0" id="deckBoatswain" name="deckBoatswain"  required>
+              <input type="number" step="any" class="form-control" value="0" id="deckBoatswain" name="deckBoatswain"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Able Bodied</th>
             <td>
-              <input type="number" step="1" class="form-control" value="0" id="deckAbleBodiedQty" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckAbleBodiedQty" required>
             </td>
             <td>
-              <input type="number" step="0.1" class="form-control" value="0" id="deckAbleBodiedPrice" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckAbleBodiedPrice" required>
             </td>
             <td>
-              <input type="number" step="1" class="form-control" value="0" id="deckAbleBodied" name="deckAbleBodied"  required>
+              <input type="number" step="any" class="form-control" value="0" id="deckAbleBodied" name="deckAbleBodied"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Ordinary Seamen</th>
             <td>
-              <input type="number" step="1" class="form-control" value="0" id="deckOrdinarySeamenQty" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckOrdinarySeamenQty" required>
             </td>
             <td>
-              <input type="number" step="0.1" class="form-control" value="0" id="deckOrdinarySeamenPrice" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckOrdinarySeamenPrice" required>
             </td>
             <td>
-              <input type="number" step="1" class="form-control" value="0" id="deckOrdinarySeamen" name="deckOrdinarySeamen"  required>
+              <input type="number" step="any" class="form-control" value="0" id="deckOrdinarySeamen" name="deckOrdinarySeamen"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Chef</th>
             <td>
-              <input type="number" step="1" class="form-control" value="0" id="deckChefQty" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckChefQty" required>
             </td>
             <td>
-              <input type="number" step="0.1" class="form-control" value="0" id="deckChefPrice" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckChefPrice" required>
             </td>
             <td>
-              <input type="number" step="1" class="form-control" value="0" id="deckChef" name="deckChef"  required>
+              <input type="number" step="any" class="form-control" value="0" id="deckChef" name="deckChef"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Assistant Chef</th>
             <td>
-              <input type="number" step="1" class="form-control" value="0" id="deckAssistantChefQty" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckAssistantChefQty" required>
             </td>
             <td>
-              <input type="number" step="0.1" class="form-control" value="0" id="deckAssistantChefPrice" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckAssistantChefPrice" required>
             </td>
             <td>
-              <input type="number" step="1" class="form-control" value="0" id="deckAssistantChef" name="deckAssistantChef"  required>
+              <input type="number" step="any" class="form-control" value="0" id="deckAssistantChef" name="deckAssistantChef"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Others</th>
             <td>
-              <input type="number" step="1" class="form-control" value="0" id="deckOthersQty" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckOthersQty" required>
             </td>
             <td>
-              <input type="number" step="0.1" class="form-control" value="0" id="deckOthersPrice" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckOthersPrice" required>
             </td>
             <td>
-              <input type="number" step="1" class="form-control" value="0" id="deckOthers" name="deckOthers"  required>
+              <input type="number" step="any" class="form-control" value="0" id="deckOthers" name="deckOthers"  required>
             </td>
           </tr>
           
@@ -543,85 +543,85 @@
           <tr>
             <th scope="row">Chief Engineer</th>
             <td>
-              <input type="number" step="1" class="form-control" value="0" id="engineChiefEngineerQty" required>
+              <input type="number" step="any" class="form-control" value="0" id="engineChiefEngineerQty" required>
             </td>
             <td>
-              <input type="number" step="0.1" class="form-control" value="0" id="engineChiefEngineerPrice" required>
+              <input type="number" step="any" class="form-control" value="0" id="engineChiefEngineerPrice" required>
             </td>
             <td>
-              <input type="number" step="1" class="form-control" value="0" id="engineChiefEngineer" name="engineChiefEngineer"  required>
+              <input type="number" step="any" class="form-control" value="0" id="engineChiefEngineer" name="engineChiefEngineer"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Chief Machinist</th>
             <td>
-              <input type="number" step="1" class="form-control" value="0" id="engineChiefMachinistQty" required>
+              <input type="number" step="any" class="form-control" value="0" id="engineChiefMachinistQty" required>
             </td>
             <td>
-              <input type="number" step="0.1" class="form-control" value="0" id="engineChiefMachinistPrice" required>
+              <input type="number" step="any" class="form-control" value="0" id="engineChiefMachinistPrice" required>
             </td>
             <td>
-              <input type="number" step="1" class="form-control" value="0" id="engineChiefMachinist" name="engineChiefMachinist"  required>
+              <input type="number" step="any" class="form-control" value="0" id="engineChiefMachinist" name="engineChiefMachinist"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Machinist</th>
             <td>
-              <input type="number" step="1" class="form-control" value="0" id="engineMachinistQty" required>
+              <input type="number" step="any" class="form-control" value="0" id="engineMachinistQty" required>
             </td>
             <td>
-              <input type="number" step="0.1" class="form-control" value="0" id="engineMachinistPrice" required>
+              <input type="number" step="any" class="form-control" value="0" id="engineMachinistPrice" required>
             </td>
             <td>
-              <input type="number" step="1" class="form-control" value="0" id="engineMachinist" name="engineMachinist"  required>
+              <input type="number" step="any" class="form-control" value="0" id="engineMachinist" name="engineMachinist"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Foremen</th>
             <td>
-              <input type="number" step="1" class="form-control" value="0" id="engineForemenQty" required>
+              <input type="number" step="any" class="form-control" value="0" id="engineForemenQty" required>
             </td>
             <td>
-              <input type="number" step="0.1" class="form-control" value="0" id="engineForemenPrice" required>
+              <input type="number" step="any" class="form-control" value="0" id="engineForemenPrice" required>
             </td>
             <td>
-              <input type="number" step="1" class="form-control" value="0" id="engineForemen" name="engineForemen"  required>
+              <input type="number" step="any" class="form-control" value="0" id="engineForemen" name="engineForemen"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Oiler</th>
             <td>
-              <input type="number" step="1" class="form-control" value="0" id="engineOilerQty" required>
+              <input type="number" step="any" class="form-control" value="0" id="engineOilerQty" required>
             </td>
             <td>
-              <input type="number" step="0.1" class="form-control" value="0" id="engineOilerPrice" required>
+              <input type="number" step="any" class="form-control" value="0" id="engineOilerPrice" required>
             </td>
             <td>
-              <input type="number" step="1" class="form-control" value="0" id="engineOiler" name="engineOiler"  required>
+              <input type="number" step="any" class="form-control" value="0" id="engineOiler" name="engineOiler"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Wiper</th>
             <td>
-              <input type="number" step="1" class="form-control" value="0" id="engineWiperQty" required>
+              <input type="number" step="any" class="form-control" value="0" id="engineWiperQty" required>
             </td>
             <td>
-              <input type="number" step="0.1" class="form-control" value="0" id="engineWiperPrice" required>
+              <input type="number" step="any" class="form-control" value="0" id="engineWiperPrice" required>
             </td>
             <td>
-              <input type="number" step="1" class="form-control" value="0" id="engineWiper" name="engineWiper"  required>
+              <input type="number" step="any" class="form-control" value="0" id="engineWiper" name="engineWiper"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Others</th>
             <td>
-              <input type="number" step="1" class="form-control" value="0" id="engineOthersQty" required>
+              <input type="number" step="any" class="form-control" value="0" id="engineOthersQty" required>
             </td>
             <td>
-              <input type="number" step="0.1" class="form-control" value="0" id="engineOthersPrice" required>
+              <input type="number" step="any" class="form-control" value="0" id="engineOthersPrice" required>
             </td>
             <td>
-              <input type="number" step="1" class="form-control" value="0" id="engineOthers" name="engineOthers"  required>
+              <input type="number" step="any" class="form-control" value="0" id="engineOthers" name="engineOthers"  required>
             </td>
           </tr>
           
@@ -642,7 +642,7 @@
       <div class="mb-3">
         <label class="form-label">Port charges per Round Trip</label>
         <div class="input-group mb-3">
-          <input type="number" step="0.1" class="form-control" id="portChargesRoundTrip" name="portChargesRoundTrip" required>
+          <input type="number" step="any" class="form-control" id="portChargesRoundTrip" name="portChargesRoundTrip" required>
           <div class="input-group-append">
             <span class="input-group-text">USD/Trip</span>
           </div>
@@ -664,7 +664,7 @@
       <div class="mb-3">
         <label class="form-label">Lasing & unlasing POL Per Trip</label>
         <div class="input-group mb-3">
-          <input type="number" step="0.1" class="form-control" id="lasingUnlasPOLTrip" name="lasingUnlasPOLTrip" required>
+          <input type="number" step="any" class="form-control" id="lasingUnlasPOLTrip" name="lasingUnlasPOLTrip" required>
           <div class="input-group-append">
             <span class="input-group-text">USD</span>
           </div>
@@ -673,7 +673,7 @@
       <div class="mb-3">
         <label class="form-label">Lasing & unlasing POD Per Trip</label>
         <div class="input-group mb-3">
-          <input type="number" step="0.1" class="form-control" id="lasingUnlasPODTrip" name="lasingUnlasPODTrip" required>
+          <input type="number" step="any" class="form-control" id="lasingUnlasPODTrip" name="lasingUnlasPODTrip" required>
           <div class="input-group-append">
             <span class="input-group-text">USD</span>
           </div>
@@ -695,7 +695,7 @@
       <div class="mb-3">
         <label class="form-label">Charter Rate per Day</label>
         <div class="input-group mb-3">
-          <input type="number" step="0.1" class="form-control" id="charterRateDay" name="charterRateDay" required>
+          <input type="number" step="any" class="form-control" id="charterRateDay" name="charterRateDay" required>
           <div class="input-group-append">
             <span class="input-group-text">USD</span>
           </div>
@@ -716,7 +716,7 @@
       <div class="mb-3">
         <label class="form-label">Ship Insurance</label>
         <div class="input-group mb-3">
-          <input type="number" step="0.1" class="form-control" id="shipInsurance" name="shipInsurance" required>
+          <input type="number" step="any" class="form-control" id="shipInsurance" name="shipInsurance" required>
           <div class="input-group-append">
             <span class="input-group-text">USD/Year</span>
           </div>
@@ -725,7 +725,7 @@
       <div class="mb-3">
         <label class="form-label">Crew Insurance</label>
         <div class="input-group mb-3">
-          <input type="number" step="0.001" class="form-control" id="crewInsurance" name="crewInsurance" required>
+          <input type="number" step="any" class="form-control" id="crewInsurance" name="crewInsurance" required>
           <div class="input-group-append">
             <span class="input-group-text">USD/Year</span>
           </div>
@@ -746,7 +746,7 @@
       <div class="mb-3">
         <label class="form-label">Docking Cost</label>
         <div class="input-group mb-3">
-          <input type="number" step="0.1" class="form-control" id="dockingCost" name="dockingCost" required>
+          <input type="number" step="any" class="form-control" id="dockingCost" name="dockingCost" required>
           <div class="input-group-append">
             <span class="input-group-text">USD/Year</span>
           </div>
@@ -755,7 +755,7 @@
       <div class="mb-3">
         <label class="form-label">Repair and Stores Cost</label>
         <div class="input-group mb-3">
-          <input type="number" step="0.1" class="form-control" id="repairStoreCost" name="repairStoreCost" required>
+          <input type="number" step="any" class="form-control" id="repairStoreCost" name="repairStoreCost" required>
           <div class="input-group-append">
             <span class="input-group-text">USD/Year</span>
           </div>
@@ -764,7 +764,7 @@
       <div class="mb-3">
         <label class="form-label">Lube Oil Cost</label>
         <div class="input-group mb-3">
-          <input type="number" step="0.1" class="form-control" id="lubeOilCost" name="lubeOilCost" required>
+          <input type="number" step="any" class="form-control" id="lubeOilCost" name="lubeOilCost" required>
           <div class="input-group-append">
             <span class="input-group-text">USD/Year</span>
           </div>
@@ -786,7 +786,7 @@
       <div class="mb-3">
         <label class="form-label">Victually</label>
         <div class="input-group mb-3">
-          <input type="number" step="0.1" class="form-control" id="victually" name="victually" required>
+          <input type="number" step="any" class="form-control" id="victually" name="victually" required>
           <div class="input-group-append">
             <span class="input-group-text">USD/Year</span>
           </div>
@@ -795,7 +795,7 @@
       <div class="mb-3">
         <label class="form-label">Administration and other cost</label>
         <div class="input-group mb-3">
-          <input type="number" step="0.1" class="form-control" id="administrationCost" name="administrationCost" required>
+          <input type="number" step="any" class="form-control" id="administrationCost" name="administrationCost" required>
           <div class="input-group-append">
             <span class="input-group-text">USD/Year</span>
           </div>
@@ -804,7 +804,7 @@
       <div class="mb-3">
         <label class="form-label">Tax</label>
         <div class="input-group mb-3">
-          <input type="number" step="0.1" class="form-control" id="tax" name="tax" required>
+          <input type="number" step="any" class="form-control" id="tax" name="tax" required>
           <div class="input-group-append">
             <span class="input-group-text">%</span>
           </div>
@@ -874,7 +874,7 @@
             `<div class="mb-3">
           <label class="form-label">No ${i} Cargo Tank full capacity</label>
           <div class="input-group mb-3">
-            <input type="number" step="0.1" class="form-control" id="cargoTank${i}" name="cargoTank${i}" required>
+            <input type="number" step="any" class="form-control" id="cargoTank${i}" name="cargoTank${i}" required>
             <div class="input-group-append">
               <span class="input-group-text">CBM</span>
             </div>
@@ -885,7 +885,7 @@
             `<div class="mb-3">
           <label class="form-label">No ${i} Pump</label>
           <div class="input-group mb-3">
-            <input type="number" step="0.1" class="form-control" id="pumpLoadingRate${i}" name="pumpLoadingRate${i}" required>
+            <input type="number" step="any" class="form-control" id="pumpLoadingRate${i}" name="pumpLoadingRate${i}" required>
             <div class="input-group-append">
               <span class="input-group-text">CBM/hr</span>
             </div>
@@ -896,7 +896,7 @@
             `<div class="mb-3">
           <label class="form-label">No ${i} Pump</label>
           <div class="input-group mb-3">
-            <input type="number" step="0.1" class="form-control" id="pumpDischargeRate${i}" name="pumpDischargeRate${i}" required>
+            <input type="number" step="any" class="form-control" id="pumpDischargeRate${i}" name="pumpDischargeRate${i}" required>
             <div class="input-group-append">
               <span class="input-group-text">CBM/hr</span>
             </div>

@@ -26,6 +26,7 @@
   </div>
   <div class="row">
     <div class="col-md-5">
+      <h4>Barge</h4>
         <div class="mb-3">
           <label class="form-label">Ship Name</label>
           <input type="text" class="form-control" id="shipName" name="shipName" value="<%= transportation.Ship.shipName %>" required>
@@ -126,6 +127,99 @@
           <label class="form-label">SFOC</label>
           <div class="input-group mb-3">
             <input type="number" step="any" class="form-control" id="SFOC" name="SFOC" value="<%= transportation.Ship.SFOC %>" required>
+            <div class="input-group-append">
+              <span class="input-group-text">gr/kWh</span>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-5">
+      <h4>Tugboat</h4>
+        <div class="mb-3">
+          <label class="form-label">Ship Name</label>
+          <input type="text" class="form-control" id="shipName_tugboat" value="<%= transportation.Tugboat.shipName %>" name="shipName_tugboat" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Type Vessel</label>
+          <input type="text" class="form-control" id="typeVessel_tugboat" value="<%= transportation.Tugboat.typeVessel %>" name="typeVessel_tugboat" required>
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label">IMO Number</label>
+          <input type="text" class="form-control" id="IMONumber_tugboat" value="<%= transportation.Tugboat.IMONumber %>" name="IMONumber_tugboat">
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label">MMSI Number</label>
+          <input type="text" class="form-control" id="MMSINumber_tugboat" value="<%= transportation.Tugboat.MMSINumber %>" name="MMSINumber_tugboat">
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label">Call Sign</label>
+          <input type="text" class="form-control" id="callSign_tugboat" value="<%= transportation.Tugboat.callSign %>" name="callSign_tugboat">
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label">Gross Tonnage</label>
+          <div class="input-group mb-3">
+            <input type="number" step="any" class="form-control" value="0" id="grossTonnage_tugboat" value="<%= transportation.Tugboat.grossTonnage %>" name="grossTonnage_tugboat">
+            <div class="input-group-append">
+              <span class="input-group-text">Ton</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label">Summer DWT</label>
+          <div class="input-group mb-3">
+            <input type="number" step="any" class="form-control" value="0" id="summerDWT_tugboat" value="<%= transportation.Tugboat.summerDWT %>" name="summerDWT_tugboat">
+            <div class="input-group-append">
+              <span class="input-group-text">Ton</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label">Length Overall x Breadth Extreme:</label>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" value="0" id="lengthOverall_tugboat" value="<%= transportation.Tugboat.lengthOverall %>" name="lengthOverall_tugboat">
+            <div class="input-group-append">
+              <span class="input-group-text">m</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label">Year Built</label>
+          <input type="number" step="any" class="form-control" value="0" id="yearBuilt_tugboat" value="<%= transportation.Tugboat.yearBuilt %>" name="yearBuilt_tugboat">
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label">Ship Age</label>
+          <div class="input-group mb-3">
+            <input type="number" step="any" class="form-control" id="shipAge_tugboat" value="<%= transportation.Tugboat.shipAge %>" name="shipAge_tugboat" required>
+            <div class="input-group-append">
+              <span class="input-group-text">years old</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label">crewNumber</label>
+          <div class="input-group mb-3">
+            <input type="number" step="any" class="form-control" id="crewNumber_tugboat" value="<%= transportation.Tugboat.crewNumber %>" name="crewNumber_tugboat" required>
+            <div class="input-group-append">
+              <span class="input-group-text">Person</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label">SFOC</label>
+          <div class="input-group mb-3">
+            <input type="number" step="any" class="form-control" id="SFOC_tugboat" value="<%= transportation.Tugboat.SFOC %>" name="SFOC_tugboat" required>
             <div class="input-group-append">
               <span class="input-group-text">gr/kWh</span>
             </div>
@@ -378,6 +472,49 @@
   </div>
   <div class="row d-flex align-items-center" id="rowData">
     <div class="col-md-6">
+      <h3>Barge</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Unit Price (USD/Mo)</th>
+            <th scope="col">Total Cost</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Loading Master</th>
+            <td>
+              <input type="number" step="any" class="form-control" value="0" id="bargeLoadingMasterQty" required>
+            </td>
+            <td>
+              <input type="number" step="any" class="form-control" value="0" id="bargeLoadingMasterPrice" required>
+            </td>
+            <td>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.Barge.bargeLoadingMaster %>" id="bargeLoadingMaster" name="bargeLoadingMaster"  required>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Boatswain</th>
+            <td>
+              <input type="number" step="any" class="form-control" value="0" id="bargeBoatswainQty" required>
+            </td>
+            <td>
+              <input type="number" step="any" class="form-control" value="0" id="bargeBoatswainPrice" required>
+            </td>
+            <td>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.Barge.bargeBoatswain %>" id="bargeBoatswain" name="bargeBoatswain"  required>
+            </td>
+          </tr>
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row d-flex align-items-center" id="rowData">
+    <div class="col-md-6">
+      <h3>Tug Boat</h3>
       <h5>Deck Dept</h5>
       <table class="table">
         <thead>
@@ -959,6 +1096,9 @@
           $(total).val(price.toFixed(1));
       }
     }
+    calculateTotal('#bargeLoadingMasterQty', '#bargeLoadingMasterPrice', '#bargeLoadingMaster');
+    calculateTotal('#bargeBoatswainQty', '#bargeBoatswainPrice', '#bargeBoatswain');
+
     calculateTotal('#deckMasterQty', '#deckMasterPrice', '#deckMaster');
     calculateTotal('#deckChiefOfficerQty', '#deckChiefOfficerPrice', '#deckChiefOfficer');
     calculateTotal('#deckOfficerQty', '#deckOfficerPrice', '#deckOfficer');

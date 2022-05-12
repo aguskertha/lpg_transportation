@@ -1,23 +1,45 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/project/<%= ProjectID %>/transportation"><%= projectName %></a></li>
+      <li class="breadcrumb-item active" aria-current="page">Form</li>
+  </ol>
+</nav>
+<br>
+<h3 class="mt-3">Select Type of Freight & Type of Voyage</h3>
+<input type="hidden" value="<%= ProjectID %>" class="form-control" id="ProjectID" name="ProjectID">
+<div class="row mt-2">
+  <div class="col-md-5">
+    <select class="form-control" name="select1" id="type_freight_select">
+        <option value="" selected disabled>Select a Type of Freight</option>
+        <% typeFreights.forEach(typeFreight => { %>
+            <option value="<%= typeFreight.slug %>"><%= typeFreight.name %></option>
+        <% }) %>
+    </select>
+  </div>
+</div>
+<div class="row mt-2">
+  <div class="col-md-5">
+    <select class="form-control" name="select1" id="type_voyage_select">
+        <option value="" selected disabled>Select a Type of Voyage</option>
+        <% typeVoyages.forEach(typeVoyage => { %>
+            <option value="<%= typeVoyage.slug %>"><%= typeVoyage.name %></option>
+        <% }) %>
+    </select>
+  </div>
+</div>
 
 
 
-<% if (typeof transportation != 'undefined') { %>
-  <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/project/<%= ProjectID %>/transportation"><%= projectName %></a></li>
-        <li class="breadcrumb-item active" aria-current="page">Edit</li>
-    </ol>
-  </nav>
-  <div class="container mt-3">
+<% if (typeof typeVoyage != 'undefined' && typeof typeFreight != 'undefined') { %>
+<div class="container mt-3">
   <h1 align="center"><%= title %> </h1>
-  <h3 align="center"><%= transportation.TypeFreight.name+' - '+transportation.TypeVoyage.name %></h3>
-  <form method="post" action="/project/<%= ProjectID %>/transportation/<%= transportation._id %>/update">
-  <input type="hidden" value="<%= transportation.TypeVoyage.slug %>" class="form-control" name="typeVoyageSlug">
-  <input type="hidden" value="<%= transportation.TypeFreight.slug %>" class="form-control" name="typeFreightSlug">
-  <input type="hidden" value="<%= transportation.ProjectID %>" class="form-control" name="ProjectID">
+  <h3 align="center"><%= typeFreight.name+' - '+typeVoyage.name %></h3>
+  <form method="post" action="/project/<%= ProjectID %>/form/<%= typeFreight.slug %>/<%= typeVoyage.slug %>">
+  <input type="hidden" value="<%= typeVoyage.slug %>" class="form-control" name="typeVoyageSlug">
+  <input type="hidden" value="<%= typeFreight.slug %>" class="form-control" name="typeFreightSlug">
+  <input type="hidden" value="<%= ProjectID %>" class="form-control" name="ProjectID">
   <input type="hidden" value="<%= currentYear %>" class="form-control" id="currentYear">
   <input type="hidden" value="<%= CBMtoMT %>" class="form-control" id="CBMtoMT">
-  <input type="hidden" value="<%= transportation.id %>" class="form-control" name="TransportationID">
   
   <div class="row">
     <div class="col-md-5">
@@ -26,21 +48,22 @@
   </div>
   <div class="row">
     <div class="col-md-5">
+      <h4>Barge</h4>
         <div class="mb-3">
           <label class="form-label">Ship Name</label>
-          <input type="text" class="form-control" id="shipName" name="shipName" value="<%= transportation.Ship.shipName %>" required>
+          <input type="text" class="form-control" id="shipName" name="shipName" required>
         </div>
         
         <div class="mb-3">
           <label class="form-label">Ship Capacity</label>
           <div class="input-group mb-3">
-            <input type="number" step="any" class="form-control" id="shipCapacityCBM" name="shipCapacityCBM" value="<%= transportation.Ship.shipCapacityCBM %>" required>
+            <input type="number" step="any" class="form-control" id="shipCapacityCBM" name="shipCapacityCBM" required>
             <div class="input-group-append">
               <span class="input-group-text">CBM</span>
             </div>
           </div>
           <div class="input-group mb-3">
-            <input type="number" step="any" class="form-control" id="shipCapacityMT" name="shipCapacityMT" value="<%= transportation.Ship.shipCapacityMT %>" required>
+            <input type="number" step="any" class="form-control" id="shipCapacityMT" name="shipCapacityMT" required>
             <div class="input-group-append">
               <span class="input-group-text">MT</span>
             </div>
@@ -49,28 +72,28 @@
 
         <div class="mb-3">
           <label class="form-label">Type Vessel</label>
-          <input type="text" class="form-control" id="typeVessel" name="typeVessel" value="<%= transportation.Ship.typeVessel %>" required>
+          <input type="text" class="form-control" id="typeVessel" name="typeVessel" required>
         </div>
         
         <div class="mb-3">
           <label class="form-label">IMO Number</label>
-          <input type="text" class="form-control" id="IMONumber" name="IMONumber" value="<%= transportation.Ship.IMONumber %>">
+          <input type="text" class="form-control" id="IMONumber" name="IMONumber">
         </div>
         
         <div class="mb-3">
           <label class="form-label">MMSI Number</label>
-          <input type="text" class="form-control" id="MMSINumber" name="MMSINumber" value="<%= transportation.Ship.MMSINumber %>">
+          <input type="text" class="form-control" id="MMSINumber" name="MMSINumber">
         </div>
         
         <div class="mb-3">
           <label class="form-label">Call Sign</label>
-          <input type="text" class="form-control" id="callSign" name="callSign" value="<%= transportation.Ship.callSign %>">
+          <input type="text" class="form-control" id="callSign" name="callSign">
         </div>
         
         <div class="mb-3">
           <label class="form-label">Gross Tonnage</label>
           <div class="input-group mb-3">
-            <input type="number" step="any" class="form-control" id="grossTonnage" name="grossTonnage" value="<%= transportation.Ship.grossTonnage %>">
+            <input type="number" step="any" class="form-control" value="0" id="grossTonnage" name="grossTonnage">
             <div class="input-group-append">
               <span class="input-group-text">Ton</span>
             </div>
@@ -80,7 +103,7 @@
         <div class="mb-3">
           <label class="form-label">Summer DWT</label>
           <div class="input-group mb-3">
-            <input type="number" step="any" class="form-control" id="summerDWT" name="summerDWT" value="<%= transportation.Ship.summerDWT %>">
+            <input type="number" step="any" class="form-control" value="0" id="summerDWT" name="summerDWT">
             <div class="input-group-append">
               <span class="input-group-text">Ton</span>
             </div>
@@ -90,7 +113,7 @@
         <div class="mb-3">
           <label class="form-label">Length Overall x Breadth Extreme:</label>
           <div class="input-group mb-3">
-            <input type="text" class="form-control" id="lengthOverall" name="lengthOverall" value="<%= transportation.Ship.lengthOverall %>">
+            <input type="text" class="form-control" value="0" id="lengthOverall" name="lengthOverall">
             <div class="input-group-append">
               <span class="input-group-text">m</span>
             </div>
@@ -99,13 +122,13 @@
         
         <div class="mb-3">
           <label class="form-label">Year Built</label>
-          <input type="number" step="any" class="form-control" id="yearBuilt" name="yearBuilt" value="<%= transportation.Ship.yearBuilt %>">
+          <input type="number" step="any" class="form-control" value="0" id="yearBuilt" name="yearBuilt">
         </div>
         
         <div class="mb-3">
           <label class="form-label">Ship Age</label>
           <div class="input-group mb-3">
-            <input type="number" step="any" class="form-control" id="shipAge" name="shipAge" value="<%= transportation.Ship.shipAge %>" required>
+            <input type="number" step="any" class="form-control" id="shipAge" name="shipAge" required>
             <div class="input-group-append">
               <span class="input-group-text">years old</span>
             </div>
@@ -115,7 +138,7 @@
         <div class="mb-3">
           <label class="form-label">crewNumber</label>
           <div class="input-group mb-3">
-            <input type="number" step="any" class="form-control" id="crewNumber" name="crewNumber" value="<%= transportation.Ship.crewNumber %>" required>
+            <input type="number" step="any" class="form-control" id="crewNumber" name="crewNumber" required>
             <div class="input-group-append">
               <span class="input-group-text">Person</span>
             </div>
@@ -125,7 +148,100 @@
         <div class="mb-3">
           <label class="form-label">SFOC</label>
           <div class="input-group mb-3">
-            <input type="number" step="any" class="form-control" id="SFOC" name="SFOC" value="<%= transportation.Ship.SFOC %>" required>
+            <input type="number" step="any" class="form-control" id="SFOC" name="SFOC" required>
+            <div class="input-group-append">
+              <span class="input-group-text">gr/kWh</span>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-5">
+      <h4>Tugboat</h4>
+        <div class="mb-3">
+          <label class="form-label">Ship Name</label>
+          <input type="text" class="form-control" id="shipName_tugboat" name="shipName_tugboat" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Type Vessel</label>
+          <input type="text" class="form-control" id="typeVessel_tugboat" name="typeVessel_tugboat" required>
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label">IMO Number</label>
+          <input type="text" class="form-control" id="IMONumber_tugboat" name="IMONumber_tugboat">
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label">MMSI Number</label>
+          <input type="text" class="form-control" id="MMSINumber_tugboat" name="MMSINumber_tugboat">
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label">Call Sign</label>
+          <input type="text" class="form-control" id="callSign_tugboat" name="callSign_tugboat">
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label">Gross Tonnage</label>
+          <div class="input-group mb-3">
+            <input type="number" step="any" class="form-control" value="0" id="grossTonnage_tugboat" name="grossTonnage_tugboat">
+            <div class="input-group-append">
+              <span class="input-group-text">Ton</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label">Summer DWT</label>
+          <div class="input-group mb-3">
+            <input type="number" step="any" class="form-control" value="0" id="summerDWT_tugboat" name="summerDWT_tugboat">
+            <div class="input-group-append">
+              <span class="input-group-text">Ton</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label">Length Overall x Breadth Extreme:</label>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" value="0" id="lengthOverall_tugboat" name="lengthOverall_tugboat">
+            <div class="input-group-append">
+              <span class="input-group-text">m</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label">Year Built</label>
+          <input type="number" step="any" class="form-control" value="0" id="yearBuilt_tugboat" name="yearBuilt_tugboat">
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label">Ship Age</label>
+          <div class="input-group mb-3">
+            <input type="number" step="any" class="form-control" id="shipAge_tugboat" name="shipAge_tugboat" required>
+            <div class="input-group-append">
+              <span class="input-group-text">years old</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label">crewNumber</label>
+          <div class="input-group mb-3">
+            <input type="number" step="any" class="form-control" id="crewNumber_tugboat" name="crewNumber_tugboat" required>
+            <div class="input-group-append">
+              <span class="input-group-text">Person</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label">SFOC</label>
+          <div class="input-group mb-3">
+            <input type="number" step="any" class="form-control" id="SFOC_tugboat" name="SFOC_tugboat" required>
             <div class="input-group-append">
               <span class="input-group-text">gr/kWh</span>
             </div>
@@ -146,18 +262,18 @@
     <div class="col-md-5">
       <div class="mb-3">
         <label class="form-label">Port of Loading (POL)</label>
-        <input type="text" class="form-control" id="POL" name="POL" value="<%= transportation.Voyage.POL %>" required>
+        <input type="text" class="form-control" id="POL" name="POL" required>
       </div>
       
       <div class="mb-3">
         <label class="form-label">Port of Destination (POD)</label>
-        <input type="text" class="form-control" id="POD" name="POD" value="<%= transportation.Voyage.POD %>" required>
+        <input type="text" class="form-control" id="POD" name="POD" required>
       </div>
       
       <div class="mb-3">
         <label class="form-label">Distance in Nautical Miles</label>
         <div class="input-group mb-3">
-          <input type="number" step="any" class="form-control" id="distance" name="distance" value="<%= transportation.Voyage.distance %>" required>
+          <input type="number" step="any" class="form-control" id="distance" name="distance" required>
           <div class="input-group-append">
             <span class="input-group-text">n.m</span>
           </div>
@@ -167,7 +283,7 @@
       <div class="mb-3">
         <label class="form-label">Service Speed of Vessel</label>
         <div class="input-group mb-3">
-          <input type="number" step="any" class="form-control" id="serviceSpeedVessel" name="serviceSpeedVessel" value="<%= transportation.Voyage.serviceSpeedVessel %>" required>
+          <input type="number" step="any" class="form-control" id="serviceSpeedVessel" name="serviceSpeedVessel" required>
           <div class="input-group-append">
             <span class="input-group-text">knot</span>
           </div>
@@ -185,12 +301,9 @@
   <div class="row">
     <div class="col-md-5">
       <div class="mb-3">
-        <script>
-          var cargoTankJS = '<%- JSON.stringify(transportation.ShipCargoTankFullCapacity.cargoTank) %>'; // test is now a valid js object
-        </script>
         <label class="form-label">Number of cargo tank</label>
         <div class="input-group mb-3">
-          <input type="number" step="any" class="form-control" id="numberOfCargoTank" name="numberOfCargoTank" value="<%= transportation.ShipCargoTankFullCapacity.numberOfCargoTank %>" required>
+          <input type="number" step="any" class="form-control" id="numberOfCargoTank" name="numberOfCargoTank" required>
           <div class="input-group-append">
             <button id="add_field_button" class="btn btn-primary input-group-text">Generate</button>
           </div>
@@ -210,15 +323,9 @@
   <div class="row">
     <div class="col-md-5">
       <h5>LOADING RATE</h5>
-      <script>
-        var pumpLoadingRateJS = '<%- JSON.stringify(transportation.TurnAroundVoyage.pumpLoadingRate) %>'; // test is now a valid js object
-      </script>
       <div class="pumpLoadingRateWrapper">
       </div>
       <h5>DISCHARGE RATE</h5>
-      <script>
-        var pumpDischargeRateJS = '<%- JSON.stringify(transportation.TurnAroundVoyage.pumpDischargeRate) %>'; // test is now a valid js object
-      </script>
       <div class="pumpDischareRateWrapper">
       </div>
     </div>
@@ -237,13 +344,13 @@
     </div>
   </div>
   <br>
-  <div class="bunkerWrapper" id="bunkerWrapper">
+  <div class="bunkerWrapper d-none" id="bunkerWrapper">
   <div class="row">
     <div class="col-md-5">
       <div class="mb-3">
         <label class="form-label">Port Idle MFO</label>
         <div class="input-group mb-3">
-          <input type="number" step="any" class="form-control" id="portIdleMFO" name="portIdleMFO" value="<%= transportation.BunkeringCalculation.portIdleMFO %>" required>
+          <input type="number" step="any" class="form-control" value="0" id="portIdleMFO" name="portIdleMFO" required>
           <div class="input-group-append">
             <span class="input-group-text">ton/day</span>
           </div>
@@ -252,7 +359,7 @@
       <div class="mb-3">
         <label class="form-label">Port Idle MDO</label>
         <div class="input-group mb-3">
-          <input type="number" step="any" class="form-control" id="portIdleMDO" name="portIdleMDO" value="<%= transportation.BunkeringCalculation.portIdleMDO %>" required>
+          <input type="number" step="any" class="form-control" value="0" id="portIdleMDO" name="portIdleMDO" required>
           <div class="input-group-append">
             <span class="input-group-text">ton/day</span>
           </div>
@@ -261,7 +368,7 @@
       <div class="mb-3">
         <label class="form-label">Port Idle MGO</label>
         <div class="input-group mb-3">
-          <input type="number" step="any" class="form-control" id="portIdleMGO" name="portIdleMGO" value="<%= transportation.BunkeringCalculation.portIdleMGO %>" required>
+          <input type="number" step="any" class="form-control" value="0" id="portIdleMGO" name="portIdleMGO" required>
           <div class="input-group-append">
             <span class="input-group-text">ton/day</span>
           </div>
@@ -270,7 +377,7 @@
       <div class="mb-3">
         <label class="form-label">Port Working MFO</label>
         <div class="input-group mb-3">
-          <input type="number" step="any" class="form-control" id="portWorkingMFO" name="portWorkingMFO" value="<%= transportation.BunkeringCalculation.portWorkingMFO %>" required>
+          <input type="number" step="any" class="form-control" value="0" id="portWorkingMFO" name="portWorkingMFO" required>
           <div class="input-group-append">
             <span class="input-group-text">ton/day</span>
           </div>
@@ -279,7 +386,7 @@
       <div class="mb-3">
         <label class="form-label">Port Working MDO</label>
         <div class="input-group mb-3">
-          <input type="number" step="any" class="form-control" id="portWorkingMDO" name="portWorkingMDO" value="<%= transportation.BunkeringCalculation.portWorkingMDO %>" required>
+          <input type="number" step="any" class="form-control" value="0" id="portWorkingMDO" name="portWorkingMDO" required>
           <div class="input-group-append">
             <span class="input-group-text">ton/day</span>
           </div>
@@ -288,7 +395,7 @@
       <div class="mb-3">
         <label class="form-label">Port Working MGO</label>
         <div class="input-group mb-3">
-          <input type="number" step="any" class="form-control" id="portWorkingMGO" name="portWorkingMGO" value="<%= transportation.BunkeringCalculation.portWorkingMGO %>" required>
+          <input type="number" step="any" class="form-control" value="0" id="portWorkingMGO" name="portWorkingMGO" required>
           <div class="input-group-append">
             <span class="input-group-text">ton/day</span>
           </div>
@@ -297,7 +404,7 @@
       <div class="mb-3">
         <label class="form-label">At Sea MFO</label>
         <div class="input-group mb-3">
-          <input type="number" step="any" class="form-control" id="atSeaMFO" name="atSeaMFO" value="<%= transportation.BunkeringCalculation.atSeaMFO %>" required>
+          <input type="number" step="any" class="form-control" value="0" id="atSeaMFO" name="atSeaMFO" required>
           <div class="input-group-append">
             <span class="input-group-text">ton/day</span>
           </div>
@@ -307,7 +414,7 @@
       <div class="mb-3">
         <label class="form-label">At Sea MDO</label>
         <div class="input-group mb-3">
-          <input type="number" step="any" class="form-control" id="atSeaMDO" name="atSeaMDO" value="<%= transportation.BunkeringCalculation.atSeaMDO %>" required>
+          <input type="number" step="any" class="form-control" value="0" id="atSeaMDO" name="atSeaMDO" required>
           <div class="input-group-append">
             <span class="input-group-text">
               ton/day
@@ -318,7 +425,7 @@
       <div class="mb-3">
         <label class="form-label">At Sea MGO</label>
         <div class="input-group mb-3">
-          <input type="number" step="any" class="form-control" id="atSeaMGO" name="atSeaMGO" value="<%= transportation.BunkeringCalculation.atSeaMGO %>" required>
+          <input type="number" step="any" class="form-control" value="0" id="atSeaMGO" name="atSeaMGO" required>
           <div class="input-group-append">
             <span class="input-group-text">ton/day</span>
           </div>
@@ -327,7 +434,7 @@
       <!-- <div class="mb-3">
         <label class="form-label">Bunker Price MFO</label>
         <div class="input-group mb-3">
-          <input type="number" step="any" class="form-control" id="bunkerPriceIDRMFO" name="bunkerPriceIDRMFO" value="<%= transportation.BunkeringCalculation.bunkerPriceIDRMFO %>" required>
+          <input type="number" step="any" class="form-control" value="0" id="bunkerPriceIDRMFO" name="bunkerPriceIDRMFO" required>
           <div class="input-group-append">
             <span class="input-group-text">IDR/MT</span>
           </div>
@@ -336,7 +443,7 @@
       <div class="mb-3">
         <label class="form-label">Bunker Price MDO</label>
         <div class="input-group mb-3">
-          <input type="number" step="any" class="form-control" id="bunkerPriceIDRMDO" name="bunkerPriceIDRMDO" value="<%= transportation.BunkeringCalculation.bunkerPriceIDRMDO %>" required>
+          <input type="number" step="any" class="form-control" value="0" id="bunkerPriceIDRMDO" name="bunkerPriceIDRMDO" required>
           <div class="input-group-append">
             <span class="input-group-text">IDR/MT</span>
           </div>
@@ -345,7 +452,7 @@
       <div class="mb-3">
         <label class="form-label">Bunker Price MGO</label>
         <div class="input-group mb-3">
-          <input type="number" step="any" class="form-control" id="bunkerPriceIDRMGO" name="bunkerPriceIDRMGO" value="<%= transportation.BunkeringCalculation.bunkerPriceIDRMGO %>" required>
+          <input type="number" step="any" class="form-control" value="0" id="bunkerPriceIDRMGO" name="bunkerPriceIDRMGO" required>
           <div class="input-group-append">
             <span class="input-group-text">IDR/MT</span>
           </div>
@@ -378,6 +485,49 @@
   </div>
   <div class="row d-flex align-items-center" id="rowData">
     <div class="col-md-6">
+      <h3>Barge</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Unit Price (USD/Mo)</th>
+            <th scope="col">Total Cost</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Loading Master</th>
+            <td>
+              <input type="number" step="any" class="form-control" value="0" id="bargeLoadingMasterQty" required>
+            </td>
+            <td>
+              <input type="number" step="any" class="form-control" value="0" id="bargeLoadingMasterPrice" required>
+            </td>
+            <td>
+              <input type="number" step="any" class="form-control" value="0" id="bargeLoadingMaster" name="bargeLoadingMaster"  required>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Boatswain</th>
+            <td>
+              <input type="number" step="any" class="form-control" value="0" id="bargeBoatswainQty" required>
+            </td>
+            <td>
+              <input type="number" step="any" class="form-control" value="0" id="bargeBoatswainPrice" required>
+            </td>
+            <td>
+              <input type="number" step="any" class="form-control" value="0" id="bargeBoatswain" name="bargeBoatswain"  required>
+            </td>
+          </tr>
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row d-flex align-items-center" id="rowData">
+    <div class="col-md-6">
+      <h3>Tug Boat</h3>
       <h5>Deck Dept</h5>
       <table class="table">
         <thead>
@@ -398,7 +548,7 @@
               <input type="number" step="any" class="form-control" value="0" id="deckMasterPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckMaster %>" id="deckMaster" name="deckMaster" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckMaster" name="deckMaster" required>
             </td>
           </tr>
           <tr>
@@ -410,7 +560,7 @@
               <input type="number" step="any" class="form-control" value="0" id="deckChiefOfficerPrice"  required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckChiefOfficer %>" id="deckChiefOfficer" name="deckChiefOfficer" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckChiefOfficer" name="deckChiefOfficer" required>
             </td>
           </tr>
           <tr>
@@ -422,7 +572,7 @@
               <input type="number" step="any" class="form-control" value="0" id="deckOfficerPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckOfficer %>" id="deckOfficer" name="deckOfficer"  required>
+              <input type="number" step="any" class="form-control" value="0" id="deckOfficer" name="deckOfficer"  required>
             </td>
           </tr>
           <tr>
@@ -434,7 +584,7 @@
               <input type="number" step="any" class="form-control" value="0" id="deckRadioOperatorPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckRadioOperator %>" id="deckRadioOperator" name="deckRadioOperator"  required>
+              <input type="number" step="any" class="form-control" value="0" id="deckRadioOperator" name="deckRadioOperator"  required>
             </td>
           </tr>
           <tr>
@@ -446,7 +596,7 @@
               <input type="number" step="any" class="form-control" value="0" id="deckBoatswainPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckBoatswain %>" id="deckBoatswain" name="deckBoatswain"  required>
+              <input type="number" step="any" class="form-control" value="0" id="deckBoatswain" name="deckBoatswain"  required>
             </td>
           </tr>
           <tr>
@@ -458,7 +608,7 @@
               <input type="number" step="any" class="form-control" value="0" id="deckAbleBodiedPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckAbleBodied %>" id="deckAbleBodied" name="deckAbleBodied"  required>
+              <input type="number" step="any" class="form-control" value="0" id="deckAbleBodied" name="deckAbleBodied"  required>
             </td>
           </tr>
           <tr>
@@ -470,7 +620,7 @@
               <input type="number" step="any" class="form-control" value="0" id="deckOrdinarySeamenPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckOrdinarySeamen %>" id="deckOrdinarySeamen" name="deckOrdinarySeamen"  required>
+              <input type="number" step="any" class="form-control" value="0" id="deckOrdinarySeamen" name="deckOrdinarySeamen"  required>
             </td>
           </tr>
           <tr>
@@ -482,7 +632,7 @@
               <input type="number" step="any" class="form-control" value="0" id="deckChefPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckChef %>" id="deckChef" name="deckChef"  required>
+              <input type="number" step="any" class="form-control" value="0" id="deckChef" name="deckChef"  required>
             </td>
           </tr>
           <tr>
@@ -494,7 +644,7 @@
               <input type="number" step="any" class="form-control" value="0" id="deckAssistantChefPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckAssistantChef %>" id="deckAssistantChef" name="deckAssistantChef"  required>
+              <input type="number" step="any" class="form-control" value="0" id="deckAssistantChef" name="deckAssistantChef"  required>
             </td>
           </tr>
           <tr>
@@ -506,7 +656,7 @@
               <input type="number" step="any" class="form-control" value="0" id="deckOthersPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckOthers %>" id="deckOthers" name="deckOthers"  required>
+              <input type="number" step="any" class="form-control" value="0" id="deckOthers" name="deckOthers"  required>
             </td>
           </tr>
           
@@ -536,7 +686,7 @@
               <input type="number" step="any" class="form-control" value="0" id="engineChiefEngineerPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineChiefEngineer %>" id="engineChiefEngineer" name="engineChiefEngineer"  required>
+              <input type="number" step="any" class="form-control" value="0" id="engineChiefEngineer" name="engineChiefEngineer"  required>
             </td>
           </tr>
           <tr>
@@ -548,7 +698,7 @@
               <input type="number" step="any" class="form-control" value="0" id="engineChiefMachinistPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineChiefMachinist %>" id="engineChiefMachinist" name="engineChiefMachinist"  required>
+              <input type="number" step="any" class="form-control" value="0" id="engineChiefMachinist" name="engineChiefMachinist"  required>
             </td>
           </tr>
           <tr>
@@ -560,7 +710,7 @@
               <input type="number" step="any" class="form-control" value="0" id="engineMachinistPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineMachinist %>" id="engineMachinist" name="engineMachinist"  required>
+              <input type="number" step="any" class="form-control" value="0" id="engineMachinist" name="engineMachinist"  required>
             </td>
           </tr>
           <tr>
@@ -572,7 +722,7 @@
               <input type="number" step="any" class="form-control" value="0" id="engineForemenPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineForemen %>" id="engineForemen" name="engineForemen"  required>
+              <input type="number" step="any" class="form-control" value="0" id="engineForemen" name="engineForemen"  required>
             </td>
           </tr>
           <tr>
@@ -584,7 +734,7 @@
               <input type="number" step="any" class="form-control" value="0" id="engineOilerPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineOiler %>" id="engineOiler" name="engineOiler"  required>
+              <input type="number" step="any" class="form-control" value="0" id="engineOiler" name="engineOiler"  required>
             </td>
           </tr>
           <tr>
@@ -596,7 +746,7 @@
               <input type="number" step="any" class="form-control" value="0" id="engineWiperPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineWiper %>" id="engineWiper" name="engineWiper"  required>
+              <input type="number" step="any" class="form-control" value="0" id="engineWiper" name="engineWiper"  required>
             </td>
           </tr>
           <tr>
@@ -608,7 +758,7 @@
               <input type="number" step="any" class="form-control" value="0" id="engineOthersPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineOthers %>" id="engineOthers" name="engineOthers"  required>
+              <input type="number" step="any" class="form-control" value="0" id="engineOthers" name="engineOthers"  required>
             </td>
           </tr>
           
@@ -629,7 +779,7 @@
       <div class="mb-3">
         <label class="form-label">Port charges per Round Trip</label>
         <div class="input-group mb-3">
-          <input type="number" step="any" class="form-control" id="portChargesRoundTrip" name="portChargesRoundTrip" value="<%= transportation.PortCost.portChargesRoundTrip %>" required>
+          <input type="number" step="any" class="form-control" id="portChargesRoundTrip" name="portChargesRoundTrip" required>
           <div class="input-group-append">
             <span class="input-group-text">USD/Trip</span>
           </div>
@@ -651,7 +801,7 @@
       <div class="mb-3">
         <label class="form-label">Lasing & unlasing POL Per Trip</label>
         <div class="input-group mb-3">
-          <input type="number" step="any" class="form-control" id="lasingUnlasPOLTrip" name="lasingUnlasPOLTrip" value="<%= transportation.CargoHandlingCost.lasingUnlasPOLTrip %>" required>
+          <input type="number" step="any" class="form-control" id="lasingUnlasPOLTrip" name="lasingUnlasPOLTrip" required>
           <div class="input-group-append">
             <span class="input-group-text">USD</span>
           </div>
@@ -660,7 +810,7 @@
       <div class="mb-3">
         <label class="form-label">Lasing & unlasing POD Per Trip</label>
         <div class="input-group mb-3">
-          <input type="number" step="any" class="form-control" id="lasingUnlasPODTrip" name="lasingUnlasPODTrip" value="<%= transportation.CargoHandlingCost.lasingUnlasPODTrip %>" required>
+          <input type="number" step="any" class="form-control" id="lasingUnlasPODTrip" name="lasingUnlasPODTrip" required>
           <div class="input-group-append">
             <span class="input-group-text">USD</span>
           </div>
@@ -682,7 +832,7 @@
       <div class="mb-3">
         <label class="form-label">Charter Rate per Day</label>
         <div class="input-group mb-3">
-          <input type="number" step="any" class="form-control" id="charterRateDay" name="charterRateDay" value="<%= transportation.VesselCharterCost.charterRateDay %>" required>
+          <input type="number" step="any" class="form-control" id="charterRateDay" name="charterRateDay" required>
           <div class="input-group-append">
             <span class="input-group-text">USD</span>
           </div>
@@ -703,7 +853,7 @@
       <div class="mb-3">
         <label class="form-label">Ship Insurance</label>
         <div class="input-group mb-3">
-          <input type="number" step="any" class="form-control" id="shipInsurance" name="shipInsurance" value="<%= transportation.InsuranceCost.shipInsurance %>" required>
+          <input type="number" step="any" class="form-control" id="shipInsurance" name="shipInsurance" required>
           <div class="input-group-append">
             <span class="input-group-text">USD/Year</span>
           </div>
@@ -712,7 +862,7 @@
       <div class="mb-3">
         <label class="form-label">Crew Insurance</label>
         <div class="input-group mb-3">
-          <input type="number" step="any" class="form-control" id="crewInsurance" name="crewInsurance" value="<%= transportation.InsuranceCost.crewInsurance %>" required>
+          <input type="number" step="any" class="form-control" id="crewInsurance" name="crewInsurance" required>
           <div class="input-group-append">
             <span class="input-group-text">USD/Year</span>
           </div>
@@ -733,7 +883,7 @@
       <div class="mb-3">
         <label class="form-label">Docking Cost</label>
         <div class="input-group mb-3">
-          <input type="number" step="any" class="form-control" id="dockingCost" name="dockingCost" value="<%= transportation.DockingRepairMaintenanceCost.dockingCost %>" required>
+          <input type="number" step="any" class="form-control" id="dockingCost" name="dockingCost" required>
           <div class="input-group-append">
             <span class="input-group-text">USD/Year</span>
           </div>
@@ -742,7 +892,7 @@
       <div class="mb-3">
         <label class="form-label">Repair and Stores Cost</label>
         <div class="input-group mb-3">
-          <input type="number" step="any" class="form-control" id="repairStoreCost" name="repairStoreCost" value="<%= transportation.DockingRepairMaintenanceCost.repairStoreCost %>" required>
+          <input type="number" step="any" class="form-control" id="repairStoreCost" name="repairStoreCost" required>
           <div class="input-group-append">
             <span class="input-group-text">USD/Year</span>
           </div>
@@ -751,7 +901,7 @@
       <div class="mb-3">
         <label class="form-label">Lube Oil Cost</label>
         <div class="input-group mb-3">
-          <input type="number" step="any" class="form-control" id="lubeOilCost" name="lubeOilCost" value="<%= transportation.DockingRepairMaintenanceCost.lubeOilCost %>" required>
+          <input type="number" step="any" class="form-control" id="lubeOilCost" name="lubeOilCost" required>
           <div class="input-group-append">
             <span class="input-group-text">USD/Year</span>
           </div>
@@ -773,7 +923,7 @@
       <div class="mb-3">
         <label class="form-label">Victually</label>
         <div class="input-group mb-3">
-          <input type="number" step="any" class="form-control" id="victually" name="victually" value="<%= transportation.OtherCost.victually %>" required>
+          <input type="number" step="any" class="form-control" id="victually" name="victually" required>
           <div class="input-group-append">
             <span class="input-group-text">USD/Year</span>
           </div>
@@ -782,7 +932,7 @@
       <div class="mb-3">
         <label class="form-label">Administration and other cost</label>
         <div class="input-group mb-3">
-          <input type="number" step="any" class="form-control" id="administrationCost" name="administrationCost" value="<%= transportation.OtherCost.administrationCost %>" required>
+          <input type="number" step="any" class="form-control" id="administrationCost" name="administrationCost" required>
           <div class="input-group-append">
             <span class="input-group-text">USD/Year</span>
           </div>
@@ -791,7 +941,7 @@
       <div class="mb-3">
         <label class="form-label">Tax</label>
         <div class="input-group mb-3">
-          <input type="number" step="any" class="form-control" id="tax" name="tax" value="<%= transportation.TotalCost.tax %>" required>
+          <input type="number" step="any" class="form-control" id="tax" name="tax" required>
           <div class="input-group-append">
             <span class="input-group-text">%</span>
           </div>
@@ -800,7 +950,7 @@
       
     </div>
   </div>
-  <button type="submit" class="btn btn-primary">Update</button>
+  <button type="submit" class="btn btn-primary">Submit</button>
   </form>
 </div>
 <br>
@@ -846,56 +996,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
   $(function() {
-    function convert(value) {
-        return value && value['$numberDecimal'] ? value['$numberDecimal'] : 0;
-    }
-
     var wrapperCargoTank = $(".cargoTankWrapper"); //Fields wrapper
     var wrapperPumpLoadingRate = $(".pumpLoadingRateWrapper"); //Fields wrapper
     var wrapperPumpDischareRate = $(".pumpDischareRateWrapper"); //Fields wrapper
     var add_button = $("#add_field_button"); //Add button ID
-    var cargoTankJSON = $.parseJSON(cargoTankJS);
-    var pumpLoadingRateJSON = $.parseJSON(pumpLoadingRateJS);
-    var pumpDischargeRateJSON = $.parseJSON(pumpDischargeRateJS);
-    var numberOfCargoTank = $("#numberOfCargoTank").val();
-    if(numberOfCargoTank !== ''){
-      for (let i = 0; i < numberOfCargoTank; i++) {
-        $(wrapperCargoTank).append(
-            `<div class="mb-3">
-          <label class="form-label">No ${i+1} Cargo Tank full capacity</label>
-          <div class="input-group mb-3">
-            <input type="number" step="any" class="form-control" id="cargoTank${i+1}" name="cargoTank${i+1}" value="${JSON.stringify(Number(convert(cargoTankJSON[i])))}" required>
-            <div class="input-group-append">
-              <span class="input-group-text">CBM</span>
-            </div>
-          </div>
-        </div>`
-          );
-          $(wrapperPumpLoadingRate).append(
-            `<div class="mb-3">
-          <label class="form-label">No ${i+1} Pump</label>
-          <div class="input-group mb-3">
-            <input type="number" step="any" class="form-control" id="pumpLoadingRate${i+1}" name="pumpLoadingRate${i+1}" value="${JSON.stringify(Number(convert(pumpLoadingRateJSON[i])))}" required>
-            <div class="input-group-append">
-              <span class="input-group-text">CBM/hr</span>
-            </div>
-          </div>
-        </div>`
-          );
-          $(wrapperPumpDischareRate).append(
-            `<div class="mb-3">
-          <label class="form-label">No ${i+1} Pump</label>
-          <div class="input-group mb-3">
-            <input type="number" step="any" class="form-control" id="pumpDischargeRate${i+1}" name="pumpDischargeRate${i+1}" value="${JSON.stringify(Number(convert(pumpDischargeRateJSON[i])))}" required>
-            <div class="input-group-append">
-              <span class="input-group-text">CBM/hr</span>
-            </div>
-          </div>
-        </div>`
-          );
-      }
-    }
-
     $(add_button).click(function(e) {
       var num = $('#numberOfCargoTank').val();
       $(wrapperCargoTank).empty();
@@ -959,6 +1063,9 @@
           $(total).val(price.toFixed(1));
       }
     }
+    calculateTotal('#bargeLoadingMasterQty', '#bargeLoadingMasterPrice', '#bargeLoadingMaster');
+    calculateTotal('#bargeBoatswainQty', '#bargeBoatswainPrice', '#bargeBoatswain');
+
     calculateTotal('#deckMasterQty', '#deckMasterPrice', '#deckMaster');
     calculateTotal('#deckChiefOfficerQty', '#deckChiefOfficerPrice', '#deckChiefOfficer');
     calculateTotal('#deckOfficerQty', '#deckOfficerPrice', '#deckOfficer');
@@ -986,6 +1093,12 @@ $(function(){
     var shipAge = currentYear - yearBuilt;
     $('#shipAge').val(shipAge);
   });
+  $('#yearBuilt_tugboat').on('change', () => {
+    var currentYear = $('#currentYear').val();
+    var yearBuilt = $('#yearBuilt_tugboat').val();
+    var shipAge = currentYear - yearBuilt;
+    $('#shipAge_tugboat').val(shipAge);
+  });
   
   $('#shipCapacityCBM').on('change', () => {
     var shipCapacityCBM = $('#shipCapacityCBM').val();
@@ -1004,10 +1117,12 @@ $(function(){
     $('#portIdleMDO').val(portIdleMDO);
     $('#portWorkingMDO').val(portWorkingMDO);
   });
+
   $('#shipInsurance').on('change', () => {
     var shipInsurance = $('#shipInsurance').val();
     $('#crewInsurance').val(((45/100)/(20/100)*shipInsurance).toFixed(3));
   });
+
   $('#bunkerInput').click(function(e){
     if($("#bunkerWrapper").hasClass("d-none")){
       $("#bunkerWrapper").removeClass('d-none');
@@ -1023,6 +1138,8 @@ $(function(){
       $("#bunkerWrapper").addClass('d-none');
     }
   });
+    
+
 });
 
 $(function(){
@@ -1040,7 +1157,7 @@ $(function(){
     });
     function doit(){
       if(type_voyage !== '' && type_freight !== '' && ProjectID !== ''){
-        window.location = `/form/${ProjectID}/${type_freight}/${type_voyage}`; // redirect  
+        window.location = `/project/${ProjectID}/form/${type_freight}/${type_voyage}`; // redirect  
         // console.log('Masuk eko');
       }
       return false;

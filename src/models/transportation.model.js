@@ -67,7 +67,57 @@ const Transportation = mongoose.model('Transportation', {
             require: false
         },
         lengthOverall:{
+            type: String,
+            require: false
+        },
+        yearBuilt:{
             type: "Decimal128",
+            require: false
+        },
+        shipAge:{
+            type: "Decimal128",
+            require: true
+        },
+        crewNumber:{
+            type: "Decimal128",
+            require: true
+        },
+        SFOC:{
+            type: "Decimal128",
+            require: true
+        }
+    },
+    Tugboat : {
+        shipName: {
+            type: String,
+            require: true
+        },
+        typeVessel:{
+            type: String,
+            require: false
+        },
+        IMONumber:{
+            type: String,
+            require: false
+        },
+        MMSINumber:{
+            type: String,
+            require: false
+        },
+        callSign:{
+            type: String,
+            require: false
+        },
+        grossTonnage:{
+            type: "Decimal128",
+            require: false
+        },
+        summerDWT:{
+            type: "Decimal128",
+            require: false
+        },
+        lengthOverall:{
+            type: String,
             require: false
         },
         yearBuilt:{
@@ -406,6 +456,16 @@ const Transportation = mongoose.model('Transportation', {
                 require: true
             },
             engineOthers : {
+                type: "Decimal128",
+                require: true
+            },
+        },
+        Barge: {
+            bargeLoadingMaster : {
+                type: "Decimal128",
+                require: true
+            },
+            bargeBoatswain : {
                 type: "Decimal128",
                 require: true
             },
