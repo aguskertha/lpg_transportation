@@ -1029,19 +1029,19 @@
           </div>
         </div>`
           );
-          $(wrapperPumpDischareRate).append(
-            `<div class="mb-3">
-          <label class="form-label">No ${i} Pump</label>
-          <div class="input-group mb-3">
-            <input type="number" step="any" class="form-control" id="pumpDischargeRate${i}" name="pumpDischargeRate${i}" required>
-            <div class="input-group-append">
-              <span class="input-group-text">CBM/hr</span>
-            </div>
-          </div>
-        </div>`
-          );
           
         }
+        $(wrapperPumpDischareRate).append(
+          `<div class="mb-3">
+        <label class="form-label">No 1 Pump</label>
+        <div class="input-group mb-3">
+          <input type="number" step="any" class="form-control" id="pumpDischargeRate1" name="pumpDischargeRate1" required>
+          <div class="input-group-append">
+            <span class="input-group-text">CBM/hr</span>
+          </div>
+        </div>
+      </div>`
+        );
     });
   });
 

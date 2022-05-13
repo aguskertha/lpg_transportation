@@ -672,12 +672,21 @@ const createTransportation = async (req, res, next) => {
         let enterWaitTimePOL = 1;
 
         let pumpDischargeRate = [];
-        for (let i = 1; i <= req.body.numberOfCargoTank; i++) {
+        let numberOfCargoTank = req.body.numberOfCargoTank;
+        if(transportation.TypeFreight.slug === 'barge' && transportation.TypeVoyage.slug === 'single_trip'){
+            numberOfCargoTank = 1;
+        }
+        for (let i = 1; i <= numberOfCargoTank; i++) {
             pumpDischargeRate.push(req.body['pumpDischargeRate'+i]);
         }
         let sumDischargeRate = 0;
         for (let i = 0; i < req.body.numberOfCargoTank; i++) {
-            sumDischargeRate += Number(Number(shipCargoTankOperationalCapacity.cargoTankOp[i])/Number(pumpDischargeRate[i]));
+            if(transportation.TypeFreight.slug === 'barge' && transportation.TypeVoyage.slug === 'single_trip'){
+                sumDischargeRate += Number(Number(shipCargoTankOperationalCapacity.cargoTankOp[i])/Number(pumpDischargeRate[0]));
+            }
+            else{
+                sumDischargeRate += Number(Number(shipCargoTankOperationalCapacity.cargoTankOp[i])/Number(pumpDischargeRate[i]));
+            }
         }
         const totalDischargeTime = sumDischargeRate/24;
         let enterWaitTimePOD = 1;
@@ -1103,12 +1112,21 @@ const updateTransportationByID = async (req, res, next) => {
         let enterWaitTimePOL = 1;
 
         let pumpDischargeRate = [];
-        for (let i = 1; i <= req.body.numberOfCargoTank; i++) {
+        let numberOfCargoTank = req.body.numberOfCargoTank;
+        if(transportation.TypeFreight.slug === 'barge' && transportation.TypeVoyage.slug === 'single_trip'){
+            numberOfCargoTank = 1;
+        }
+        for (let i = 1; i <= numberOfCargoTank; i++) {
             pumpDischargeRate.push(req.body['pumpDischargeRate'+i]);
         }
         let sumDischargeRate = 0;
         for (let i = 0; i < req.body.numberOfCargoTank; i++) {
-            sumDischargeRate += Number(Number(shipCargoTankOperationalCapacity.cargoTankOp[i])/Number(pumpDischargeRate[i]));
+            if(transportation.TypeFreight.slug === 'barge' && transportation.TypeVoyage.slug === 'single_trip'){
+                sumDischargeRate += Number(Number(shipCargoTankOperationalCapacity.cargoTankOp[i])/Number(pumpDischargeRate[0]));
+            }
+            else{
+                sumDischargeRate += Number(Number(shipCargoTankOperationalCapacity.cargoTankOp[i])/Number(pumpDischargeRate[i]));
+            }
         }
         const totalDischargeTime = sumDischargeRate/24;
         let enterWaitTimePOD = 1;
