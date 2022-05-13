@@ -1,0 +1,465 @@
+<div class="container mt-3">
+    <h1 align="center"><%= title %> </h1>
+    <h3 align="center"><%= typeCase.name %></h3>
+    <form method="post" action="/project/<%= ProjectID %>/skidtruck/form/<%= typeCase.slug %>"></form>
+    <input type="hidden" id="unitConversion" value="<%= JSON.stringify(unitConversion) %> ">
+    <div class="row">
+      <div class="col-md-5">
+        <h2>Distribution Area</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="mb-3">
+            <label class="form-label">Area</label>
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" id="distArea" name="distArea" value="<%= typeof distArea != 'undefined' ? distArea : '' %>" required>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Origin</label>
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" id="distOrigin" name="distOrigin" value="<%= typeof distOrigin != 'undefined' ? distOrigin : '' %>" required>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Destination</label>
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" id="distDestination" name="distDestination" value="<%= typeof distDestination != 'undefined' ? distDestination : '' %>" required>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-5">
+        <h2>Skid Truck ID</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="mb-3">
+            <label class="form-label">Cargo Capacity</label>
+            <div class="input-group mb-3">
+              <input type="number" step="any" class="form-control" id="skidTruckCargoCapacity" name="skidTruckCargoCapacity" value="<%= typeof skidTruckCargoCapacity != 'undefined' ? skidTruckCargoCapacity : '0' %>" required>
+              <div class="input-group-append">
+                <span class="input-group-text">MT</span>
+              </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Head Truck Specification</label>
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" id="skidTruckHeadSpec" name="skidTruckHeadSpec" value="<%= typeof skidTruckHeadSpec != 'undefined' ? skidTruckHeadSpec : '' %>">
+              <div class="input-group-append">
+                <span class="input-group-text">PS</span>
+              </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Trucking Operating Speed </label>
+            <div class="input-group mb-3">
+              <input type="number" step="any" class="form-control" id="skidTruckSpeed" name="skidTruckSpeed" value="<%= typeof skidTruckSpeed != 'undefined' ? skidTruckSpeed : '0' %>" required>
+              <div class="input-group-append">
+                <span class="input-group-text">km/hr</span>
+              </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Trucking Fuel Oil Consumption (FOC) </label>
+            <div class="input-group mb-3">
+              <input type="number" step="any" class="form-control" id="skidTruckFuelConsume" name="skidTruckFuelConsume" value="<%= typeof skidTruckFuelConsume != 'undefined' ? skidTruckFuelConsume : '0' %>" required>
+              <div class="input-group-append">
+                <span class="input-group-text">lt/hr</span>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-5">
+          <h2>Basis Data</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="mb-3">
+                <label class="form-label">LPG Price</label>
+                <div class="input-group mb-1">
+                    <input type="number" step="any" class="form-control" id="basisDataLPGPriceUSD" name="basisDataLPGPriceUSD" value="<%= typeof basisDataLPGPriceUSD != 'undefined' ? basisDataLPGPriceUSD : '0' %>" required>
+                    <div class="input-group-append">
+                    <span class="input-group-text">USD/ton</span>
+                    </div>
+                </div>
+                <div class="input-group mb-1">
+                    <input type="number" step="any" class="form-control" id="basisDataLPGPriceRp" name="basisDataLPGPriceRp" value="<%= typeof basisDataLPGPriceRp != 'undefined' ? basisDataLPGPriceRp : '0' %>" required>
+                    <div class="input-group-append">
+                    <span class="input-group-text">Rp/ton</span>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="number" step="any" class="form-control" id="basisDataLPGPriceRpKg" name="basisDataLPGPriceRpKg" value="<%= typeof basisDataLPGPriceRpKg != 'undefined' ? basisDataLPGPriceRpKg : '0' %>" readonly required>
+                    <div class="input-group-append">
+                    <span class="input-group-text">Rp/kg</span>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Solar Price (Pertamina Dex)</label>
+                <div class="input-group mb-3">
+                    <input type="number" step="any" class="form-control" id="basisDataSolarPrice" name="basisDataSolarPrice" value="<%= typeof basisDataSolarPrice != 'undefined' ? basisDataSolarPrice : '0' %>" required>
+                    <div class="input-group-append">
+                    <span class="input-group-text">Rp/lt</span>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Truck & Skid Rental Price</label>
+                <div class="input-group mb-1">
+                    <input type="number" step="any" class="form-control" id="basisDataRentalPriceMonth" name="basisDataRentalPriceMonth" value="<%= typeof basisDataRentalPriceMonth != 'undefined' ? basisDataRentalPriceMonth : '0' %>" required>
+                    <div class="input-group-append">
+                    <span class="input-group-text">Rp/month</span>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="number" step="any" class="form-control" id="basisDataRentalPriceDay" name="basisDataRentalPriceDay" value="<%= typeof basisDataRentalPriceDay != 'undefined' ? basisDataRentalPriceDay : '0' %>" readonly required>
+                    <div class="input-group-append">
+                    <span class="input-group-text">Rp/day</span>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Driver Salary</label>
+                <div class="input-group mb-1">
+                    <input type="number" step="any" class="form-control" id="basisDataDriverSalaryMonth" name="basisDataDriverSalaryMonth" value="<%= typeof basisDataDriverSalaryMonth != 'undefined' ? basisDataDriverSalaryMonth : '0' %>" required>
+                    <div class="input-group-append">
+                    <span class="input-group-text">Rp/month</span>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="number" step="any" class="form-control" id="basisDataDriverSalaryDay" name="basisDataDriverSalaryDay" value="<%= typeof basisDataDriverSalaryDay != 'undefined' ? basisDataRentalPriceDay : '0' %>" readonly required>
+                    <div class="input-group-append">
+                    <span class="input-group-text">Rp/day</span>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Assistant Driver Salary</label>
+                <div class="input-group mb-1">
+                    <input type="number" step="any" class="form-control" id="basisDataAssistDriverSalaryMonth" name="basisDataAssistDriverSalaryMonth" value="<%= typeof basisDataAssistDriverSalaryMonth != 'undefined' ? basisDataAssistDriverSalaryMonth : '0' %>" required>
+                    <div class="input-group-append">
+                    <span class="input-group-text">Rp/month</span>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="number" step="any" class="form-control" id="basisDataAssistDriverSalaryDay" name="basisDataAssistDriverSalaryDay" value="<%= typeof basisDataAssistDriverSalaryDay != 'undefined' ? basisDataAssistDriverSalaryDay : '0' %>" readonly required>
+                    <div class="input-group-append">
+                    <span class="input-group-text">Rp/day</span>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Mis. (allowances, parking, etc)</label>
+                <div class="input-group mb-3">
+                    <input type="number" step="any" class="form-control" id="basisDataMisEtc" name="basisDataMisEtc" value="<%= typeof basisDataMisEtc != 'undefined' ? basisDataMisEtc : '0' %>" required>
+                    <div class="input-group-append">
+                    <span class="input-group-text">Rp/trip</span>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">LCT Rate per truck</label>
+                <div class="input-group mb-1">
+                    <input type="number" step="any" class="form-control" id="basisDataLCTRate" name="basisDataLCTRate" value="<%= typeof basisDataLCTRate != 'undefined' ? basisDataLCTRate : '0' %>" required>
+                    <div class="input-group-append">
+                    <span class="input-group-text">Rp/Truck</span>
+                    </div>
+                </div>
+                <label class="form-label">Other Cost for LCT Trans. (15% from Ferry Cost)</label>
+                <div class="input-group mb-3">
+                    <input type="number" step="any" class="form-control" id="basisDataLCTRateEtc" name="basisDataLCTRateEtc" value="<%= typeof basisDataLCTRateEtc != 'undefined' ? basisDataLCTRateEtc : '0' %>" readonly required>
+                    <div class="input-group-append">
+                    <span class="input-group-text">Rp/Truck</span>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Total Cost for Ferry</label>
+                <div class="input-group mb-3">
+                    <input type="number" step="any" class="form-control" id="basisDataTotalCost" name="basisDataTotalCost" value="<%= typeof basisDataTotalCost != 'undefined' ? basisDataTotalCost : '0' %>" readonly required>
+                    <div class="input-group-append">
+                    <span class="input-group-text">Rp/Truck</span>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Transportation Risk Factor</label>
+                <div class="input-group mb-3">
+                    <input type="number" step="any" class="form-control" id="basisDataRiskFactor" name="basisDataRiskFactor" value="<%= typeof basisDataRiskFactor != 'undefined' ? basisDataRiskFactor : '1.2' %>" readonly required>
+                </div>
+            </div>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-md-5">
+          <h2>Delivery Data</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="mb-3">
+                <label class="form-label">Origin LPG</label>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" id="deliveryDataOriginLPG" name="deliveryDataOriginLPG" value="<%= typeof deliveryDataOriginLPG != 'undefined' ? deliveryDataOriginLPG : '' %>" required>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Origin Port</label>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" id="deliveryDataOriginPort" name="deliveryDataOriginPort" value="<%= typeof deliveryDataOriginPort != 'undefined' ? deliveryDataOriginPort : '' %>" required>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Destination Port</label>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" id="deliveryDataDestinationPort" name="deliveryDataDestinationPort" value="<%= typeof deliveryDataDestinationPort != 'undefined' ? deliveryDataDestinationPort : '' %>" required>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Destination SPBE</label>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" id="deliveryDataDestinationSPBE" name="deliveryDataDestinationSPBE" value="<%= typeof deliveryDataDestinationSPBE != 'undefined' ? deliveryDataDestinationSPBE : '' %>" required>
+                </div>
+            </div>
+            <div class="mb-3">
+                <div class="wrapperDistanceTruckingOrigin">
+                    <label class="form-label">Distance Tracking LPG-PORT</label>
+                </div>
+                <div class="input-group mb-1">
+                    <input type="number" step="any" class="form-control" id="deliveryDataDistanceTruckingOriginKM" name="deliveryDataDistanceTruckingOriginKM" value="<%= typeof deliveryDataDistanceTruckingOriginKM != 'undefined' ? deliveryDataDistanceTruckingOriginKM : '0' %>" required>
+                    <div class="input-group-append">
+                    <span class="input-group-text">km</span>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="number" step="any" class="form-control" id="deliveryDataDistanceTruckingOriginMile" name="deliveryDataDistanceTruckingOriginMile" value="<%= typeof deliveryDataDistanceTruckingOriginMile != 'undefined' ? deliveryDataDistanceTruckingOriginMile : '0' %>" readonly required>
+                    <div class="input-group-append">
+                    <span class="input-group-text">mile</span>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <div class="wrapperDistanceSailFerryPort">
+                    <label class="form-label">Distance Sailing using Ferry to Port</label>
+                </div>
+                <div class="input-group mb-1">
+                    <input type="number" step="any" class="form-control" id="deliveryDataDistanceSailFerryPortKM" name="deliveryDataDistanceSailFerryPortKM" value="<%= typeof deliveryDataDistanceSailFerryPortKM != 'undefined' ? deliveryDataDistanceSailFerryPortKM : '0' %>" required>
+                    <div class="input-group-append">
+                    <span class="input-group-text">km</span>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="number" step="any" class="form-control" id="deliveryDataDistanceSailFerryPortMile" name="deliveryDataDistanceSailFerryPortMile" value="<%= typeof deliveryDataDistanceSailFerryPortMile != 'undefined' ? deliveryDataDistanceSailFerryPortMile : '0' %>" readonly required>
+                    <div class="input-group-append">
+                    <span class="input-group-text">mile</span>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <div class="wrapperDistanceTruckingPortSpbe">
+                    <label class="form-label">Distance Trucking from Port to SPBE</label>
+                </div>
+                <div class="input-group mb-1">
+                    <input type="number" step="any" class="form-control" id="deliveryDataDistanceTruckingPortSpbeKM" name="deliveryDataDistanceTruckingPortSpbeKM" value="<%= typeof deliveryDataDistanceTruckingPortSpbeKM != 'undefined' ? deliveryDataDistanceTruckingPortSpbeKM : '0' %>" required>
+                    <div class="input-group-append">
+                    <span class="input-group-text">km</span>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="number" step="any" class="form-control" id="deliveryDataDistanceTruckingPortSpbeMile" name="deliveryDataDistanceTruckingPortSpbeMile" value="<%= typeof deliveryDataDistanceTruckingPortSpbeMile != 'undefined' ? deliveryDataDistanceTruckingPortSpbeMile : '0' %>" readonly required>
+                    <div class="input-group-append">
+                    <span class="input-group-text">mile</span>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label"><b>Total Distance</b></label>
+                <div class="input-group mb-3">
+                    <input type="number" step="any" class="form-control" id="deliveryDataTotalDistance" name="deliveryDataTotalDistance" value="<%= typeof deliveryDataTotalDistance != 'undefined' ? deliveryDataTotalDistance : '0' %>" readonly required>
+                    <div class="input-group-append">
+                    <span class="input-group-text">km</span>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">LPG Loading/unloading at Truck</label>
+                <div class="input-group mb-3">
+                    <input type="number" step="any" class="form-control" id="deliveryDataLPGLoadUnload" name="deliveryDataLPGLoadUnload" value="<%= typeof deliveryDataLPGLoadUnload != 'undefined' ? deliveryDataLPGLoadUnload : '0' %>" required>
+                    <div class="input-group-append">
+                    <span class="input-group-text">hr</span>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Round Trip (RT) Duration (Sailing with Ferry)</label>
+                <div class="input-group mb-3">
+                    <input type="number" step="any" class="form-control" id="deliveryDataRoundTripSailling" name="deliveryDataRoundTripSailling" value="<%= typeof deliveryDataRoundTripSailling != 'undefined' ? deliveryDataRoundTripSailling : '0' %>" required>
+                    <div class="input-group-append">
+                    <span class="input-group-text">hr</span>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Number or Trucking per Delivery</label>
+                <div class="input-group mb-3">
+                    <input type="number" step="any" class="form-control" id="deliveryDataNumberTrucking" name="deliveryDataNumberTrucking" value="<%= typeof deliveryDataNumberTrucking != 'undefined' ? deliveryDataNumberTrucking : '0' %>" required>
+                    <div class="input-group-append">
+                    <span class="input-group-text">Truck</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+      <br>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script>
+    $(function(){
+        var unitConversionStr = $('#unitConversion').val();
+        var unitConversion = JSON.parse(unitConversionStr);
+        $('#basisDataLPGPriceUSD').on('change', function () {
+            var basisDataLPGPriceUSD = $('#basisDataLPGPriceUSD').val();
+            var basisDataLPGPriceRp = Number(basisDataLPGPriceUSD * unitConversion.USDtoRP)
+            $('#basisDataLPGPriceRp').val(basisDataLPGPriceRp)
+            $('#basisDataLPGPriceRpKg').val(basisDataLPGPriceRp/1000)
+        });
+        $('#basisDataLPGPriceRp').on('change', function () {
+            var basisDataLPGPriceRp = $('#basisDataLPGPriceRp').val();
+            var basisDataLPGPriceUSD = Number(basisDataLPGPriceRp / unitConversion.USDtoRP)
+            $('#basisDataLPGPriceUSD').val(basisDataLPGPriceUSD)
+            $('#basisDataLPGPriceRpKg').val(basisDataLPGPriceRp/1000)
+        });
+
+        $('#basisDataRentalPriceMonth').on('change', function(){
+            var basisDataRentalPriceMonth = $('#basisDataRentalPriceMonth').val();
+            var basisDataRentalPriceDay = Number(basisDataRentalPriceMonth / 30 * 1.3);
+            $('#basisDataRentalPriceDay').val(basisDataRentalPriceDay);
+        });
+
+        $('#basisDataDriverSalaryMonth').on('change', function(){
+            var basisDataDriverSalaryMonth = $('#basisDataDriverSalaryMonth').val();
+            var basisDataDriverSalaryDay = Number(basisDataDriverSalaryMonth / 30);
+            $('#basisDataDriverSalaryDay').val(basisDataDriverSalaryDay);
+        });
+        $('#basisDataAssistDriverSalaryMonth').on('change', function(){
+            var basisDataAssistDriverSalaryMonth = $('#basisDataAssistDriverSalaryMonth').val();
+            var basisDataAssistDriverSalaryDay = Number(basisDataAssistDriverSalaryMonth / 30);
+            $('#basisDataAssistDriverSalaryDay').val(basisDataAssistDriverSalaryDay);
+        });
+
+        $('#basisDataLCTRate').on('change', function(){
+            var basisDataLCTRate = $('#basisDataLCTRate').val();
+            var basisDataLCTRateEtc = Number(basisDataLCTRate * 0.15);
+            var basisDataTotalCost = Number(Number(basisDataLCTRate) + Number(basisDataLCTRateEtc));
+            $('#basisDataLCTRateEtc').val(basisDataLCTRateEtc);
+            $('#basisDataTotalCost').val(basisDataTotalCost);
+        });
+    
+        $('#deliveryDataOriginLPG').on('change', function(){
+            var deliveryDataOriginLPG = $('#deliveryDataOriginLPG').val();
+            var deliveryDataOriginPort = $('#deliveryDataOriginPort').val();
+            var label = `Distance Trucking from ${deliveryDataOriginLPG} to Port ${deliveryDataOriginPort}`;
+            var wrapperDistanceTruckingOrigin = $('.wrapperDistanceTruckingOrigin');
+            $(wrapperDistanceTruckingOrigin).empty();
+            $(wrapperDistanceTruckingOrigin).append(`
+            <label class="form-label">${label}</label>
+            `);
+
+            var labelDistanceSailFerryPort = `Distance Sailing using Ferry to Port ${deliveryDataOriginPort}`;
+            var wrapperDistanceSailFerryPort = $('.wrapperDistanceSailFerryPort');
+            $(wrapperDistanceSailFerryPort).empty();
+            $(wrapperDistanceSailFerryPort).append(`
+            <label class="form-label">${labelDistanceSailFerryPort}</label>
+            `);
+        });
+        $('#deliveryDataOriginPort').on('change', function(){
+            var deliveryDataOriginLPG = $('#deliveryDataOriginLPG').val();
+            var deliveryDataOriginPort = $('#deliveryDataOriginPort').val();
+            var label = `Distance Trucking from ${deliveryDataOriginLPG} to Port ${deliveryDataOriginPort}`;
+            var wrapperDistanceTruckingOrigin = $('.wrapperDistanceTruckingOrigin');
+            $(wrapperDistanceTruckingOrigin).empty();
+            $(wrapperDistanceTruckingOrigin).append(`
+            <label class="form-label">${label}</label>
+            `);
+
+            var labelDistanceSailFerryPort = `Distance Sailing using Ferry to Port ${deliveryDataOriginPort}`;
+            var wrapperDistanceSailFerryPort = $('.wrapperDistanceSailFerryPort');
+            $(wrapperDistanceSailFerryPort).empty();
+            $(wrapperDistanceSailFerryPort).append(`
+            <label class="form-label">${labelDistanceSailFerryPort}</label>
+            `);
+        });
+
+        $('#deliveryDataDestinationPort').on('change', function(){
+            var deliveryDataDestinationPort = $('#deliveryDataDestinationPort').val();
+            var deliveryDataDestinationSPBE = $('#deliveryDataDestinationSPBE').val();
+
+            var labelDistanceTruckingPortSpbe = `Distance Trucking from Port ${deliveryDataDestinationPort} to ${deliveryDataDestinationSPBE}`;
+            var wrapperDistanceTruckingPortSpbe = $('.wrapperDistanceTruckingPortSpbe');
+            $(wrapperDistanceTruckingPortSpbe).empty();
+            $(wrapperDistanceTruckingPortSpbe).append(`
+            <label class="form-label">${labelDistanceTruckingPortSpbe}</label>
+            `);
+        });
+
+        $('#deliveryDataDestinationSPBE').on('change', function(){
+            var deliveryDataDestinationPort = $('#deliveryDataDestinationPort').val();
+            var deliveryDataDestinationSPBE = $('#deliveryDataDestinationSPBE').val();
+
+            var labelDistanceTruckingPortSpbe = `Distance Trucking from Port ${deliveryDataDestinationPort} to ${deliveryDataDestinationSPBE}`;
+            var wrapperDistanceTruckingPortSpbe = $('.wrapperDistanceTruckingPortSpbe');
+            $(wrapperDistanceTruckingPortSpbe).empty();
+            $(wrapperDistanceTruckingPortSpbe).append(`
+            <label class="form-label">${labelDistanceTruckingPortSpbe}</label>
+            `);
+        });
+
+        $('#deliveryDataDistanceTruckingOriginKM').on('change', function(){
+            var deliveryDataDistanceTruckingOriginKM = $('#deliveryDataDistanceTruckingOriginKM').val();
+            var deliveryDataDistanceTruckingOriginMile = Number(deliveryDataDistanceTruckingOriginKM * unitConversion.KMtoMILE);
+            $('#deliveryDataDistanceTruckingOriginMile').val(deliveryDataDistanceTruckingOriginMile);
+            
+            var deliveryDataDistanceSailFerryPortKM = $('#deliveryDataDistanceSailFerryPortKM').val();
+            var deliveryDataDistanceTruckingPortSpbeKM = $('#deliveryDataDistanceTruckingPortSpbeKM').val();
+            var deliveryDataTotalDistance = Number(Number(deliveryDataDistanceTruckingOriginKM) + Number(deliveryDataDistanceSailFerryPortKM) + Number(deliveryDataDistanceTruckingPortSpbeKM));
+            $('#deliveryDataTotalDistance').val(deliveryDataTotalDistance);
+
+        });
+
+        $('#deliveryDataDistanceSailFerryPortKM').on('change', function(){
+            var deliveryDataDistanceSailFerryPortKM = $('#deliveryDataDistanceSailFerryPortKM').val();
+            var deliveryDataDistanceSailFerryPortMile = Number(deliveryDataDistanceSailFerryPortKM * unitConversion.KMtoMILE);
+            $('#deliveryDataDistanceSailFerryPortMile').val(deliveryDataDistanceSailFerryPortMile);
+
+            var deliveryDataDistanceTruckingOriginKM = $('#deliveryDataDistanceTruckingOriginKM').val();
+            var deliveryDataDistanceTruckingPortSpbeKM = $('#deliveryDataDistanceTruckingPortSpbeKM').val();
+            var deliveryDataTotalDistance = Number(Number(deliveryDataDistanceTruckingOriginKM) + Number(deliveryDataDistanceSailFerryPortKM) + Number(deliveryDataDistanceTruckingPortSpbeKM));
+            $('#deliveryDataTotalDistance').val(deliveryDataTotalDistance);
+        });
+        
+        $('#deliveryDataDistanceTruckingPortSpbeKM').on('change', function(){
+            var deliveryDataDistanceTruckingPortSpbeKM = $('#deliveryDataDistanceTruckingPortSpbeKM').val();
+            var deliveryDataDistanceTruckingPortSpbeMile = Number(deliveryDataDistanceTruckingPortSpbeKM * unitConversion.KMtoMILE);
+            $('#deliveryDataDistanceTruckingPortSpbeMile').val(deliveryDataDistanceTruckingPortSpbeMile);
+        
+            var deliveryDataDistanceSailFerryPortKM = $('#deliveryDataDistanceSailFerryPortKM').val();
+            var deliveryDataDistanceTruckingOriginKM = $('#deliveryDataDistanceTruckingOriginKM').val();
+            var deliveryDataTotalDistance = Number(Number(deliveryDataDistanceTruckingOriginKM) + Number(deliveryDataDistanceSailFerryPortKM) + Number(deliveryDataDistanceTruckingPortSpbeKM));
+            $('#deliveryDataTotalDistance').val(deliveryDataTotalDistance);
+        });
+    });
+</script>

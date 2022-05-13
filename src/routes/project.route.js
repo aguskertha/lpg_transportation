@@ -26,6 +26,13 @@ const {
 
 } = require('./../controllers/project.controller');
 
+const { 
+    getProjectSkidTruckByID, 
+    getFormSkidTruck, 
+    getFormSkidTruckByCase,
+    createTransportationSkidTruck 
+} = require('./../controllers/transportation-skidtruck.controller');
+
 router.post('/', createProject);
 router.post('/update', updateProjectByID);
 router.post('/:projectID/form/:typeFreightSlug/:typeVoyageSlug', createTransportation);
@@ -49,4 +56,9 @@ router.get('/:projectID/delete', deleteProjectByID);
 
 router.get('/:projectID/transportation/:transportationID/summary', getSummaryTransportationBunkerPriceSensitivity);
 router.get('/create/costShipAge', createCostShipAge);
+
+router.get('/:projectID/skidtruck', getProjectSkidTruckByID);
+router.get('/:projectID/skidtruck/form', getFormSkidTruck);
+router.get('/:projectID/skidtruck/form/:typeCase', getFormSkidTruckByCase);
+router.post('/:projectID/skidtruck/form/:typeCase', createTransportationSkidTruck);
 module.exports = router;
