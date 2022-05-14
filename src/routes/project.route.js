@@ -30,7 +30,8 @@ const {
     getProjectSkidTruckByID, 
     getFormSkidTruck, 
     getFormSkidTruckByCase,
-    createTransportationSkidTruck 
+    createTransportationSkidTruck, 
+    createTransportationSkidTruck2
 } = require('./../controllers/transportation-skidtruck.controller');
 
 router.post('/', createProject);
@@ -60,5 +61,6 @@ router.get('/create/costShipAge', createCostShipAge);
 router.get('/:projectID/skidtruck', getProjectSkidTruckByID);
 router.get('/:projectID/skidtruck/form', getFormSkidTruck);
 router.get('/:projectID/skidtruck/form/:typeCase', getFormSkidTruckByCase);
-router.post('/:projectID/skidtruck/form/:typeCase', createTransportationSkidTruck);
+router.post('/:projectID/skidtruck/form/case-1', createTransportationSkidTruck);
+router.post('/:projectID/skidtruck/form/case-2', createTransportationSkidTruck2);
 module.exports = router;

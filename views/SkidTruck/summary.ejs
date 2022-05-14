@@ -41,6 +41,11 @@
           </tr>
         <tr style="white-space: nowrap;" align="center">
             <th>#</th>
+            <th>Case
+                <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
+                    <i class="fa fa-eye-slash"></i>  
+                </button>
+            </th>
             <th>Area
                 <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
                     <i class="fa fa-eye-slash"></i>  
@@ -102,7 +107,9 @@
     <tbody>
         <% for( let index = 0; index < transSkidTrucks.length; index++ ) { %>
         <% const transSkidTruck = transSkidTrucks[index] %> 
+        <tr style="white-space: nowrap;" >
             <th scope="row"><%= index+1 %></th>
+            <td><%= transSkidTruck.TypeCase %></td>
             <td><%= transSkidTruck.DistributionArea.distArea %></td>
             <td><%= transSkidTruck.DistributionArea.distOrigin %></td>
             <td><%= transSkidTruck.DistributionArea.distDestination %></td>
@@ -112,6 +119,8 @@
             <td>Rp<%= transSkidTruck.ProposedFreight.proposedFreight_IDR_KG_NM.toFixed(4) %></td>
             <td>$<%= transSkidTruck.ProposedFreight.proposedFreight_USD_MT.toFixed(4) %></td>
             <td>Rp<%= transSkidTruck.ProposedFreight.proposedFreight_IDR_MT.toFixed(4) %></td>
+            <td>No Action</td>
+        </tr>
         <% } %>
     </tbody>
 </table>

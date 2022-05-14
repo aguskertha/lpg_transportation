@@ -6,8 +6,8 @@ const userRouter = require('./user.route');
 const {ensureAuthenticated} = require('./../middleware/auth');
 
 router.use('/', indexRouter);
-router.use('/topic',ensureAuthenticated, topicRouter);
-router.use('/project', ensureAuthenticated, projectRouter);
+router.use('/topic', topicRouter);
+router.use('/project', projectRouter);
 router.use('/user', userRouter);
 
 module.exports = router;

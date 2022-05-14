@@ -1,1 +1,1345 @@
-<h1><%= typeCase.name %> </h1>
+<div class="container mt-3">
+<h1 align="center"><%= title %> </h1>
+<h3 align="center"><%= typeCase.name %></h3>
+<form method="post" action="/project/<%= ProjectID %>/skidtruck/form/<%= typeCase.slug %>">
+<input type="hidden" id="unitConversion" value="<%= JSON.stringify(unitConversion) %> ">
+<div class="row">
+    <div class="col-md-5">
+    <h2>Distribution Area</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+    <div class="mb-3">
+        <label class="form-label">Area</label>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" id="distArea" name="distArea" value="<%= typeof distArea != 'undefined' ? distArea : '' %>" required>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Origin</label>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" id="distOrigin" name="distOrigin" value="<%= typeof distOrigin != 'undefined' ? distOrigin : '' %>" required>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Destination</label>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" id="distDestination" name="distDestination" value="<%= typeof distDestination != 'undefined' ? distDestination : '' %>" required>
+        </div>
+    </div>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-5">
+    <h2>Barge ID</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="mb-3">
+            <label class="form-label">Vessel name</label>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" id="bargeVesselName" name="bargeVesselName" value="<%= typeof bargeVesselName != 'undefined' ? bargeVesselName : '' %>" required>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Type of Vessel</label>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" id="bargeTypeVessel" name="bargeTypeVessel" value="<%= typeof bargeTypeVessel != 'undefined' ? bargeTypeVessel : '' %>" required>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Cargo Capacity</label>
+            <div class="input-group mb-1">
+              <input type="number" step="any" class="form-control" id="bargeCargoCapacityCBM" name="bargeCargoCapacityCBM" value="<%= typeof bargeCargoCapacityCBM != 'undefined' ? bargeCargoCapacityCBM : '0' %>" required>
+              <div class="input-group-append">
+                <span class="input-group-text">CBM</span>
+              </div>
+            </div>
+            <div class="input-group mb-3">
+              <input type="number" step="any" class="form-control" id="bargeCargoCapacityMT" name="bargeCargoCapacityMT" value="<%= typeof bargeCargoCapacityMT != 'undefined' ? bargeCargoCapacityMT : '0' %>" required>
+              <div class="input-group-append">
+                <span class="input-group-text">MT</span>
+              </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">IMO Number</label>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" id="bargeIMONumber" name="bargeIMONumber" value="<%= typeof bargeIMONumber != 'undefined' ? bargeIMONumber : '-' %>">
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">MMSI Number</label>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" id="bargeMMSINumber" name="bargeMMSINumber" value="<%= typeof bargeMMSINumber != 'undefined' ? bargeMMSINumber : '-' %>">
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Call Sign</label>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" id="bargeCallSign" name="bargeCallSign" value="<%= typeof bargeCallSign != 'undefined' ? bargeCallSign : '-' %>">
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Gross Tonnage</label>
+            <div class="input-group mb-3">
+                <input type="number" step="any" class="form-control" id="bargeGrossTonnage" name="bargeGrossTonnage" value="<%= typeof bargeGrossTonnage != 'undefined' ? bargeGrossTonnage : '-' %>">
+                <div class="input-group-append">
+                    <span class="input-group-text">ton</span>
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Summer DWT</label>
+            <div class="input-group mb-3">
+                <input type="number" step="any" class="form-control" id="bargeSummerDWT" name="bargeSummerDWT" value="<%= typeof bargeSummerDWT != 'undefined' ? bargeSummerDWT : '0' %>">
+                <div class="input-group-append">
+                    <span class="input-group-text">m</span>
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Length Overall x Breadth Extreme: </label>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" id="bargeLengthBreadth" name="bargeLengthBreadth" value="<%= typeof bargeLengthBreadth != 'undefined' ? bargeLengthBreadth : '0' %>">
+                <div class="input-group-append">
+                    <span class="input-group-text">m</span>
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Year Built</label>
+            <div class="input-group mb-3">
+                <input type="number" step="any" class="form-control" id="bargeYearBuilt" name="bargeYearBuilt" value="<%= typeof bargeYearBuilt != 'undefined' ? bargeYearBuilt : '0' %>">
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Ship Age</label>
+            <div class="input-group mb-3">
+                <input type="number" step="any" class="form-control" id="bargeShipAge" name="bargeShipAge" value="<%= typeof bargeShipAge != 'undefined' ? bargeShipAge : '0' %>">
+                <div class="input-group-append">
+                    <span class="input-group-text">years</span>
+                </div>
+            </div>
+        <div class="mb-3">
+            <label class="form-label">Crew Number</label>
+            <div class="input-group mb-3">
+                <input type="number" step="any" class="form-control" id="bargeCrewNumber" name="bargeCrewNumber" value="<%= typeof bargeCrewNumber != 'undefined' ? bargeCrewNumber : '0' %>">
+                <div class="input-group-append">
+                    <span class="input-group-text">person</span>
+                </div>
+            </div>
+        <div class="mb-3">
+            <label class="form-label">SFOC</label>
+            <div class="input-group mb-3">
+                <input type="number" step="any" class="form-control" id="bargeSFOC" name="bargeSFOC" value="<%= typeof bargeSFOC != 'undefined' ? bargeSFOC : '0' %>" required>
+                <div class="input-group-append">
+                    <span class="input-group-text">ton/hr</span>
+                </div>
+            </div>
+        </div>
+          
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-5">
+    <h2>Tugboat ID</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="mb-3">
+            <label class="form-label">Vessel name</label>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" id="tugboatVesselName" name="tugboatVesselName" value="<%= typeof tugboatVesselName != 'undefined' ? tugboatVesselName : '' %>" required>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Type of Vessel</label>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" id="tugboatTypeVessel" name="tugboatTypeVessel" value="<%= typeof tugboatTypeVessel != 'undefined' ? tugboatTypeVessel : '' %>" required>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">IMO Number</label>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" id="tugboatIMONumber" name="tugboatIMONumber" value="<%= typeof tugboatIMONumber != 'undefined' ? tugboatIMONumber : '-' %>">
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">MMSI Number</label>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" id="tugboatMMSINumber" name="tugboatMMSINumber" value="<%= typeof tugboatMMSINumber != 'undefined' ? tugboatMMSINumber : '-' %>">
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Call Sign</label>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" id="tugboatCallSign" name="tugboatCallSign" value="<%= typeof tugboatCallSign != 'undefined' ? tugboatCallSign : '-' %>">
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Gross Tonnage</label>
+            <div class="input-group mb-3">
+                <input type="number" step="any" class="form-control" id="tugboatGrossTonnage" name="tugboatGrossTonnage" value="<%= typeof tugboatGrossTonnage != 'undefined' ? tugboatGrossTonnage : '-' %>">
+                <div class="input-group-append">
+                    <span class="input-group-text">ton</span>
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Summer DWT</label>
+            <div class="input-group mb-3">
+                <input type="number" step="any" class="form-control" id="tugboatSummerDWT" name="tugboatSummerDWT" value="<%= typeof tugboatSummerDWT != 'undefined' ? tugboatSummerDWT : '0' %>">
+                <div class="input-group-append">
+                    <span class="input-group-text">m</span>
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Length Overall x Breadth Extreme: </label>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" id="tugboatLengthBreadth" name="tugboatLengthBreadth" value="<%= typeof tugboatLengthBreadth != 'undefined' ? tugboatLengthBreadth : '0' %>">
+                <div class="input-group-append">
+                    <span class="input-group-text">m</span>
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Year Built</label>
+            <div class="input-group mb-3">
+                <input type="number" step="any" class="form-control" id="tugboatYearBuilt" name="tugboatYearBuilt" value="<%= typeof tugboatYearBuilt != 'undefined' ? tugboatYearBuilt : '0' %>">
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Ship Age</label>
+            <div class="input-group mb-3">
+                <input type="number" step="any" class="form-control" id="tugboatShipAge" name="tugboatShipAge" value="<%= typeof tugboatShipAge != 'undefined' ? tugboatShipAge : '0' %>">
+                <div class="input-group-append">
+                    <span class="input-group-text">years</span>
+                </div>
+            </div>
+        <div class="mb-3">
+            <label class="form-label">Crew Number</label>
+            <div class="input-group mb-3">
+                <input type="number" step="any" class="form-control" id="tugboatCrewNumber" name="tugboatCrewNumber" value="<%= typeof tugboatCrewNumber != 'undefined' ? tugboatCrewNumber : '0' %>">
+                <div class="input-group-append">
+                    <span class="input-group-text">person</span>
+                </div>
+            </div>
+        <div class="mb-3">
+            <label class="form-label">SFOC</label>
+            <div class="input-group mb-3">
+                <input type="number" step="any" class="form-control" id="tugboatSFOC" name="tugboatSFOC" value="<%= typeof tugboatSFOC != 'undefined' ? tugboatSFOC : '0' %>" required>
+                <div class="input-group-append">
+                    <span class="input-group-text">ton/hr</span>
+                </div>
+            </div>
+        </div>
+          
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-5">
+        <h2>Skid Truck ID</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="mb-3">
+            <label class="form-label">Cargo Capacity</label>
+            <div class="input-group mb-3">
+            <input type="number" step="any" class="form-control" id="skidTruckCargoCapacity" name="skidTruckCargoCapacity" value="<%= typeof skidTruckCargoCapacity != 'undefined' ? skidTruckCargoCapacity : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">MT</span>
+            </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Head Truck Specification</label>
+            <div class="input-group mb-3">
+            <input type="text" class="form-control" id="skidTruckHeadSpec" name="skidTruckHeadSpec" value="<%= typeof skidTruckHeadSpec != 'undefined' ? skidTruckHeadSpec : '' %>">
+            <div class="input-group-append">
+                <span class="input-group-text">PS</span>
+            </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Trucking Operating Speed </label>
+            <div class="input-group mb-3">
+            <input type="number" step="any" class="form-control" id="skidTruckSpeed" name="skidTruckSpeed" value="<%= typeof skidTruckSpeed != 'undefined' ? skidTruckSpeed : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">km/hr</span>
+            </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Trucking Fuel Oil Consumption (FOC) </label>
+            <div class="input-group mb-3">
+            <input type="number" step="any" class="form-control" id="skidTruckFuelConsume" name="skidTruckFuelConsume" value="<%= typeof skidTruckFuelConsume != 'undefined' ? skidTruckFuelConsume : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">lt/hr</span>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-5">
+      <h2>Basis Data</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="mb-3">
+            <label class="form-label">LPG Price</label>
+            <div class="input-group mb-1">
+                <input type="number" step="any" class="form-control" id="basisDataLPGPriceUSD" name="basisDataLPGPriceUSD" value="<%= typeof basisDataLPGPriceUSD != 'undefined' ? basisDataLPGPriceUSD : '0' %>" required>
+                <div class="input-group-append">
+                <span class="input-group-text">USD/ton</span>
+                </div>
+            </div>
+            <div class="input-group mb-1">
+                <input type="number" step="any" class="form-control" id="basisDataLPGPriceRp" name="basisDataLPGPriceRp" value="<%= typeof basisDataLPGPriceRp != 'undefined' ? basisDataLPGPriceRp : '0' %>" required>
+                <div class="input-group-append">
+                <span class="input-group-text">Rp/ton</span>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <input type="number" step="any" class="form-control" id="basisDataLPGPriceRpKg" name="basisDataLPGPriceRpKg" value="<%= typeof basisDataLPGPriceRpKg != 'undefined' ? basisDataLPGPriceRpKg : '0' %>" readonly required>
+                <div class="input-group-append">
+                <span class="input-group-text">Rp/kg</span>
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Solar Price (Pertamina Dex)</label>
+            <div class="input-group mb-3">
+                <input type="number" step="any" class="form-control" id="basisDataSolarPrice" name="basisDataSolarPrice" value="<%= typeof basisDataSolarPrice != 'undefined' ? basisDataSolarPrice : '0' %>" required>
+                <div class="input-group-append">
+                <span class="input-group-text">Rp/lt</span>
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Truck & Skid Rental Price</label>
+            <div class="input-group mb-1">
+                <input type="number" step="any" class="form-control" id="basisDataRentalPriceMonth" name="basisDataRentalPriceMonth" value="<%= typeof basisDataRentalPriceMonth != 'undefined' ? basisDataRentalPriceMonth : '0' %>" required>
+                <div class="input-group-append">
+                <span class="input-group-text">Rp/month</span>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <input type="number" step="any" class="form-control" id="basisDataRentalPriceDay" name="basisDataRentalPriceDay" value="<%= typeof basisDataRentalPriceDay != 'undefined' ? basisDataRentalPriceDay : '0' %>" readonly required>
+                <div class="input-group-append">
+                <span class="input-group-text">Rp/day</span>
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Driver Salary</label>
+            <div class="input-group mb-1">
+                <input type="number" step="any" class="form-control" id="basisDataDriverSalaryMonth" name="basisDataDriverSalaryMonth" value="<%= typeof basisDataDriverSalaryMonth != 'undefined' ? basisDataDriverSalaryMonth : '0' %>" required>
+                <div class="input-group-append">
+                <span class="input-group-text">Rp/month</span>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <input type="number" step="any" class="form-control" id="basisDataDriverSalaryDay" name="basisDataDriverSalaryDay" value="<%= typeof basisDataDriverSalaryDay != 'undefined' ? basisDataRentalPriceDay : '0' %>" readonly required>
+                <div class="input-group-append">
+                <span class="input-group-text">Rp/day</span>
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Assistant Driver Salary</label>
+            <div class="input-group mb-1">
+                <input type="number" step="any" class="form-control" id="basisDataAssistDriverSalaryMonth" name="basisDataAssistDriverSalaryMonth" value="<%= typeof basisDataAssistDriverSalaryMonth != 'undefined' ? basisDataAssistDriverSalaryMonth : '0' %>" required>
+                <div class="input-group-append">
+                <span class="input-group-text">Rp/month</span>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <input type="number" step="any" class="form-control" id="basisDataAssistDriverSalaryDay" name="basisDataAssistDriverSalaryDay" value="<%= typeof basisDataAssistDriverSalaryDay != 'undefined' ? basisDataAssistDriverSalaryDay : '0' %>" readonly required>
+                <div class="input-group-append">
+                <span class="input-group-text">Rp/day</span>
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Mis. (allowances, parking, etc)</label>
+            <div class="input-group mb-3">
+                <input type="number" step="any" class="form-control" id="basisDataMisEtc" name="basisDataMisEtc" value="<%= typeof basisDataMisEtc != 'undefined' ? basisDataMisEtc : '0' %>" required>
+                <div class="input-group-append">
+                <span class="input-group-text">Rp/trip</span>
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Transportation Risk Factor</label>
+            <div class="input-group mb-3">
+                <input type="number" step="any" class="form-control" id="basisDataRiskFactor" name="basisDataRiskFactor" value="<%= typeof basisDataRiskFactor != 'undefined' ? basisDataRiskFactor : '1.2' %>" readonly required>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-5">
+      <h2>DeliveryData</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-5">
+      <h4>Voyage</h4>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">Port of Loading</label>
+        <div class="input-group mb-1">
+            <input type="text" class="form-control" id="deliveryVoyagePortLoading" name="deliveryVoyagePortLoading" value="<%= typeof deliveryVoyagePortLoading != 'undefined' ? deliveryVoyagePortLoading : '' %>" required>
+        </div>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">Port of Discharge</label>
+        <div class="input-group mb-1">
+            <input type="text" class="form-control" id="deliveryVoyagePortDischarge" name="deliveryVoyagePortDischarge" value="<%= typeof deliveryVoyagePortDischarge != 'undefined' ? deliveryVoyagePortDischarge : '' %>" required>
+        </div>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">Distance in Nautical Miles</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="deliveryVoyageDistanceNM" name="deliveryVoyageDistanceNM" value="<%= typeof deliveryVoyageDistanceNM != 'undefined' ? deliveryVoyageDistanceNM : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">Nm</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Service Speed of Vessel</label>
+        <div class="input-group mb-3">
+            <input type="number" step="any" class="form-control" id="deliveryVoyageSpeedVessel" name="deliveryVoyageSpeedVessel" value="<%= typeof deliveryVoyageSpeedVessel != 'undefined' ? deliveryVoyageSpeedVessel : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">knot</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-5">
+        <h5>Sailling Time</h5>
+    </div>
+    <div class="mb-1">
+        <div class="wrapperDeliveryVoyageLadenTo">
+            <label class="form-label">Laden to</label>
+        </div>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="deliveryVoyageLadenTo" name="deliveryVoyageLadenTo" value="<%= typeof deliveryVoyageLadenTo != 'undefined' ? deliveryVoyageLadenTo : '0' %>" readonly required>
+            <div class="input-group-append">
+                <span class="input-group-text">days</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-3">
+        <div class="wrapperDeliveryVoyageBallastTo">
+            <label class="form-label">Ballast to</label>
+        </div>
+        <div class="input-group mb-3">
+            <input type="number" step="any" class="form-control" id="deliveryVoyageBallastTo" name="deliveryVoyageBallastTo" value="<%= typeof deliveryVoyageBallastTo != 'undefined' ? deliveryVoyageBallastTo : '0' %>" readonly required>
+            <div class="input-group-append">
+                <span class="input-group-text">days</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <h5>Loading Time (TLPG to Vessel)</h5>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">No. 1 Pump at Port</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="deliveryVoyagePumpPort1" name="deliveryVoyagePumpPort1" value="<%= typeof deliveryVoyagePumpPort1 != 'undefined' ? deliveryVoyagePumpPort1 : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">CBM/hr</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">No. 2 Pump at Port</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="deliveryVoyagePumpPort2" name="deliveryVoyagePumpPort2" value="<%= typeof deliveryVoyagePumpPort2 != 'undefined' ? deliveryVoyagePumpPort2 : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">CBM/hr</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">Total Loading Time</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="deliveryVoyageTotalLoadingTime" name="deliveryVoyageTotalLoadingTime" value="<%= typeof deliveryVoyageTotalLoadingTime != 'undefined' ? deliveryVoyageTotalLoadingTime : '0' %>" readonly required>
+            <div class="input-group-append">
+                <span class="input-group-text">days</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Entering and Waiting Time at POL</label>
+        <div class="input-group mb-3">
+            <input type="number" step="any" class="form-control" id="deliveryVoyageEnterWaitTimePOL" name="deliveryVoyageEnterWaitTimePOL" value="<%= typeof deliveryVoyageEnterWaitTimePOL != 'undefined' ? deliveryVoyageEnterWaitTimePOL : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">days</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <h5>Discharge Time (to Onshore Storage)</h5>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">No. 1 Pump at Vessel</label>
+        <div class="input-group mb-3">
+            <input type="number" step="any" class="form-control" id="deliveryVoyageDiscPumpPort1" name="deliveryVoyageDiscPumpPort1" value="<%= typeof deliveryVoyageDiscPumpPort1 != 'undefined' ? deliveryVoyageDiscPumpPort1 : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">CBM/hr</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">Total Loading Time</label>
+        <div class="input-group mb-3">
+            <input type="number" step="any" class="form-control" id="deliveryVoyageDiscTotalLoadingTime" name="deliveryVoyageDiscTotalLoadingTime" value="<%= typeof deliveryVoyageDiscTotalLoadingTime != 'undefined' ? deliveryVoyageDiscTotalLoadingTime : '0' %>" readonly required>
+            <div class="input-group-append">
+                <span class="input-group-text">days</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Entering and Waiting Time at POL</label>
+        <div class="input-group mb-3">
+            <input type="number" step="any" class="form-control" id="deliveryVoyageDiscEnterWaitTimePOL" name="deliveryVoyageDiscEnterWaitTimePOL" value="<%= typeof deliveryVoyageDiscEnterWaitTimePOL != 'undefined' ? deliveryVoyageDiscEnterWaitTimePOL : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">days</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <h5>Number of Voyage</h5>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">Calendar days per year</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="deliveryVoyageCalendarDays" name="deliveryVoyageCalendarDays" value="<%= typeof deliveryVoyageCalendarDays != 'undefined' ? deliveryVoyageCalendarDays : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">days</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">Docking (survey, repair, etc.)</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="deliveryVoyageDockingEtc" name="deliveryVoyageDockingEtc" value="<%= typeof deliveryVoyageDockingEtc != 'undefined' ? deliveryVoyageDockingEtc : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">days</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Mobilization</label>
+        <div class="input-group mb-3">
+            <input type="number" step="any" class="form-control" id="deliveryVoyageMobilization" name="deliveryVoyageMobilization" value="<%= typeof deliveryVoyageMobilization != 'undefined' ? deliveryVoyageMobilization : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">days</span>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-5">
+      <h4>Trucking</h4>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">Origin</label>
+        <div class="input-group mb-1">
+            <input type="text" class="form-control" id="deliveryTruckOrigin" name="deliveryTruckOrigin" value="<%= typeof deliveryTruckOrigin != 'undefined' ? deliveryTruckOrigin : '' %>" required>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Destination</label>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" id="deliveryTruckDestination" name="deliveryTruckDestination" value="<%= typeof deliveryTruckDestination != 'undefined' ? deliveryTruckDestination : '' %>" required>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <h5>LPG Filling Time</h5>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">LPG Filling rate to Truck</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="deliveryTruckLPGFillRate" name="deliveryTruckLPGFillRate" value="<%= typeof deliveryTruckLPGFillRate != 'undefined' ? deliveryTruckLPGFillRate : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">hr/truck</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Number of LPG Filling shed</label>
+        <div class="input-group mb-3">
+            <input type="number" step="any" class="form-control" id="deliveryTruckNumberLPGFill" name="deliveryTruckNumberLPGFill" value="<%= typeof deliveryTruckNumberLPGFill != 'undefined' ? deliveryTruckNumberLPGFill : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">unit</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <h5>LPG Discharge Time</h5>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">LPG Discharge rate to LPG Storage Tank</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="deliveryTruckLPGDiscRate" name="deliveryTruckLPGDiscRate" value="<%= typeof deliveryTruckLPGDiscRate != 'undefined' ? deliveryTruckLPGDiscRate : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">hr/truck</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Number of Connection/Manifold at SPBE</label>
+        <div class="input-group mb-3">
+            <input type="number" step="any" class="form-control" id="deliveryTruckNumberConnSPBE" name="deliveryTruckNumberConnSPBE" value="<%= typeof deliveryTruckNumberConnSPBE != 'undefined' ? deliveryTruckNumberConnSPBE : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">unit</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <h5>Trucking Time</h5>
+    </div>
+    <div class="mb-3">
+        <div class="wrapperDeliveryTruckDistanceTrucking">
+            <label class="form-label">Distance Trucking from to</label>
+        </div>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="deliveryTruckDistanceTruckingKM" name="deliveryTruckDistanceTruckingKM" value="<%= typeof deliveryTruckDistanceTruckingKM != 'undefined' ? deliveryTruckDistanceTruckingKM : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">km</span>
+            </div>
+        </div>
+        <div class="input-group mb-3">
+            <input type="number" step="any" class="form-control" id="deliveryTruckDistanceTruckingMile" name="deliveryTruckDistanceTruckingMile" value="<%= typeof deliveryTruckDistanceTruckingMile != 'undefined' ? deliveryTruckDistanceTruckingMile : '0' %>" readonly required>
+            <div class="input-group-append">
+                <span class="input-group-text">mile</span>
+            </div>
+        </div>
+        <div class="wrapperDeliveryTruckTotalTruckingTimeTrip">
+            <label class="form-label">Total Trucking time to (1 trip)</label>
+        </div>
+        <div class="input-group mb-3">
+            <input type="number" step="any" class="form-control" id="deliveryTruckTotalTruckingTimeTrip" name="deliveryTruckTotalTruckingTimeTrip" value="<%= typeof deliveryTruckTotalTruckingTimeTrip != 'undefined' ? deliveryTruckTotalTruckingTimeTrip : '0' %>" readonly required>
+            <div class="input-group-append">
+                <span class="input-group-text">hr</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-3">
+        <h5><label class="form-label">Number or Trucking per Delivery</label></h5>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="deliveryTruckNumberTruckingDelivery" name="deliveryTruckNumberTruckingDelivery" value="<%= typeof deliveryTruckNumberTruckingDelivery != 'undefined' ? deliveryTruckNumberTruckingDelivery : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">Truck</span>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-5">
+      <h2>COST COMPONENT</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-5">
+        <h4>BUNKERING COST</h4>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">Port Idle MFO</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="bunkeringPortIdleMFO" name="bunkeringPortIdleMFO" value="<%= typeof bunkeringPortIdleMFO != 'undefined' ? bunkeringPortIdleMFO : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">ton/day</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">Port Idle MDO</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="bunkeringPortIdleMDO" name="bunkeringPortIdleMDO" value="<%= typeof bunkeringPortIdleMDO != 'undefined' ? bunkeringPortIdleMDO : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">ton/day</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Port Idle MGO</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="bunkeringPortIdleMGO" name="bunkeringPortIdleMGO" value="<%= typeof bunkeringPortIdleMGO != 'undefined' ? bunkeringPortIdleMGO : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">ton/day</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">Port Working MGO</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="bunkeringPortWorkingMFO" name="bunkeringPortWorkingMFO" value="<%= typeof bunkeringPortWorkingMFO != 'undefined' ? bunkeringPortWorkingMFO : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">ton/day</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">Port Working MDO</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="bunkeringPortWorkingMDO" name="bunkeringPortWorkingMDO" value="<%= typeof bunkeringPortWorkingMDO != 'undefined' ? bunkeringPortWorkingMDO : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">ton/day</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Port Working MFO</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="bunkeringPortWorkingMGO" name="bunkeringPortWorkingMGO" value="<%= typeof bunkeringPortWorkingMGO != 'undefined' ? bunkeringPortWorkingMGO : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">ton/day</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">At Sea MFO</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="bunkeringAtSeaMFO" name="bunkeringAtSeaMFO" value="<%= typeof bunkeringAtSeaMFO != 'undefined' ? bunkeringAtSeaMFO : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">ton/day</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">At Sea MDO</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="bunkeringAtSeaMDO" name="bunkeringAtSeaMDO" value="<%= typeof bunkeringAtSeaMDO != 'undefined' ? bunkeringAtSeaMDO : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">ton/day</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">At Sea MGO</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="bunkeringAtSeaMGO" name="bunkeringAtSeaMGO" value="<%= typeof bunkeringAtSeaMGO != 'undefined' ? bunkeringAtSeaMGO : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">ton/day</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">Bunker Price (IDR)</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="bunkeringBunkerPriceIDR" name="bunkeringBunkerPriceIDR" value="<%= typeof bunkeringBunkerPriceIDR != 'undefined' ? bunkeringBunkerPriceIDR : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">Rp/ton</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Bunker Price (USD)</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="bunkeringBunkerPriceUSD" name="bunkeringBunkerPriceUSD" value="<%= typeof bunkeringBunkerPriceUSD != 'undefined' ? bunkeringBunkerPriceUSD : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">USD/ton</span>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-5">
+        <h4>MANNING/CREW COST</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-5">
+        <h5>Barge</h5>
+    </div>
+</div>
+<div class="row" style="margin-left: 10px;">
+    <div class="mb-1">
+        <label class="form-label">Loading Master</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="bunkeringBargeLoadingMaster" name="bunkeringBargeLoadingMaster" value="<%= typeof bunkeringBargeLoadingMaster != 'undefined' ? bunkeringBargeLoadingMaster : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">USD/Month</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Boatswain</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="bunkeringBargeBoatswain" name="bunkeringBargeBoatswain" value="<%= typeof bunkeringBargeBoatswain != 'undefined' ? bunkeringBargeBoatswain : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">USD/Month</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-5">
+        <h5>Tugboat</h5>
+    </div>
+</div>
+<div class="row" style="margin-left: 10px;">
+    <div class="col-md-5">
+        <h5>Deck Dept.</h5>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">Master</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="bunkeringTugboatDeckMaster" name="bunkeringTugboatDeckMaster" value="<%= typeof bunkeringTugboatDeckMaster != 'undefined' ? bunkeringTugboatDeckMaster : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">USD/Month</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">Chief Officer</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="bunkeringTugboatDeckChiefOfficer" name="bunkeringTugboatDeckChiefOfficer" value="<%= typeof bunkeringTugboatDeckChiefOfficer != 'undefined' ? bunkeringTugboatDeckChiefOfficer : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">USD/Month</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">Deck Officer</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="bunkeringTugboatDeckOfficer" name="bunkeringTugboatDeckOfficer" value="<%= typeof bunkeringTugboatDeckOfficer != 'undefined' ? bunkeringTugboatDeckOfficer : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">USD/Month</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">Radio Operator</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="bunkeringTugboatDeckRadioOperator" name="bunkeringTugboatDeckRadioOperator" value="<%= typeof bunkeringTugboatDeckRadioOperator != 'undefined' ? bunkeringTugboatDeckRadioOperator : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">USD/Month</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">Boatswain</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="bunkeringTugboatDeckBoatswain" name="bunkeringTugboatDeckBoatswain" value="<%= typeof bunkeringTugboatDeckBoatswain != 'undefined' ? bunkeringTugboatDeckBoatswain : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">USD/Month</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">Able Bodied</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="bunkeringTugboatDeckAbleBodied" name="bunkeringTugboatDeckAbleBodied" value="<%= typeof bunkeringTugboatDeckAbleBodied != 'undefined' ? bunkeringTugboatDeckAbleBodied : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">USD/Month</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">Ordinary Seamen</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="bunkeringTugboatDeckOrdinarySeamen" name="bunkeringTugboatDeckOrdinarySeamen" value="<%= typeof bunkeringTugboatDeckOrdinarySeamen != 'undefined' ? bunkeringTugboatDeckOrdinarySeamen : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">USD/Month</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">Chef</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="bunkeringTugboatDeckChef" name="bunkeringTugboatDeckChef" value="<%= typeof bunkeringTugboatDeckChef != 'undefined' ? bunkeringTugboatDeckChef : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">USD/Month</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">Assistant Chef</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="bunkeringTugboatDeckAssistantChef" name="bunkeringTugboatDeckAssistantChef" value="<%= typeof bunkeringTugboatDeckAssistantChef != 'undefined' ? bunkeringTugboatDeckAssistantChef : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">USD/Month</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Others</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="bunkeringTugboatDeckOthers" name="bunkeringTugboatDeckOthers" value="<%= typeof bunkeringTugboatDeckOthers != 'undefined' ? bunkeringTugboatDeckOthers : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">USD/Month</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" style="margin-left: 10px;">
+    <div class="col-md-5">
+        <h5>Engine Dept.</h5>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">Chief Engineer</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="bunkeringTugboatEngineChiefEngineer" name="bunkeringTugboatEngineChiefEngineer" value="<%= typeof bunkeringTugboatEngineChiefEngineer != 'undefined' ? bunkeringTugboatEngineChiefEngineer : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">USD/Month</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">Chief Machinist</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="bunkeringTugboatEngineChiefMachinist" name="bunkeringTugboatEngineChiefMachinist" value="<%= typeof bunkeringTugboatEngineChiefMachinist != 'undefined' ? bunkeringTugboatEngineChiefMachinist : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">USD/Month</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">Machinist</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="bunkeringTugboatEngineMachinist" name="bunkeringTugboatEngineMachinist" value="<%= typeof bunkeringTugboatEngineMachinist != 'undefined' ? bunkeringTugboatEngineMachinist : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">USD/Month</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">Engine Foremen</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="bunkeringTugboatEngineEngineForemen" name="bunkeringTugboatEngineEngineForemen" value="<%= typeof bunkeringTugboatEngineEngineForemen != 'undefined' ? bunkeringTugboatEngineEngineForemen : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">USD/Month</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">Oiler</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="bunkeringTugboatEngineOiler" name="bunkeringTugboatEngineOiler" value="<%= typeof bunkeringTugboatEngineOiler != 'undefined' ? bunkeringTugboatEngineOiler : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">USD/Month</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">Wiper</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="bunkeringTugboatEngineWiper" name="bunkeringTugboatEngineWiper" value="<%= typeof bunkeringTugboatEngineWiper != 'undefined' ? bunkeringTugboatEngineWiper : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">USD/Month</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Others</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="bunkeringTugboatEngineOthers" name="bunkeringTugboatEngineOthers" value="<%= typeof bunkeringTugboatEngineOthers != 'undefined' ? bunkeringTugboatEngineOthers : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">USD/Month</span>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-5">
+        <h4>PORT COST</h4>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Port charges per Round Trip</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="portCostChargeRoundTrip" name="portCostChargeRoundTrip" value="<%= typeof portCostChargeRoundTrip != 'undefined' ? portCostChargeRoundTrip : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">USD/Trip</span>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-5">
+        <h4>CARGO HANDLING COST</h4>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">Lasing & unlasing POL Per Trip</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="portCostLasUnlasPOLTrip" name="portCostLasUnlasPOLTrip" value="<%= typeof portCostLasUnlasPOLTrip != 'undefined' ? portCostLasUnlasPOLTrip : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">USD</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Lasing & unlasing POD Per Trip</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="portCostLasUnlasPODTrip" name="portCostLasUnlasPODTrip" value="<%= typeof portCostLasUnlasPODTrip != 'undefined' ? portCostLasUnlasPODTrip : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">USD</span>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-5">
+        <h4>VESSEL'S CHARTER COST</h4>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Charter Rate per Day</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="vesselCharterCostCharterRateDay" name="vesselCharterCostCharterRateDay" value="<%= typeof vesselCharterCostCharterRateDay != 'undefined' ? vesselCharterCostCharterRateDay : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">USD</span>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-5">
+        <h4>INSURANCE COST (if relevant with charter scheme)</h4>
+    </div>
+    <% const shipInsurance = Number(1/100 * (35000000000/14600)) %> 
+    <% const crewInsurance = Number((45/100) / (20/100) * shipInsurance) %> 
+    <% const totalInsurance = Number(shipInsurance + crewInsurance) %> 
+    <div class="mb-1">
+        <label class="form-label">Crew Insurance</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="insuranceCostCrew" name="insuranceCostCrew" value="<%= typeof insuranceCostCrew != 'undefined' ? insuranceCostCrew : crewInsurance %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">USD/Year</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">Ship Insurance</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="insuranceCostShip" name="insuranceCostShip" value="<%= typeof insuranceCostShip != 'undefined' ? insuranceCostShip : shipInsurance %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">USD/Year</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Total Insurance Cost per Year</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="insuranceCostTotal" name="insuranceCostTotal" value="<%= typeof insuranceCostTotal != 'undefined' ? insuranceCostTotal : totalInsurance %>" readonly required>
+            <div class="input-group-append">
+                <span class="input-group-text">USD?Year</span>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-5">
+        <h4>DOCKING, REPAIRS, AND MAINTENANCE COST</h4>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">Docking Cost</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="dockRepairMTDockingCost" name="dockRepairMTDockingCost" value="<%= typeof dockRepairMTDockingCost != 'undefined' ? dockRepairMTDockingCost : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">USD/Year</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">Repair and Stores Cost</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="dockRepairMTRepairStoreCost" name="dockRepairMTRepairStoreCost" value="<%= typeof dockRepairMTRepairStoreCost != 'undefined' ? dockRepairMTRepairStoreCost : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">USD/Year</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">Lube Oil Cost</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="dockRepairMTLubeOilCost" name="dockRepairMTLubeOilCost" value="<%= typeof dockRepairMTLubeOilCost != 'undefined' ? dockRepairMTLubeOilCost : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">USD/Year</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Total Docking, Repair, Maintenance Cost</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="dockRepairMTTotal" name="dockRepairMTTotal" value="<%= typeof dockRepairMTTotal != 'undefined' ? dockRepairMTTotal : '0' %>" readonly required>
+            <div class="input-group-append">
+                <span class="input-group-text">USD/Year</span>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-5">
+        <h4>OTHER COST</h4>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">Victually</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="otherCostVictually" name="otherCostVictually" value="<%= typeof otherCostVictually != 'undefined' ? otherCostVictually : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">USD/Year</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-1">
+        <label class="form-label">Administration and other cost</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="otherCostAdmin" name="otherCostAdmin" value="<%= typeof otherCostAdmin != 'undefined' ? otherCostAdmin : '0' %>" required>
+            <div class="input-group-append">
+                <span class="input-group-text">USD/Year</span>
+            </div>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Total Other Cost</label>
+        <div class="input-group mb-1">
+            <input type="number" step="any" class="form-control" id="otherCostTotal" name="otherCostTotal" value="<%= typeof otherCostTotal != 'undefined' ? otherCostTotal : '0' %>" readonly required>
+            <div class="input-group-append">
+                <span class="input-group-text">USD/Year</span>
+            </div>
+        </div>
+    </div>
+</div>
+<button type="submit" class="btn btn-primary">Submit</button>
+</form>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    $(function(){
+        var unitConversionStr = $('#unitConversion').val();
+        var unitConversion = JSON.parse(unitConversionStr);
+        $('#bargeCargoCapacityCBM').on('change', function () {
+            var bargeCargoCapacityCBM = $('#bargeCargoCapacityCBM').val();
+            var bargeCargoCapacityMT = Number(bargeCargoCapacityCBM * unitConversion.CBMtoMT)
+            $('#bargeCargoCapacityMT').val(bargeCargoCapacityMT)
+        });
+        $('#bargeCargoCapacityMT').on('change', function () {
+            var bargeCargoCapacityMT = $('#bargeCargoCapacityMT').val();
+            var bargeCargoCapacityCBM = Number(bargeCargoCapacityMT / unitConversion.CBMtoMT)
+            $('#bargeCargoCapacityCBM').val(bargeCargoCapacityCBM)
+        });
+        $('#bargeYearBuilt').on('change', function () {
+            var bargeYearBuilt = $('#bargeYearBuilt').val();
+            var currentYear = Number(new Date().getFullYear());
+            var bargeShipAge = Number(currentYear - bargeYearBuilt)
+            $('#bargeShipAge').val(bargeShipAge)
+        });
+        $('#tugboatYearBuilt').on('change', function () {
+            var tugboatYearBuilt = $('#tugboatYearBuilt').val();
+            var currentYear = Number(new Date().getFullYear());
+            var tugboatShipAge = Number(currentYear - tugboatYearBuilt)
+            $('#tugboatShipAge').val(tugboatShipAge)
+        });
+
+        $('#basisDataLPGPriceUSD').on('change', function () {
+            var basisDataLPGPriceUSD = $('#basisDataLPGPriceUSD').val();
+            var basisDataLPGPriceRp = Number(basisDataLPGPriceUSD * unitConversion.USDtoRP)
+            $('#basisDataLPGPriceRp').val(basisDataLPGPriceRp)
+            $('#basisDataLPGPriceRpKg').val(basisDataLPGPriceRp/1000)
+        });
+        $('#basisDataLPGPriceRp').on('change', function () {
+            var basisDataLPGPriceRp = $('#basisDataLPGPriceRp').val();
+            var basisDataLPGPriceUSD = Number(basisDataLPGPriceRp / unitConversion.USDtoRP)
+            $('#basisDataLPGPriceUSD').val(basisDataLPGPriceUSD)
+            $('#basisDataLPGPriceRpKg').val(basisDataLPGPriceRp/1000)
+        });
+
+        $('#basisDataRentalPriceMonth').on('change', function(){
+            var basisDataRentalPriceMonth = $('#basisDataRentalPriceMonth').val();
+            var basisDataRentalPriceDay = Number(basisDataRentalPriceMonth / 30 * 1.3);
+            $('#basisDataRentalPriceDay').val(basisDataRentalPriceDay);
+        });
+
+        $('#basisDataDriverSalaryMonth').on('change', function(){
+            var basisDataDriverSalaryMonth = $('#basisDataDriverSalaryMonth').val();
+            var basisDataDriverSalaryDay = Number(basisDataDriverSalaryMonth / 30);
+            $('#basisDataDriverSalaryDay').val(basisDataDriverSalaryDay);
+        });
+        $('#basisDataAssistDriverSalaryMonth').on('change', function(){
+            var basisDataAssistDriverSalaryMonth = $('#basisDataAssistDriverSalaryMonth').val();
+            var basisDataAssistDriverSalaryDay = Number(basisDataAssistDriverSalaryMonth / 30);
+            $('#basisDataAssistDriverSalaryDay').val(basisDataAssistDriverSalaryDay);
+        });
+        
+        $('#deliveryVoyagePortDischarge').on('change', function(){
+            var deliveryVoyagePortDischarge = $('#deliveryVoyagePortDischarge').val();
+            var labelDeliveryVoyageLadenTo = `Laden to ${deliveryVoyagePortDischarge}`;
+            var wrapperDeliveryVoyageLadenTo = $('.wrapperDeliveryVoyageLadenTo');
+            $(wrapperDeliveryVoyageLadenTo).empty();
+            $(wrapperDeliveryVoyageLadenTo).append(`
+            <label class="form-label">${labelDeliveryVoyageLadenTo}</label>
+            `);
+        });
+        $('#deliveryVoyagePortLoading').on('change', function(){
+            var deliveryVoyagePortLoading = $('#deliveryVoyagePortLoading').val();
+            var labelDeliveryVoyageBallastTo = `Ballast to ${deliveryVoyagePortLoading}`;
+            var wrapperDeliveryVoyageBallastTo = $('.wrapperDeliveryVoyageBallastTo');
+            $(wrapperDeliveryVoyageBallastTo).empty();
+            $(wrapperDeliveryVoyageBallastTo).append(`
+            <label class="form-label">${labelDeliveryVoyageBallastTo}</label>
+            `);
+        });
+        
+        
+        $('#deliveryVoyageDistanceNM').on('change', function(){
+            var deliveryVoyageDistanceNM = $('#deliveryVoyageDistanceNM').val();
+            var deliveryVoyageSpeedVessel = $('#deliveryVoyageSpeedVessel').val();
+            var deliveryVoyageLadenTo = (deliveryVoyageDistanceNM / deliveryVoyageSpeedVessel / 24);
+            $('#deliveryVoyageLadenTo').val(deliveryVoyageLadenTo);
+            $('#deliveryVoyageBallastTo').val(deliveryVoyageLadenTo);
+        });
+        $('#deliveryVoyageSpeedVessel').on('change', function(){
+            var deliveryVoyageDistanceNM = $('#deliveryVoyageDistanceNM').val();
+            var deliveryVoyageSpeedVessel = $('#deliveryVoyageSpeedVessel').val();
+            var deliveryVoyageLadenTo = (deliveryVoyageDistanceNM / deliveryVoyageSpeedVessel / 24);
+            $('#deliveryVoyageLadenTo').val(deliveryVoyageLadenTo);
+            $('#deliveryVoyageBallastTo').val(deliveryVoyageLadenTo);
+        });
+
+        $('#deliveryVoyagePumpPort1').on('change', function(){
+            var deliveryVoyagePumpPort1 = $('#deliveryVoyagePumpPort1').val();
+            var bargeCargoCapacityCBM = $('#bargeCargoCapacityCBM').val();
+            var deliveryVoyageTotalLoadingTime = (bargeCargoCapacityCBM / deliveryVoyagePumpPort1 / 24);
+            $('#deliveryVoyageTotalLoadingTime').val(deliveryVoyageTotalLoadingTime);
+        });
+
+        $('#deliveryVoyageDiscPumpPort1').on('change', function(){
+            var deliveryVoyageDiscPumpPort1 = $('#deliveryVoyageDiscPumpPort1').val();
+            var bargeCargoCapacityCBM = $('#bargeCargoCapacityCBM').val();
+            var deliveryVoyageDiscTotalLoadingTime = (bargeCargoCapacityCBM / deliveryVoyageDiscPumpPort1 / 24);
+            $('#deliveryVoyageDiscTotalLoadingTime').val(deliveryVoyageDiscTotalLoadingTime);
+        });
+        
+
+        $('#deliveryTruckOrigin').on('change', function(){
+            var deliveryTruckOrigin = $('#deliveryTruckOrigin').val();
+            var deliveryTruckDestination = $('#deliveryTruckDestination').val();
+            var labelDeliveryTruckDistanceTrucking = `Distance Trucking from ${deliveryTruckOrigin} to ${deliveryTruckDestination}`;
+            var wrapperDeliveryTruckDistanceTrucking = $('.wrapperDeliveryTruckDistanceTrucking');
+            $(wrapperDeliveryTruckDistanceTrucking).empty();
+            $(wrapperDeliveryTruckDistanceTrucking).append(`
+            <label class="form-label">${labelDeliveryTruckDistanceTrucking}</label>
+            `);
+        });
+        $('#deliveryTruckDestination').on('change', function(){
+            var deliveryTruckOrigin = $('#deliveryTruckOrigin').val();
+            var deliveryTruckDestination = $('#deliveryTruckDestination').val();
+            var labelDeliveryTruckDistanceTrucking = `Distance Trucking from ${deliveryTruckOrigin} to ${deliveryTruckDestination}`;
+            var wrapperDeliveryTruckDistanceTrucking = $('.wrapperDeliveryTruckDistanceTrucking');
+            $(wrapperDeliveryTruckDistanceTrucking).empty();
+            $(wrapperDeliveryTruckDistanceTrucking).append(`
+            <label class="form-label">${labelDeliveryTruckDistanceTrucking}</label>
+            `);
+
+            var labelDeliveryTruckTotalTruckingTimeTrip = `Total trucking time to ${deliveryTruckDestination}`;
+            var wrapperDeliveryTruckTotalTruckingTimeTrip = $('.wrapperDeliveryTruckTotalTruckingTimeTrip');
+            $(wrapperDeliveryTruckTotalTruckingTimeTrip).empty();
+            $(wrapperDeliveryTruckTotalTruckingTimeTrip).append(`
+            <label class="form-label">${labelDeliveryTruckTotalTruckingTimeTrip}</label>
+            `);
+        });
+
+        $('#deliveryTruckDistanceTruckingKM').on('change', function(){
+            var deliveryTruckDistanceTruckingKM = $('#deliveryTruckDistanceTruckingKM').val();
+            var deliveryTruckDistanceTruckingMile = (deliveryTruckDistanceTruckingKM * unitConversion.KMtoMILE);
+            $('#deliveryTruckDistanceTruckingMile').val(deliveryTruckDistanceTruckingMile);
+            var skidTruckSpeed = $('#skidTruckSpeed').val();
+            var deliveryTruckTotalTruckingTimeTrip = (deliveryTruckDistanceTruckingKM / skidTruckSpeed);
+            $('#deliveryTruckTotalTruckingTimeTrip').val(deliveryTruckTotalTruckingTimeTrip);
+            
+        });
+        
+        $('#tugboatSFOC').on('change', function(){
+            var tugboatSFOC = $('#tugboatSFOC').val();
+            var bargeSFOC = $('#bargeSFOC').val();
+            var bunkeringPortIdleMDO = (0.1 * tugboatSFOC);
+            var bunkeringAtSeaMDO = Number(tugboatSFOC);
+            var bunkeringPortWorkingMDO = (Number(bargeSFOC) + (0.2 * tugboatSFOC));
+            $('#bunkeringPortIdleMDO').val(bunkeringPortIdleMDO);
+            $('#bunkeringAtSeaMDO').val(bunkeringAtSeaMDO);
+            $('#bunkeringPortWorkingMDO').val(bunkeringPortWorkingMDO);
+        });
+        
+        $('#bargeSFOC').on('change', function(){
+            var tugboatSFOC = $('#tugboatSFOC').val();
+            var bargeSFOC = $('#bargeSFOC').val();
+            var bunkeringPortWorkingMDO = (Number(bargeSFOC) + (0.2 * tugboatSFOC));
+            $('#bunkeringPortWorkingMDO').val(bunkeringPortWorkingMDO);
+        });
+
+        $('#bunkeringBunkerPriceIDR').on('change', function(){
+            var bunkeringBunkerPriceIDR = $('#bunkeringBunkerPriceIDR').val();
+            var bunkeringBunkerPriceUSD = (bunkeringBunkerPriceIDR / unitConversion.USDtoRP);
+            $('#bunkeringBunkerPriceUSD').val(bunkeringBunkerPriceUSD);
+        });
+        $('#bunkeringBunkerPriceUSD').on('change', function(){
+            var bunkeringBunkerPriceUSD = $('#bunkeringBunkerPriceUSD').val();
+            var bunkeringBunkerPriceIDR = (bunkeringBunkerPriceUSD * unitConversion.USDtoRP);
+            $('#bunkeringBunkerPriceIDR').val(bunkeringBunkerPriceIDR);
+        });
+
+        $('#insuranceCostShip').on('change', function(){
+            var insuranceCostShip = $('#insuranceCostShip').val();
+            var insuranceCostCrew = Number((45/100) / (20/100) * insuranceCostShip);
+            var insuranceCostTotal = Number(Number(insuranceCostShip) + insuranceCostCrew);
+
+            $('#insuranceCostCrew').val(insuranceCostCrew);
+            $('#insuranceCostTotal').val(insuranceCostTotal);
+        });
+
+        function dockRepairMT(field){
+            $(field).on('change', function(){
+                var dockRepairMTDockingCost = $('#dockRepairMTDockingCost').val();
+                var dockRepairMTRepairStoreCost = $('#dockRepairMTRepairStoreCost').val();
+                var dockRepairMTLubeOilCost = $('#dockRepairMTLubeOilCost').val();
+                var dockRepairMTTotal = Number(dockRepairMTDockingCost) + Number(dockRepairMTRepairStoreCost) + Number(dockRepairMTLubeOilCost);
+                
+                $('#dockRepairMTTotal').val(dockRepairMTTotal);
+            });
+        }
+        dockRepairMT('#dockRepairMTDockingCost');
+        dockRepairMT('#dockRepairMTRepairStoreCost');
+        dockRepairMT('#dockRepairMTLubeOilCost');
+        
+        function otherCost(field){
+            $(field).on('change', function(){
+                var otherCostVictually = $('#otherCostVictually').val();
+                var otherCostAdmin = $('#otherCostAdmin').val();
+                var otherCostTotal = Number(otherCostVictually) + Number(otherCostAdmin);
+                
+                $('#otherCostTotal').val(otherCostTotal);
+            });
+        }
+        otherCost('#otherCostVictually');
+        otherCost('#otherCostAdmin');
+
+    });
+</script>
+ 
