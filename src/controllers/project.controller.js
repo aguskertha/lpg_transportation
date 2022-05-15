@@ -42,7 +42,7 @@ const getProjectTerminalByID = async (req, res, next) => {
     try {
         const ProjectID = req.params.projectID;
         const project = await Project.findOne({_id: ObjectID(ProjectID)});
-        const terminalDatas = await Terminal.find();
+        const terminalDatas = await Terminal.find({ProjectID: ObjectID(ProjectID)});
         let terminals = [];
         terminalDatas.forEach(terminal => {
             const data = {
@@ -359,6 +359,7 @@ const createTerminal = async (req, res, next) => {
 
         const terminal = {
             terminalName,
+            ProjectID,
             Receiving,
             Storage,
             LPGFillingStation,
@@ -623,6 +624,7 @@ const updateTerminal = async (req, res, next) => {
 
         const terminal = {
             terminalName,
+            ProjectID,
             Receiving,
             Storage,
             LPGFillingStation,

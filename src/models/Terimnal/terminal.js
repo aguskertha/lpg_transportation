@@ -6,6 +6,10 @@ const terminalSchema = new Schema({
         type: String,
         required: true
     },
+    ProjectID: {
+        type: String,
+        required: true
+    },
     Receiving:{
         type: mongoose.Schema.Types.Mixed,
         required: true
