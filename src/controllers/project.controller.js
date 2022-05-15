@@ -693,10 +693,10 @@ const createTerminalCalculation = async (req, res, next) => {
     try {
         const terminal = await Terminal.findOne({_id: ObjectID(req.params.terminalID)});
 
-        const disposalPrice = terminal.disposalPrice;
+        const disposalPrice = terminal.Capex.disposalPrice;
 
-        const capexTotal = terminal.totalCapex;
-        const opexTotal = terminal.totalOpex;
+        const capexTotal = terminal.Capex.totalCapex;
+        const opexTotal = terminal.Opex.totalOpex;
 
         const discountRateBody = Number(req.body.discountRate);
         const contractDuration = Number(req.body.contractDuration);
