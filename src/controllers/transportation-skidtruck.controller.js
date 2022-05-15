@@ -33,6 +33,7 @@ const getProjectSkidTruckByID = async (req, res, next) => {
         let transSkidTrucks = [];
         transSkidTruckDatas.forEach(transSkidTruckData => {
             const transSkidTruck = {
+                _id: transSkidTruckData._id,
                 TypeCase: 'Case 1',
                 DistributionArea: {
                     distArea: transSkidTruckData.DistributionArea.distArea,
@@ -55,6 +56,7 @@ const getProjectSkidTruckByID = async (req, res, next) => {
 
         transSkidTruckBarges.forEach(transSkidTruckBarge => {
             const transSkidTruck = {
+                _id: transSkidTruckBarge._id,
                 TypeCase: 'Case 2',
                 DistributionArea: {
                     distArea: transSkidTruckBarge.DistributionArea.distArea,
@@ -256,9 +258,21 @@ const createTransportationSkidTruck = async (req, res, next) => {
             RealFreightRate,
             ProposedFreight
         }
-        const newTransSkidTruck = new TransSkidTruck(transSkidTruck);
-        await newTransSkidTruck.save();
-        res.redirect(`/project/${ProjectID}/skidtruck`)
+        console.log(req.body.skidTruckID)
+        if(req.body.skidTruckID){
+            await TransSkidTruck.updateOne(
+                { _id: req.body.skidTruckID},
+                {
+                    $set: transSkidTruck
+                }
+            );
+            res.redirect(`/project/${ProjectID}/skidtruck`)
+        }
+        else{
+            const newTransSkidTruck = new TransSkidTruck(transSkidTruck);
+            await newTransSkidTruck.save();
+            res.redirect(`/project/${ProjectID}/skidtruck`)
+        }
     } catch (error) {
         res.render('error', {
             layout: 'layouts/main-layout',
@@ -591,10 +605,178 @@ const createTransportationSkidTruck2 = async (req, res, next) => {
         });
     }
 }
+
+const duplicateTransportationSkidTruckByID = async (req, res, next) => {
+    try {
+        const ProjectID = req.params.projectID;
+        const skidTruckID = req.params.skidTruckID;
+        const transSkidTruck = await TransSkidTruck.findOne({_id: ObjectID(skidTruckID)});
+        if(transSkidTruck){
+            transSkidTruck._id = ObjectID();
+            TransSkidTruck.insertMany(transSkidTruck, (error, result)=>{
+                res.redirect(`/project/${ProjectID}/skidtruck`)
+            });
+        }
+        
+        const transSkidTruckBarge = await TransSkidTruckBarge.findOne({_id: ObjectID(skidTruckID)});
+        if(transSkidTruckBarge){
+            transSkidTruckBarge._id = ObjectID();
+            TransSkidTruckBarge.insertMany(transSkidTruckBarge, (error, result)=>{
+                res.redirect(`/project/${ProjectID}/skidtruck`)
+            });
+        }
+        
+    } catch (error) {
+        res.render('error', {
+            layout: 'layouts/main-layout',
+            message: error,
+            status: 400
+        });
+    }
+}
+
+const varDataTransSkidTruck = async (dataSend, transSkidTruck) => {
+    try{
+
+        dataSend.distArea = transSkidTruck.DistributionArea.distArea;
+        dataSend.distOrigin = transSkidTruck.DistributionArea.distOrigin;
+        dataSend.distDestination = transSkidTruck.DistributionArea.distDestination;
+
+        dataSend.skidTruckCargoCapacity = transSkidTruck.SkidTruck.skidTruckCargoCapacity;
+        dataSend.skidTruckHeadSpec = transSkidTruck.SkidTruck.skidTruckHeadSpec;
+        dataSend.skidTruckSpeed = transSkidTruck.SkidTruck.skidTruckSpeed;
+        dataSend.skidTruckFuelConsume = transSkidTruck.SkidTruck.skidTruckFuelConsume;
+        
+        dataSend.basisDataLPGPriceUSD = transSkidTruck.BasisData.basisDataLPGPriceUSD;
+        dataSend.basisDataLPGPriceRp = transSkidTruck.BasisData.basisDataLPGPriceRp;
+        dataSend.basisDataLPGPriceRpKg = transSkidTruck.BasisData.basisDataLPGPriceRpKg;
+        dataSend.basisDataSolarPrice = transSkidTruck.BasisData.basisDataSolarPrice;
+        dataSend.basisDataRentalPriceMonth = transSkidTruck.BasisData.basisDataRentalPriceMonth;
+        dataSend.basisDataRentalPriceDay = transSkidTruck.BasisData.basisDataRentalPriceDay;
+        dataSend.basisDataDriverSalaryMonth = transSkidTruck.BasisData.basisDataDriverSalaryMonth;
+        dataSend.basisDataDriverSalaryDay = transSkidTruck.BasisData.basisDataDriverSalaryDay;
+        dataSend.basisDataAssistDriverSalaryMonth = transSkidTruck.BasisData.basisDataAssistDriverSalaryMonth;
+        dataSend.basisDataAssistDriverSalaryDay = transSkidTruck.BasisData.basisDataAssistDriverSalaryDay;
+        dataSend.basisDataMisEtc = transSkidTruck.BasisData.basisDataMisEtc;
+        dataSend.basisDataLCTRate = transSkidTruck.BasisData.basisDataLCTRate;
+        dataSend.basisDataLCTRateEtc = transSkidTruck.BasisData.basisDataLCTRateEtc;
+        dataSend.basisDataTotalCost = transSkidTruck.BasisData.basisDataTotalCost;
+        dataSend.basisDataRiskFactor = transSkidTruck.BasisData.basisDataRiskFactor;
+        
+        dataSend.deliveryDataOriginLPG = transSkidTruck.DeliveryData.deliveryDataOriginLPG;
+        dataSend.deliveryDataOriginPort = transSkidTruck.DeliveryData.deliveryDataOriginPort;
+        dataSend.deliveryDataDestinationPort = transSkidTruck.DeliveryData.deliveryDataDestinationPort;
+        dataSend.deliveryDataDestinationSPBE = transSkidTruck.DeliveryData.deliveryDataDestinationSPBE;
+        dataSend.deliveryDataDistanceTruckingOriginKM = transSkidTruck.DeliveryData.deliveryDataDistanceTruckingOriginKM;
+        dataSend.deliveryDataDistanceTruckingOriginMile = transSkidTruck.DeliveryData.deliveryDataDistanceTruckingOriginMile;
+        dataSend.deliveryDataDistanceSailFerryPortKM = transSkidTruck.DeliveryData.deliveryDataDistanceSailFerryPortKM;
+        dataSend.deliveryDataDistanceSailFerryPortMile = transSkidTruck.DeliveryData.deliveryDataDistanceSailFerryPortMile;
+        dataSend.deliveryDataDistanceTruckingPortSpbeKM = transSkidTruck.DeliveryData.deliveryDataDistanceTruckingPortSpbeKM;
+        dataSend.deliveryDataDistanceTruckingPortSpbeMile = transSkidTruck.DeliveryData.deliveryDataDistanceTruckingPortSpbeMile;
+        dataSend.deliveryDataTotalDistance = transSkidTruck.DeliveryData.deliveryDataTotalDistance;
+        dataSend.deliveryDataLPGLoadUnload = transSkidTruck.DeliveryData.deliveryDataLPGLoadUnload;
+        dataSend.deliveryDataRoundTripSailling = transSkidTruck.DeliveryData.deliveryDataRoundTripSailling;
+        dataSend.deliveryDataNumberTrucking = transSkidTruck.DeliveryData.deliveryDataNumberTrucking;
+
+        return dataSend;
+    }
+    catch(error){
+
+    }
+}
+
+const editTransportationSkidTruckByID = async (req, res, next) => {
+    try {
+        const ProjectID = req.params.projectID;
+        const skidTruckID = req.params.skidTruckID;
+        const transSkidTruck = await TransSkidTruck.findOne({_id: ObjectID(skidTruckID)});
+        if(transSkidTruck){
+            let dataSend = {
+                layout: 'layouts/main-layout',
+                title: 'Form LPG Transportation',
+                ProjectID,
+                transSkidTruck,
+                typeCase: {
+                    name: 'Case 1',
+                    slug: 'case-1'
+                },
+                unitConversion,
+                skidTruckID
+            }
+
+            res.render('SkidTruck/form-case-1', await varDataTransSkidTruck(dataSend, transSkidTruck));
+        }
+        
+        const transSkidTruckBarge = await TransSkidTruckBarge.findOne({_id: ObjectID(skidTruckID)});
+        if(transSkidTruckBarge){
+            // res.render('SkidTruck/form-case-2', {
+            //     layout: 'layouts/main-layout',
+            //     title: 'Form LPG Transportation',
+            //     ProjectID,
+            //     transSkidTruckBarge,
+            //     typeCase: {
+            //         name: 'Case 1',
+            //         slug: 'case-1'
+            //     },
+            //     unitConversion,
+            //     skidTruckID
+            // });
+            res.send('Still progress :D')
+        }
+    } catch (error) {
+        res.render('error', {
+            layout: 'layouts/main-layout',
+            message: error,
+            status: 400
+        });
+    }
+}
+const updateTransportationSkidTruckByID = async (req, res, next) => {
+    try {
+        
+    } catch (error) {
+        res.render('error', {
+            layout: 'layouts/main-layout',
+            message: error,
+            status: 400
+        });
+    }
+}
+const deleteTransportationSkidTruckByID = async (req, res, next) => {
+    try {
+        const ProjectID = req.params.projectID;
+        const skidTruckID = req.params.skidTruckID;
+
+        const transSkidTruck = await TransSkidTruck.findOne({_id: ObjectID(skidTruckID)});
+        if(transSkidTruck){
+            await TransSkidTruck.deleteOne({_id : ObjectID(skidTruckID)});
+            res.redirect(`/project/${ProjectID}/skidtruck`)
+        }
+        
+        const transSkidTruckBarge = await TransSkidTruckBarge.findOne({_id: ObjectID(skidTruckID)});
+        if(transSkidTruckBarge){
+            await TransSkidTruckBarge.deleteOne({_id : ObjectID(skidTruckID)});
+            res.redirect(`/project/${ProjectID}/skidtruck`)
+        }
+
+        
+    } catch (error) {
+        res.render('error', {
+            layout: 'layouts/main-layout',
+            message: error,
+            status: 400
+        });
+    }
+}
+
 module.exports = {
     getProjectSkidTruckByID,
     getFormSkidTruck,
     getFormSkidTruckByCase,
     createTransportationSkidTruck,
-    createTransportationSkidTruck2
+    createTransportationSkidTruck2,
+    duplicateTransportationSkidTruckByID,
+    deleteTransportationSkidTruckByID,
+    updateTransportationSkidTruckByID,
+    editTransportationSkidTruckByID
 }

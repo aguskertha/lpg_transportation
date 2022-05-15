@@ -119,7 +119,11 @@
             <td>Rp<%= transSkidTruck.ProposedFreight.proposedFreight_IDR_KG_NM.toFixed(4) %></td>
             <td>$<%= transSkidTruck.ProposedFreight.proposedFreight_USD_MT.toFixed(4) %></td>
             <td>Rp<%= transSkidTruck.ProposedFreight.proposedFreight_IDR_MT.toFixed(4) %></td>
-            <td>No Action</td>
+            <td>
+                <a class="btn btn-warning btn-sm" href="/project/<%= project._id %>/skidtruck/<%= transSkidTruck._id %>/edit" role="button"><i class="fa fa-edit"></i> Edit</a>
+                <a class="btn btn-info btn-sm" href="/project/<%= project._id %>/skidtruck/<%= transSkidTruck._id %>/duplicate" role="button"><i class="fa fa-files-o"></i> Duplicate</a>
+                <a class="btn btn-danger btn-sm" onclick="confirmDelete('<%= project._id %>','<%= transSkidTruck._id %>')" role="button"><i class="fa fa-trash"></i> Delete</a>
+            </td>
         </tr>
         <% } %>
     </tbody>
@@ -148,6 +152,16 @@ function ExportToExcel(file_name, type, fn, dl) {
 }
 </script>
 <script>
+    function confirmDelete(projectID, skidtruckID){
+        var result = confirm('Are you sure you want to delete this project?');
+        if (result) {
+            $.ajax({
+                type:'GET',
+                url:`/project/${projectID}/skidtruck/${skidtruckID}/delete`,
+            });
+            window.location = `/project/${projectID}/skidtruck`;
+        }
+    }
 $(function() {
   // on init
   $(".table-hideable .hide-col").each(HideColumnIndex);
