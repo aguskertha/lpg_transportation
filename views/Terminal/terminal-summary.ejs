@@ -94,8 +94,9 @@
           <td><%= terminal.disposalPrice.toFixed(2) %></td> 
           <td><%= terminal.totalOpex.toFixed(2) %></td> 
           <td>
-            <a class="btn btn-warning btn-sm" href="/project/<%= ProjectID %>/terminal/<%= terminal._id %>/calculation" role="button"><i class="bi bi-graph-up"></i></a>
-            <a class="btn btn-info btn-sm" href="/project/<%= ProjectID %>/terminal/<%= terminal.id %>/duplicate" role="button"><i class="fa fa-files-o"></i> Duplicate</a>
+            <a class="btn btn-primary btn-sm" href="/project/<%= ProjectID %>/terminal/<%= terminal._id %>/calculation" role="button"><i class="bi bi-graph-up"></i></a>
+            <a class="btn btn-warning btn-sm" href="/project/<%= ProjectID %>/terminal/<%= terminal._id %>/edit" role="button"><i class="fa fa-edit"></i> Edit</a>
+            <a class="btn btn-info btn-sm" href="/project/<%= ProjectID %>/terminal/<%= terminal._id %>/duplicate" role="button"><i class="fa fa-files-o"></i> Duplicate</a>
             <a class="btn btn-danger btn-sm" onclick="confirmDelete('<%= ProjectID %>','<%= terminal._id %>')" role="button"><i class="fa fa-trash"></i> Delete</a>
         </tr>
       <% } %>

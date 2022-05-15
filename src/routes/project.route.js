@@ -23,7 +23,9 @@ const {
     createTransportationBunkerPriceSensitivity,
     getSummaryTransportationBunkerPriceSensitivity,
     createCostShipAge,
-
+    createCustom,
+    editTerminalByID,
+    updateTerminal
 } = require('./../controllers/project.controller');
 
 const { 
@@ -48,6 +50,8 @@ router.get('/:projectID/terminal/:terminalID/calculation', getTerminalCalculatio
 router.post('/:projectID/terminal/:terminalID/calculation', createTerminalCalculation);
 router.get('/:projectID/terminal/:terminalID/delete', deleteTerminalByID);
 router.get('/:projectID/terminal/:terminalID/duplicate', duplicateTerminalByID);
+router.get('/:projectID/terminal/:terminalID/edit', editTerminalByID);
+router.post('/:projectID/terminal/:terminalID/update', updateTerminal);
 router.get('/:projectID/terminal/form', getFormTerminal);
 router.get('/:projectID/transportation', getProjectTransportationByID);
 router.get('/:projectID/transportation/:transportationID/edit', editTransportationByID);
@@ -63,4 +67,6 @@ router.get('/:projectID/skidtruck/form', getFormSkidTruck);
 router.get('/:projectID/skidtruck/form/:typeCase', getFormSkidTruckByCase);
 router.post('/:projectID/skidtruck/form/case-1', createTransportationSkidTruck);
 router.post('/:projectID/skidtruck/form/case-2', createTransportationSkidTruck2);
+
+router.get('/custom', createCustom);
 module.exports = router;

@@ -1,0 +1,2487 @@
+<div class="container mt-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/project/<%= ProjectID %>/terminal"><%= ProjectName %></a></li>
+            <li class="breadcrumb-item active" aria-current="page">Form</li>
+        </ol>
+    </nav>
+    <br>
+    <form method="post" action="/project/<%= ProjectID %>/terminal/<%= terminal._id %>/update">
+    <input type="hidden" name="ProjectID" value="<%= ProjectID %>">
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Terminal Name</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" name="terminalName" value="<%= terminal.terminalName %>" required>
+            </div>
+        </div>
+    </div>
+    <div class="row" align="center">
+        <div class="col-md-12">
+          <h1>CAPEX</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-5">
+          <h2>Receiving</h2>
+        </div>
+    </div>
+    <input type="hidden" id="jettyTypeNumber" name="jettyTypeNumber" value="<%= terminal.Receiving.JettyType.jettyTypeNumber %>">
+    
+    <div class="jettyTypeWapper">
+    <% for( let index = 1; index <= terminal.Receiving.JettyType.jettyTypeSubTotals.length; index++ ) { %>
+    <% const jettyTypeSubTotal =  terminal.Receiving.JettyType.jettyTypeSubTotals[index-1] %> 
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Jetty Type
+            </label>
+            <div class="mb-3">
+                <select class="form-control" id="jettyTypeSelect<%= index %>">
+                    <option value="" selected disabled>Select a Jetty Type</option>
+                    <% jettyType.facilityTypes.forEach(jettyTypeFacilityType => { %>
+                        <option value="<%= JSON.stringify(jettyTypeFacilityType) %>"><%= jettyTypeFacilityType.facilityName %></option>
+                    <% }) %>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Unit Price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="text" class="form-control" id="jettyTypeUnitCost<%= index %>" value="0">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Unit</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="jettyTypeUnit<%= index %>" value="m2" readonly>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Specification</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="jettyTypeSpecification" value="">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Qty</label>
+            <div class="mb-3">
+                <input type="number" step="1" class="form-control" value="0" id="jettyTypeQty<%= index %>" >
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Total Cost</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="number" step="1" class="form-control" id="jettyTypeTotal<%= index %>" name="jettyTypeTotal<%= index %>" value="<%= jettyTypeSubTotal %>" readonly >
+            </div>
+        </div>
+    </div>
+    <% } %>
+    </div>
+    <div class="row">
+        <div class="col-md-11">
+            <hr>
+        </div>
+        <div class="col-md-1" align="center">
+            <button type="button" class="btn btn-primary btn-md" id="jettyTypeButton"><i class="fa fa-plus"></i></button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Jetty Connection</label>
+            <div class="mb-3">
+                <select class="form-control" id="jettyConnectionSelect" >
+                    <option value="" selected disabled>Select a Jetty Connection</option>
+                    <% jettyConnection.facilityTypes.forEach(jettyConnectionFacilityType => { %>
+                        <option value="<%= JSON.stringify(jettyConnectionFacilityType) %>"><%= jettyConnectionFacilityType.facilityName %></option>
+                    <% }) %>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Unit Price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="text" class="form-control" id="jettyConnectionUnitCost" value="0">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Unit</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="jettyConnectionUnit" value="m2" readonly>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Specification</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="jettyConnectionSpecification" value="">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Qty</label>
+            <div class="mb-3">
+                <input type="number" step="1" class="form-control" value="0" id="jettyConnectionQty">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Total Cost</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="number" step="1" class="form-control" id="jettyConnectionTotal" name="jettyConnectionTotal" value="<%= terminal.Receiving.jettyConnectionTotal %>" readonly >
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Unloading Facility</label>
+            <div class="mb-3">
+                <select class="form-control" id="unloadingFacilitySelect" >
+                    <option value="" selected disabled>Select a Unloading Facility</option>
+                    <% unloadingFacility.facilityTypes.forEach(unloadingFacilityFacilityType => { %>
+                        <option value="<%= JSON.stringify(unloadingFacilityFacilityType) %>"><%= unloadingFacilityFacilityType.facilityName %></option>
+                    <% }) %>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Unit Price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="text" class="form-control" id="unloadingFacilityUnitCost" value="0">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Unit</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="unloadingFacilityUnit" value="unit" readonly>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Specification</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="unloadingFacilitySpecification" value="">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Qty</label>
+            <div class="mb-3">
+                <input type="number" step="1" class="form-control" value="0" id="unloadingFacilityQty" >
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Total Cost</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="number" step="1" class="form-control" id="unloadingFacilityTotal" name="unloadingFacilityTotal" value="<%= terminal.Receiving.unloadingFacilityTotal %>" readonly >
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Pipeline Installation</label>
+            <div class="mb-3">
+                <select class="form-control" id="pipelineInstallationSelect" >
+                    <option value="" selected disabled>Select a Pipeline Installation</option>
+                    <% pipelineInstallation.facilityTypes.forEach(pipelineInstallationFacilityType => { %>
+                        <option value="<%= JSON.stringify(pipelineInstallationFacilityType) %>"><%= pipelineInstallationFacilityType.facilityName %></option>
+                    <% }) %>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Unit Price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="text" class="form-control" id="pipelineInstallationUnitCost" value="0">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Unit</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="pipelineInstallationUnit" value="m" readonly>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Specification</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="pipelineInstallationSpecification" value="">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Qty</label>
+            <div class="mb-3">
+                <input type="number" step="1" class="form-control" value="0" id="pipelineInstallationQty" >
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Total Cost</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="number" step="1" class="form-control" id="pipelineInstallationTotal" name="pipelineInstallationTotal" value="<%= terminal.Receiving.pipelineInstallationTotal %>" readonly >
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="mooringFacilitiesNumber" name="mooringFacilitiesNumber" value="<%= terminal.Receiving.MooringFacility.mooringFacilitiesNumber %>">
+    <div class="mooringFacilitiesWrapper">
+    <% for( let index = 1; index <= terminal.Receiving.MooringFacility.mooringFacilitiesSubTotals.length; index++ ) { %>
+    <% const mooringFacilitiesTotal =  terminal.Receiving.MooringFacility.mooringFacilitiesSubTotals[index-1] %>
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Mooring Facilities
+            </label>
+            <div class="mb-3">
+                <select class="form-control" id="mooringFacilitiesSelect<%= index %>" >
+                    <option value="" selected disabled>Select a Mooring Facilities</option>
+                    <% mooringFacilities.facilityTypes.forEach(mooringFacilitiesFacilityType => { %>
+                        <option value="<%= JSON.stringify(mooringFacilitiesFacilityType) %>"><%= mooringFacilitiesFacilityType.facilityName %></option>
+                    <% }) %>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Unit Price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="text" class="form-control" id="mooringFacilitiesUnitCost<%= index %>" value="0">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Unit</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="mooringFacilitiesUnit<%= index %>" value="pc" readonly>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Specification</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="jettyTypeSpecification" value="">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Qty</label>
+            <div class="mb-3">
+                <input type="number" step="1" class="form-control" value="0" id="mooringFacilitiesQty<%= index %>" >
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Total Cost</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="number" step="1" class="form-control" id="mooringFacilitiesTotal<%= index %>" name="mooringFacilitiesTotal<%= index %>" value="<%= mooringFacilitiesTotal %>" readonly >
+            </div>
+        </div>
+    </div>
+    <% } %> 
+    </div>
+    <div class="row">
+        <div class="col-md-11">
+            <hr>
+        </div>
+        <div class="col-md-1" align="center">
+            <button type="button" class="btn btn-primary btn-md" id="mooringFacilitiesButton"><i class="fa fa-plus"></i></button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Metering</label>
+            <div class="mb-3">
+                <select class="form-control" id="meteringSelect" >
+                    <option value="" selected disabled>Select a Metering</option>
+                    <% metering.facilityTypes.forEach(meteringFacilityType => { %>
+                        <option value="<%= JSON.stringify(meteringFacilityType) %>"><%= meteringFacilityType.facilityName %></option>
+                    <% }) %>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Unit Price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="text" class="form-control" id="meteringUnitCost" value="0">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Unit</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="meteringUnit" value="" readonly>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Specification</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="meteringSpecification" value="">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Qty</label>
+            <div class="mb-3">
+                <input type="number" step="1" class="form-control" value="0" id="meteringQty" >
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Total Cost</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="number" step="1" class="form-control" id="meteringTotal" name="meteringTotal" value="<%= terminal.Receiving.meteringTotal %>" readonly >
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="receivingOthersNumber" name="receivingOthersNumber" value="<%= terminal.Receiving.ReceivingOthers.receivingOthersNumber %>">
+    <div class="receivingOthersWrapper">
+    <% for( let index = 1; index <= terminal.Receiving.ReceivingOthers.receivingOthersSubTotals.length; index++ ) { %>
+    <% const receivingOthersTotal =  terminal.Receiving.ReceivingOthers.receivingOthersSubTotals[index-1] %>
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Others
+            </label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="receivingOthersSelect<%= index %>" value="">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Unit Price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="text" class="form-control" id="receivingOthersUnitCost<%= index %>" value="">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Unit</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="receivingOthersUnit<%= index %>" value="">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Specification</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="receivingOthersSpecification<%= index %>" value="">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Qty</label>
+            <div class="mb-3">
+                <input type="number" step="1" class="form-control" value="0" id="receivingOthersQty<%= index %>">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Total Cost</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="number" step="1" class="form-control" id="receivingOthersTotal<%= index %>" name="receivingOthersTotal<%= index %>" value="<%= receivingOthersTotal %>" readonly>
+            </div>
+        </div>
+    </div>
+    <% } %> 
+    </div>
+    <div class="row">
+        <div class="col-md-11">
+            <hr>
+        </div>
+        <div class="col-md-1" align="center">
+            <button type="button" class="btn btn-primary btn-md" id="receivingOthersButton"><i class="fa fa-plus"></i></button>
+        </div>
+    </div>
+    <br><br>
+
+    <div class="row">
+        <div class="col-md-5">
+          <h2>Storage</h2>
+        </div>
+    </div>
+    <input type="hidden" id="propaneStorageTankNumber" name="propaneStorageTankNumber" value="<%= terminal.Storage.PropaneStorageTank.propaneStorageTankNumber %>">
+    <div class="propaneStorageTankWrapper">
+    <% for( let index = 1; index <= terminal.Storage.PropaneStorageTank.propaneStorageTankSubTotals.length; index++ ) { %>
+    <% const propaneStorageTankTotal =  terminal.Storage.PropaneStorageTank.propaneStorageTankSubTotals[index-1] %>
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Propane Storage Tank</label>
+            <div class="mb-3">
+                <select class="form-control" id="propaneStorageTankSelect<%= index %>" >
+                    <option value="" selected disabled>Select a Propane Storage Tank</option>
+                    <% propaneStorageTank.facilityTypes.forEach(jettyTypeFacilityType => { %>
+                        <option value="<%= JSON.stringify(jettyTypeFacilityType) %>"><%= jettyTypeFacilityType.facilityName %></option>
+                    <% }) %>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Unit Price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="text" class="form-control" id="propaneStorageTankUnitCost<%= index %>" value="0">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Unit</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="propaneStorageTankUnit<%= index %>" value="m3" readonly>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Specification</label>
+            <div class="mb-3">
+                <div class="propaneStorageTankWrapperSpec">
+                    <select class="form-control" id="propaneStorageTankSpecSelect<%= index %>" >
+                        <option value="" selected disabled>Select a Specification</option>
+                            
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-1">
+            <label class="form-label">Qty</label>
+            <div class="mb-3">
+                <input type="number" step="1" class="form-control" value="0" id="propaneStorageTankQty<%= index %>" >
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Total Cost</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="number" step="1" class="form-control" id="propaneStorageTankTotal<%= index %>" name="propaneStorageTankTotal<%= index %>" value="<%= propaneStorageTankTotal %>" readonly >
+            </div>
+        </div>
+    </div>
+    <% } %> 
+    </div>
+    <div class="row">
+        <div class="col-md-11">
+            <hr>
+        </div>
+        <div class="col-md-1" align="center">
+            <button type="button" class="btn btn-primary btn-md" id="propaneStorageTankButton"><i class="fa fa-plus"></i></button>
+        </div>
+    </div>
+    <input type="hidden" id="butaneStorageTankNumber" name="butaneStorageTankNumber" value="<%= terminal.Storage.ButaneStorageTank.butaneStorageTankNumber %>">
+    <div class="butaneStorageTankWrapper">
+    <% for( let index = 1; index <= terminal.Storage.ButaneStorageTank.butaneStorageTankNumber; index++ ) { %>
+    <% const butaneStorageTankTotal =  terminal.Storage.ButaneStorageTank.butaneStorageTankSubTotals[index-1] %>
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Butane Storage Tank</label>
+            <div class="mb-3">
+                <select class="form-control" id="butaneStorageTankSelect<%= index %>" >
+                    <option value="" selected disabled>Select a Butane Storage Tank</option>
+                    <% butaneStorageTank.facilityTypes.forEach(jettyTypeFacilityType => { %>
+                        <option value="<%= JSON.stringify(jettyTypeFacilityType) %>"><%= jettyTypeFacilityType.facilityName %></option>
+                    <% }) %>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Unit Price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="text" class="form-control" id="butaneStorageTankUnitCost<%= index %>" value="0">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Unit</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="butaneStorageTankUnit<%= index %>" value="m3" readonly>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Specification</label>
+            <div class="mb-3">
+                <div class="butaneStorageTankWrapperSpec">
+                    <select class="form-control" id="butaneStorageTankSpecSelect<%= index %>" >
+                        <option value="" selected disabled>Select a Specification</option>
+                            
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-1">
+            <label class="form-label">Qty</label>
+            <div class="mb-3">
+                <input type="number" step="1" class="form-control" value="0" id="butaneStorageTankQty<%= index %>" >
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Total Cost</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="number" step="1" class="form-control" id="butaneStorageTankTotal<%= index %>" name="butaneStorageTankTotal<%= index %>" value="<%= butaneStorageTankTotal %>" readonly >
+            </div>
+        </div>
+    </div>
+    <% } %> 
+    </div>
+    <div class="row">
+        <div class="col-md-11">
+            <hr>
+        </div>
+        <div class="col-md-1" align="center">
+            <button type="button" class="btn btn-primary btn-md" id="butaneStorageTankButton"><i class="fa fa-plus"></i></button>
+        </div>
+    </div>
+    <input type="hidden" id="mixedStorageTankNumber" name="mixedStorageTankNumber" value="<%= terminal.Storage.MixedStorageTank.mixedStorageTankNumber %>">
+    <div class="mixedStorageTankWrapper">
+    <% for( let index = 1; index <= terminal.Storage.MixedStorageTank.mixedStorageTankNumber; index++ ) { %>
+    <% const mixedStorageTankTotal =  terminal.Storage.MixedStorageTank.mixedStorageTankSubTotals[index-1] %>
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Mixed LPG Storage Tank</label>
+            <div class="mb-3">
+                <select class="form-control" id="mixedStorageTankSelect<%= index %>" >
+                    <option value="" selected disabled>Select a Mixed Storage Tank</option>
+                    <% mixedStorageTank.facilityTypes.forEach(jettyTypeFacilityType => { %>
+                        <option value="<%= JSON.stringify(jettyTypeFacilityType) %>"><%= jettyTypeFacilityType.facilityName %></option>
+                    <% }) %>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Unit Price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="text" class="form-control" id="mixedStorageTankUnitCost<%= index %>" value="0">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Unit</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="mixedStorageTankUnit<%= index %>" value="m3" readonly>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Specification</label>
+            <div class="mb-3">
+                <div class="mixedStorageTankWrapperSpec">
+                    <select class="form-control" id="mixedStorageTankSpecSelect<%= index %>" >
+                        <option value="" selected disabled>Select a Specification</option>
+                            
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-1">
+            <label class="form-label">Qty</label>
+            <div class="mb-3">
+                <input type="number" step="1" class="form-control" value="0" id="mixedStorageTankQty<%= index %>" >
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Total Cost</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="number" step="1" class="form-control" id="mixedStorageTankTotal<%= index %>" name="mixedStorageTankTotal<%= index %>" value="<%= mixedStorageTankTotal %>" readonly >
+            </div>
+        </div>
+    </div>
+    <% } %> 
+    </div>
+    <div class="row">
+        <div class="col-md-11">
+            <hr>
+        </div>
+        <div class="col-md-1" align="center">
+            <button type="button" class="btn btn-primary btn-md" id="mixedStorageTankButton"><i class="fa fa-plus"></i></button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Pipeline and Instrumentation
+            </label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="pipelineStorageSelect" value="">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Unit Price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="text" class="form-control" id="pipelineStorageUnitCost" value="0">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Unit</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="pipelineStorageUnit" value="">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Specification</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="pipelineStorageSpecification" value="">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Qty</label>
+            <div class="mb-3">
+                <input type="number" step="1" class="form-control" value="0" id="pipelineStorageQty">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Total Cost</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="number" step="1" class="form-control" id="pipelineStorageTotal" name="pipelineStorageTotal" value="<%= terminal.Storage.pipelineStorageTotal %>" readonly >
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="loadingPumpNumber" name="loadingPumpNumber" value="1">
+    <div class="loadingPumpWrapper">
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Loading Pump
+            </label>
+            <div class="mb-3">
+                <select class="form-control" id="loadingPumpSelect1" >
+                    <option value="" selected disabled>Select a Loading Pump</option>
+                    <% loadingPump.facilityTypes.forEach(jettyTypeFacilityType => { %>
+                        <option value="<%= JSON.stringify(jettyTypeFacilityType) %>"><%= jettyTypeFacilityType.facilityName %></option>
+                    <% }) %>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Unit Price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="text" class="form-control" id="loadingPumpUnitCost1" value="0">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Unit</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="loadingPumpUnit1" value="MT/h" readonly>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Specification</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="loadingPumpSpecification" value="">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Qty</label>
+            <div class="mb-3">
+                <input type="number" step="1" class="form-control" value="0" id="loadingPumpQty1" >
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Total Cost</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="number" step="1" class="form-control" id="loadingPumpTotal1" name="loadingPumpTotal1" value="<%= terminal.Storage.LoadingPump.loadingPumpTotal %>" readonly >
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Heat Exchanger 
+            </label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="heatExhargerSelect" value="">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Unit Price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="text" class="form-control" id="heatExhargerUnitCost" value="0">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Unit</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="heatExhargerUnit" value="">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Specification</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="heatExhargerSpecification" value="">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Qty</label>
+            <div class="mb-3">
+                <input type="number" step="1" class="form-control" value="0" id="heatExhargerQty">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Total Cost</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="number" step="1" class="form-control" id="heatExhargerTotal" name="heatExhargerTotal" value="<%= terminal.Storage.heatExhargerTotal %>" readonly >
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Booster Pump 
+            </label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="boosterPumpSelect" value="">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Unit Price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="text" class="form-control" id="boosterPumpUnitCost" value="0">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Unit</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="boosterPumpUnit" value="MT/h">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Specification</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="boosterPumpSpecification" value="">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Qty</label>
+            <div class="mb-3">
+                <input type="number" step="1" class="form-control" value="0" id="boosterPumpQty">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Total Cost</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="number" step="1" class="form-control" id="boosterPumpTotal" name="boosterPumpTotal" value="<%= terminal.Storage.boosterPumpTotal %>" readonly >
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="storageOthersNumber" name="storageOthersNumber" value="<%= terminal.Storage.StorageOthers.storageOthersNumber %>">
+    <div class="storageOthersWrapper">
+    <% for( let index = 1; index <= terminal.Storage.StorageOthers.storageOthersNumber; index++ ) { %>
+    <% const storageOthersTotal =  terminal.Storage.StorageOthers.storageOthersSubTotals[index-1] %>
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Others
+            </label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="storageOthersSelect<%= index %>" value="">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Unit Price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="text" class="form-control" id="storageOthersUnitCost<%= index %>" value="0">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Unit</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="storageOthersUnit<%= index %>" value="">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Specification</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="storageOthersSpecification<%= index %>" value="">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Qty</label>
+            <div class="mb-3">
+                <input type="number" step="1" class="form-control" value="0" id="storageOthersQty<%= index %>">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Total Cost</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="number" step="1" class="form-control" id="storageOthersTotal<%= index %>" name="storageOthersTotal<%= index %>" value="<%= storageOthersTotal %>" readonly>
+            </div>
+        </div>
+    </div>
+    <% } %> 
+    </div>
+    <div class="row">
+        <div class="col-md-11">
+            <hr>
+        </div>
+        <div class="col-md-1" align="center">
+            <button type="button" class="btn btn-primary btn-md" id="storageOthersButton"><i class="fa fa-plus"></i></button>
+        </div>
+    </div>
+    <br><br>
+    <div class="row">
+        <div class="col-md-5">
+          <h2>LPG Filling Station</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Loading Skid</label>
+            <div class="mb-3">
+                <select class="form-control" id="loadingSkidSelect" >
+                    <option value="" selected disabled>Select a Loading Skid</option>
+                    <% loadingSkid.facilityTypes.forEach(jettyTypeFacilityType => { %>
+                        <option value="<%= JSON.stringify(jettyTypeFacilityType) %>"><%= jettyTypeFacilityType.facilityName %></option>
+                    <% }) %>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <label class="form-label">Unit Price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="text" class="form-control" id="loadingSkidUnitCost" value="0">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Unit</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="loadingSkidUnit" value="Unit" readonly>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">Specification</label>
+            <div class="mb-3">
+                <div class="loadingSkidNumberWrapperSpec">
+                    <select class="form-control" id="loadingSkidSpecSelect" >
+                        <option value="" selected disabled>Select a Specification</option>
+                            
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-1">
+            <label class="form-label">Qty</label>
+            <div class="mb-3">
+                <input type="number" step="1" class="form-control" value="0" id="loadingSkidQty" >
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Total Cost</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="number" step="1" class="form-control" id="loadingSkidTotal" name="loadingSkidTotal" value="<%= terminal.LPGFillingStation.loadingSkidTotal %>" readonly >
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Buffer Tank 
+            </label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="bufferTankSelect" value="">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Unit Price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="text" class="form-control" id="bufferTankUnitCost" value="0">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Unit</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="bufferTankUnit" value="m3">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Specification</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="bufferTankSpecification" value="">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Qty</label>
+            <div class="mb-3">
+                <input type="number" step="1" class="form-control" value="0" id="bufferTankQty">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Total Cost</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="number" step="1" class="form-control" id="bufferTankTotal" name="bufferTankTotal" value="<%= terminal.LPGFillingStation.bufferTankTotal %>" readonly >
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Weightbridge and weightronic</label>
+            <div class="mb-3">
+                <select class="form-control" id="weightbridgeSelect" >
+                    <option value="" selected disabled>Select a Weighrbridge</option>
+                    <% weightbridge.facilityTypes.forEach(jettyConnectionFacilityType => { %>
+                        <option value="<%= JSON.stringify(jettyConnectionFacilityType) %>"><%= jettyConnectionFacilityType.facilityName %></option>
+                    <% }) %>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Unit Price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="text" class="form-control" id="weightbridgeUnitCost" value="0">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Unit</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="weightbridgeUnit" value="Unit" readonly>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Specification</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="jettyConnectionSpecification" value="">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Qty</label>
+            <div class="mb-3">
+                <input type="number" step="1" class="form-control" value="0" id="weightbridgeQty" >
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Total Cost</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="number" step="1" class="form-control" id="weightbridgeTotal" name="weightbridgeTotal" value="<%= terminal.LPGFillingStation.weightbridgeTotal %>" readonly >
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Loading Bay 
+            </label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="loadingBaySelect" value="">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Unit Price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="text" class="form-control" id="loadingBayUnitCost" value="0">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Unit</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="loadingBayUnit" value="Unit">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Specification</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="loadingBaySpecification" value="">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Qty</label>
+            <div class="mb-3">
+                <input type="number" step="1" class="form-control" value="0" id="loadingBayQty">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Total Cost</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="number" step="1" class="form-control" id="loadingBayTotal" name="loadingBayTotal" value="<%= terminal.LPGFillingStation.loadingBayTotal %>" readonly >
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="carouselFillingNumber" name="carouselFillingNumber" value="<%= terminal.LPGFillingStation.CarouselFilling.carouselFillingNumber %>">
+    <div class="carouselFillingWrapper">
+    <% for( let index = 1; index <= terminal.LPGFillingStation.CarouselFilling.carouselFillingNumber; index++ ) { %>
+    <% const carouselFillingTotal =  terminal.LPGFillingStation.CarouselFilling.carouselFillingSubTotals[index-1] %>
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Carousel Filling
+            </label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="carouselFillingSelect<%= index %>" value="">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Unit Price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="text" class="form-control" id="carouselFillingUnitCost<%= index %>" value="0">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Unit</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="carouselFillingUnit<%= index %>" value="Unit">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Specification</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="carouselFillingSpecification<%= index %>" value="">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Qty</label>
+            <div class="mb-3">
+                <input type="number" step="1" class="form-control" value="0" id="carouselFillingQty<%= index %>">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Total Cost</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="number" step="1" class="form-control" id="carouselFillingTotal<%= index %>" name="carouselFillingTotal<%= index %>" value="<%= carouselFillingTotal %>" readonly >
+            </div>
+        </div>
+    </div>
+    <% } %> 
+    </div>
+    <div class="row">
+        <div class="col-md-11">
+            <hr>
+        </div>
+        <div class="col-md-1" align="center">
+            <button type="button" class="btn btn-primary btn-md" id="carouselFillingButton"><i class="fa fa-plus"></i></button>
+        </div>
+    </div>
+    <input type="hidden" id="fillingStationOthersNumber" name="fillingStationOthersNumber" value="<%= terminal.LPGFillingStation.FillingStationOthers.fillingStationOthersNumber %>">
+    <div class="fillingStationOthersWrapper">
+    <% for( let index = 1; index <= terminal.LPGFillingStation.FillingStationOthers.fillingStationOthersNumber; index++ ) { %>
+    <% const fillingStationOthersTotal = terminal.LPGFillingStation.FillingStationOthers.fillingStationOthersSubTotals[index-1] %>
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Others
+            </label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="fillingStationOthersSelect<%= index %>" value="">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Unit Price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="text" class="form-control" id="fillingStationOthersUnitCost<%= index %>" value="0">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Unit</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="fillingStationOthersUnit<%= index %>" value="">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Specification</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="fillingStationOthersSpecification<%= index %>" value="">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Qty</label>
+            <div class="mb-3">
+                <input type="number" step="1" class="form-control" value="0" id="fillingStationOthersQty<%= index %>">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Total Cost</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="number" step="1" class="form-control" id="fillingStationOthersTotal<%= index %>" name="fillingStationOthersTotal<%= index %>" value="<%= fillingStationOthersTotal %>" readonly>
+            </div>
+        </div>
+    </div>
+    <% } %> 
+    </div>
+    <div class="row">
+        <div class="col-md-11">
+            <hr>
+        </div>
+        <div class="col-md-1" align="center">
+            <button type="button" class="btn btn-primary btn-md" id="fillingStationOthersButton"><i class="fa fa-plus"></i></button>
+        </div>
+    </div>
+    <br><br>
+    <div class="row">
+        <div class="col-md-5">
+          <h2>Control Room</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">SCADA and Terminal Automation System
+            </label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="terminalAutomationSelect" value="">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Unit Price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="text" class="form-control" id="terminalAutomationUnitCost" value="166666.666666667">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Unit</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="terminalAutomationUnit" value="Unit">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Specification</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="terminalAutomationSpecification" value="">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Qty</label>
+            <div class="mb-3">
+                <input type="number" step="1" class="form-control" value="1" id="terminalAutomationQty">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Total Cost</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="number" step="1" class="form-control" id="terminalAutomationTotal" name="terminalAutomationTotal" value="<%= terminal.ControlRoom.terminalAutomationTotal %>" readonly >
+            </div>
+        </div>
+    </div>
+    <br><br>
+    <div class="row">
+        <div class="col-md-5">
+          <h2>Firefighting system</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Main fire water pump
+            </label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="fireWaterPumpSelect" value="">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Unit Price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="text" class="form-control" id="fireWaterPumpUnitCost" value="218000">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Unit</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="fireWaterPumpUnit" value="Pc">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Specification</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="fireWaterPumpSpecification" value="">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Qty</label>
+            <div class="mb-3">
+                <input type="number" step="1" class="form-control" value="1" id="fireWaterPumpQty">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Total Cost</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="number" step="1" class="form-control" id="fireWaterPumpTotal" name="fireWaterPumpTotal" value="<%= terminal.FirefightingSystem.fireWaterPumpTotal %>" readonly >
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Fire hydrants
+            </label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="fireHydrantsSelect" value="">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Unit Price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="text" class="form-control" id="fireHydrantsUnitCost" value="180000">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Unit</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="fireHydrantsUnit" value="Set">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Specification</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="fireHydrantsSpecification" value="">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Qty</label>
+            <div class="mb-3">
+                <input type="number" step="1" class="form-control" value="1" id="fireHydrantsQty">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Total Cost</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="number" step="1" class="form-control" id="fireHydrantsTotal" name="fireHydrantsTotal" value="<%= terminal.FirefightingSystem.fireHydrantsTotal %>" readonly >
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Fire extinguisers
+            </label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="fireExtinguisersSelect" value="">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Unit Price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="text" class="form-control" id="fireExtinguisersUnitCost" value="4285.71428571429">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Unit</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="fireExtinguisersUnit" value="Set">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Specification</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="fireExtinguisersSpecification" value="">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Qty</label>
+            <div class="mb-3">
+                <input type="number" step="1" class="form-control" value="1" id="fireExtinguisersQty">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Total Cost</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="number" step="1" class="form-control" id="fireExtinguisersTotal" name="fireExtinguisersTotal" value="<%= terminal.FirefightingSystem.fireExtinguisersTotal %>" readonly >
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Fire and Gas Detector
+            </label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="fireGasDetectorSelect" value="">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Unit Price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="text" class="form-control" id="fireGasDetectorUnitCost" value="298800">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Unit</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="fireGasDetectorUnit" value="Set">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Specification</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="fireGasDetectorSpecification" value="">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Qty</label>
+            <div class="mb-3">
+                <input type="number" step="1" class="form-control" value="1" id="fireGasDetectorQty">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Total Cost</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="number" step="1" class="form-control" id="fireGasDetectorTotal" name="fireGasDetectorTotal" value="<%= terminal.FirefightingSystem.fireGasDetectorTotal %>" readonly >
+            </div>
+        </div>
+    </div>
+    <br><br>
+    <div class="row">
+        <div class="col-md-5">
+          <h2>Utility</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Flare
+            </label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="flareSelect" value="">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Unit Price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="text" class="form-control" id="flareUnitCost" value="6800">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Unit</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="flareUnit" value="Unit">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Specification</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="flareSpecification" value="">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Qty</label>
+            <div class="mb-3">
+                <input type="number" step="1" class="form-control" value="1" id="flareQty">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Total Cost</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="number" step="1" class="form-control" id="flareTotal" name="flareTotal" value="<%= terminal.Utility.flareTotal %>" readonly >
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Instrument Air
+            </label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="instrumentAirSelect" value="">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Unit Price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="text" class="form-control" id="instrumentAirUnitCost" value="312000">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Unit</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="instrumentAirUnit" value="Unit">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Specification</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="instrumentAirSpecification" value="">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Qty</label>
+            <div class="mb-3">
+                <input type="number" step="1" class="form-control" value="1" id="instrumentAirQty">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Total Cost</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="number" step="1" class="form-control" id="instrumentAirTotal" name="instrumentAirTotal" value="<%= terminal.Utility.instrumentAirTotal %>" readonly >
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Emergency Power
+            </label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="emergencyPowerSelect" value="">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Unit Price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="text" class="form-control" id="emergencyPowerUnitCost" value="38000">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Unit</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="emergencyPowerUnit" value="Unit">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Specification</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="emergencyPowerSpecification" value="">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Qty</label>
+            <div class="mb-3">
+                <input type="number" step="1" class="form-control" value="1" id="emergencyPowerQty">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Total Cost</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="number" step="1" class="form-control" id="emergencyPowerTotal" name="emergencyPowerTotal" value="<%= terminal.Utility.emergencyPowerTotal %>" readonly >
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Diesel Oil Pump
+            </label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="dieselOilPumpSelect" value="">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Unit Price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="text" class="form-control" id="dieselOilPumpUnitCost" value="28000">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Unit</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="dieselOilPumpUnit" value="set">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Specification</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="dieselOilPumpSpecification" value="">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Qty</label>
+            <div class="mb-3">
+                <input type="number" step="1" class="form-control" value="1" id="dieselOilPumpQty">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Total Cost</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="number" step="1" class="form-control" id="dieselOilPumpTotal" name="dieselOilPumpTotal" value="<%= terminal.Utility.dieselOilPumpTotal %>" readonly >
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Fresh Water Pump
+            </label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="freshWaterPumpSelect" value="">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Unit Price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="text" class="form-control" id="freshWaterPumpUnitCost" value="12000">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Unit</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="freshWaterPumpUnit" value="set">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Specification</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="freshWaterPumpSpecification" value="">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Qty</label>
+            <div class="mb-3">
+                <input type="number" step="1" class="form-control" value="1" id="freshWaterPumpQty">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Total Cost</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="number" step="1" class="form-control" id="freshWaterPumpTotal" name="freshWaterPumpTotal" value="<%= terminal.Utility.freshWaterPumpTotal %>" readonly >
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Oil Pump
+            </label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="oilPumpSelect" value="">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Unit Price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="text" class="form-control" id="oilPumpUnitCost" value="9000">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Unit</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="oilPumpUnit" value="set">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Specification</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="oilPumpSpecification" value="">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Qty</label>
+            <div class="mb-3">
+                <input type="number" step="1" class="form-control" value="1" id="oilPumpQty">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Total Cost</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="number" step="1" class="form-control" id="oilPumpTotal" name="oilPumpTotal" value="<%= terminal.Utility.oilPumpTotal %>" readonly >
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Diesel Oil Tank
+            </label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="dieselOilTankSelect" value="">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Unit Price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="text" class="form-control" id="dieselOilTankUnitCost" value="280">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Unit</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="dieselOilTankUnit" value="m3">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Specification</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="dieselOilTankSpecification" value="">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Qty</label>
+            <div class="mb-3">
+                <input type="number" step="1" class="form-control" value="1" id="dieselOilTankQty">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Total Cost</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="number" step="1" class="form-control" id="dieselOilTankTotal" name="dieselOilTankTotal" value="<%= terminal.Utility.dieselOilTankTotal %>" readonly >
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Fresh Water Tank
+            </label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="freshWaterTankSelect" value="">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Unit Price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="text" class="form-control" id="freshWaterTankUnitCost" value="280">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Unit</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="freshWaterTankUnit" value="m3">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Specification</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="freshWaterTankSpecification" value="">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Qty</label>
+            <div class="mb-3">
+                <input type="number" step="1" class="form-control" value="1" id="freshWaterTankQty">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Total Cost</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="number" step="1" class="form-control" id="freshWaterTankTotal" name="freshWaterTankTotal" value="<%= terminal.Utility.freshWaterTankTotal %>" readonly >
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Oil Tank
+            </label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="oilTankSelect" value="">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Unit Price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="text" class="form-control" id="oilTankUnitCost" value="280">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Unit</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="oilTankUnit" value="m3">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Specification</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="oilTankSpecification" value="">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Qty</label>
+            <div class="mb-3">
+                <input type="number" step="1" class="form-control" value="1" id="oilTankQty">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Total Cost</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="number" step="1" class="form-control" id="oilTankTotal" name="oilTankTotal" value="<%= terminal.Utility.oilTankTotal %>" readonly >
+            </div>
+        </div>
+    </div>
+    <br><br>
+    <div class="row">
+        <div class="col-md-5">
+          <h2>Office Building</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Building
+            </label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="buildingSelect" value="">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Unit Price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="text" class="form-control" id="buildingUnitCost" value="3214">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Unit</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="buildingUnit" value="m3">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Specification</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="buildingSpecification" value="">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Qty</label>
+            <div class="mb-3">
+                <input type="number" step="1" class="form-control" value="1" id="buildingQty">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Total Cost</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="number" step="1" class="form-control" id="buildingTotal" name="buildingTotal" value="<%= terminal.OfficeBuilding.buildingTotal %>" readonly >
+            </div>
+        </div>
+    </div>
+    <br><br>
+    <div class="row">
+        <div class="col-md-5">
+          <h2>Land Rent</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Land
+            </label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="landRentSelect" value="">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Unit Price</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="text" class="form-control" id="landRentUnitCost" value="52">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Unit</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="landRentUnit" value="m2">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Specification</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="landRentSpecification" value="">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label">Qty</label>
+            <div class="mb-3">
+                <input type="number" step="1" class="form-control" value="1" id="landRentQty">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Total Cost</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="number" step="1" class="form-control" id="landRentTotal" name="landRentTotal" value="<%= terminal.LandRent.landRentTotal %>" readonly >
+            </div>
+        </div>
+    </div>
+    <br><br>
+    <div class="row" align="center">
+        <div class="col-md-12">
+          <h1>OPEX</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-5">
+            <button type="button" class="btn btn-primary" id="opexInputButton">Input Data</button>&nbsp;
+            <button type="button" class="btn btn-info" id="opexEstimateButton" data-bs-toggle="modal" data-bs-target="#exampleModal" >Estimate</button>
+        </div>
+    </div>
+    <br>
+    <div class="d-none" id="opexInputWrapper">
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label class="form-label">Storage Capacity</label>
+                <div class="input-group mb-3">
+                  <input type="number" step="0.1" class="form-control" id="opexInput" name="opexInput" value="<%= terminal.Opex.opexStorageCapacity %>" >
+                  <div class="input-group-append">
+                    <span class="input-group-text">MT</span>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-5">
+            <h2>Jetty Rent</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="mb-3">
+            <label class="form-label">Capacity</label>
+            <div class="input-group mb-3">
+                <input type="number" step="any" class="form-control" id="jettyRentCapacity" name="jettyRentCapacity" value="<%= terminal.Opex.jettyRentCapacity %>" required>
+                <div class="input-group-append">
+                <span class="input-group-text">MT</span>
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Unloading Frequency</label>
+            <div class="input-group mb-3">
+                <input type="number" step="any" class="form-control" id="jettyRentUnloading" name="jettyRentUnloading" value="<%= terminal.Opex.jettyRentUnloading %>" required>
+                <div class="input-group-append">
+                <span class="input-group-text">Year</span>
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Cost</label>
+            <div class="input-group mb-3">
+                <input type="number" step="any" class="form-control" id="jettyRentCost" name="jettyRentCost" value="<%= terminal.Opex.jettyRentCost %>" required>
+                <div class="input-group-append">
+                <span class="input-group-text">Rp/Kg</span>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+    </div>
+    <div class="d-none" id="opexResultWrapper">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">OPEX</label>
+                    <div class="input-group mb-3">
+                      <input type="number" step="0.1" class="form-control" id="opexResult" name="opexResult" value="<%= terminal.Opex.totalOpex %>" readonly>
+                      <div class="input-group-append">
+                        <span class="input-group-text">USD/year</span>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <br>
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Formula</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="manPower" class="col-form-label">Man Power:</label>
+              <div class="input-group">
+                <input type="number" class="form-control" id="manPower" >
+                <div class="input-group-append">
+                  <span class="input-group-text">Year</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="depreciation" class="col-form-label">Depreciation:</label>
+              <div class="input-group">
+                <input type="number" class="form-control" id="depreciation" >
+                <div class="input-group-append">
+                  <span class="input-group-text">Year</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="maintenance" class="col-form-label">Maintenance:</label>
+              <div class="input-group">
+                <input type="number" class="form-control" id="maintenance" >
+                <div class="input-group-append">
+                  <span class="input-group-text">Year</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="financialCosts" class="col-form-label">Financial costs:</label>
+              <div class="input-group">
+                <input type="number" class="form-control" id="financialCosts" >
+                <div class="input-group-append">
+                  <span class="input-group-text">Year</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="othersDataModal" class="col-form-label">Others:</label>
+              <div class="input-group">
+                <input type="number" class="form-control" id="othersDataModal" >
+                <div class="input-group-append">
+                  <span class="input-group-text">Year</span>
+                </div>
+              </div>
+            </div>
+            
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="opexModal" onclick="submitData()">Estimate</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    function submitData(){
+        const manPower = $('#manPower').val();
+        const depreciation = $('#depreciation').val();
+        const maintenance = $('#maintenance').val();
+        const financialCosts = $('#financialCosts').val();
+        const othersDataModal = $('#othersDataModal').val();
+        const total = Number(Number(manPower)+Number(depreciation)+Number(maintenance)+Number(financialCosts)+Number(othersDataModal));
+        $('#opexResult').val(total);
+    }
+    $(function() {
+        $('#opexInputButton').click(function(e){
+            if($("#opexInputWrapper").hasClass("d-none")){
+                $("#opexInputWrapper").removeClass('d-none');
+            }
+            if($("#opexResultWrapper").hasClass("d-none")){
+                $("#opexResultWrapper").removeClass('d-none');
+            }
+        });
+
+        $('#opexModal').click(()=>{
+            if($("#opexResultWrapper").hasClass("d-none")){
+                $("#opexResultWrapper").removeClass('d-none');
+            }
+            if(!$("#opexInputWrapper").hasClass("d-none")){
+                $("#opexInputWrapper").addClass('d-none');
+            }
+        });
+
+        $('#opexInput').on('change', function () {
+            const value = $('#opexInput').val();
+            const capacity = $('#jettyRentCapacity').val();
+            const unloading = $('#jettyRentUnloading').val();
+            const cost = $('#jettyRentCost').val();
+            const jettyRent = (Number(capacity) * Number(unloading) * Number(cost) * 1000) / 14500;
+            const result = Number(value) * (348965/500);
+            const totalOpex = jettyRent + result;
+            $('#opexResult').val(totalOpex);
+        });
+
+        $('#jettyRentCapacity').on('change', function () {
+            const value = $('#opexInput').val();
+            const capacity = $('#jettyRentCapacity').val();
+            const unloading = $('#jettyRentUnloading').val();
+            const cost = $('#jettyRentCost').val();
+            const jettyRent = (Number(capacity) * Number(unloading) * Number(cost) * 1000) / 14500;
+            const result = Number(value) * (348965/500);
+            const totalOpex = jettyRent + result;
+            $('#opexResult').val(totalOpex);
+        });
+
+        $('#jettyRentUnloading').on('change', function () {
+            const value = $('#opexInput').val();
+            const capacity = $('#jettyRentCapacity').val();
+            const unloading = $('#jettyRentUnloading').val();
+            const cost = $('#jettyRentCost').val();
+            const jettyRent = (Number(capacity) * Number(unloading) * Number(cost) * 1000) / 14500;
+            const result = Number(value) * (348965/500);
+            const totalOpex = jettyRent + result;
+            $('#opexResult').val(totalOpex);
+        });
+
+        $('#jettyRentCost').on('change', function () {
+            const value = $('#opexInput').val();
+            const capacity = $('#jettyRentCapacity').val();
+            const unloading = $('#jettyRentUnloading').val();
+            const cost = $('#jettyRentCost').val();
+            const jettyRent = (Number(capacity) * Number(unloading) * Number(cost) * 1000) / 14500;
+            const result = Number(value) * (348965/500);
+            const totalOpex = jettyRent + result;
+            $('#opexResult').val(totalOpex);
+        });
+    });
+    $(function(){
+        function storages(select, specSelect, unitCost, unit, qty, lastTotal){
+            $(select).on('change', function () {
+                var type = $(this).val();
+                var typeJSON = $.parseJSON(type);
+                $(specSelect).empty();
+                $(specSelect).append(`<option value="" selected disabled>Select a Specification</option>`);
+                typeJSON.specifications.forEach(element => {
+                    $(specSelect).append(`
+                        <option value='${JSON.stringify(element)}'>${element.name}</option>
+                    `);
+                });
+                
+            });
+            $(specSelect).on('change', function () {
+                var type = $(this).val();
+                var typeJSON = $.parseJSON(type);
+                $(unitCost).val(typeJSON.unitCost);
+                $(unit).val(typeJSON.unit);
+                if($(qty).val() == 0){
+                    $(qty).val(1);
+                }
+                var total = Number(Number($(qty).val()) * Number($(unitCost).val()));
+                console.log(total)
+                $(lastTotal).val(total);
+            });
+            $(qty).on('change', function () {
+                var total = Number(Number($(qty).val()) * Number($(unitCost).val()));
+                $(lastTotal).val(total);
+            });
+        }
+        storages('#propaneStorageTankSelect1', '#propaneStorageTankSpecSelect1', '#propaneStorageTankUnitCost1', '#propaneStorageTankUnit1', '#propaneStorageTankQty1', '#propaneStorageTankTotal1');    
+        storages('#butaneStorageTankSelect1', '#butaneStorageTankSpecSelect1', '#butaneStorageTankUnitCost1', '#butaneStorageTankUnit1', '#butaneStorageTankQty1', '#butaneStorageTankTotal1');    
+        storages('#mixedStorageTankSelect1', '#mixedStorageTankSpecSelect1', '#mixedStorageTankUnitCost1', '#mixedStorageTankUnit1', '#mixedStorageTankQty1', '#mixedStorageTankTotal1');    
+        storages('#loadingSkidSelect', '#loadingSkidSpecSelect', '#loadingSkidUnitCost', '#loadingSkidUnit', '#loadingSkidQty', '#loadingSkidTotal');    
+        
+        
+        function addFieldStorageTank (label, number, button, wrapper, select, specSelect, unitCost, unit, qty, lastTotal, facilities){
+            var jettyTypeNumber = $(number).val();
+            $(button).on('click', () => {
+                var jettyTypeWapper = $(wrapper);
+                $(number).val(++jettyTypeNumber);
+                $(jettyTypeWapper).append(`
+                <div class="row">
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        <select class="form-control" id="${select}${jettyTypeNumber}">
+                            <option value="" selected disabled>Select a ${label}</option>
+                            ${facilities}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">$</span>
+                        </div>
+                        <input type="text" class="form-control" id="${unitCost}${jettyTypeNumber}" value="">
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="${unit}${jettyTypeNumber}" value="" readonly>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        <div class="propaneStorageTankWrapperSpec">
+                            <select class="form-control" id="${specSelect}${jettyTypeNumber}">
+                                <option value="" selected disabled>Select a Specifications</option>
+                                    
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-1">
+                    <div class="mb-3">
+                        <input type="number" step="1" class="form-control" value="0" id="${qty}${jettyTypeNumber}" >
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">$</span>
+                        </div>
+                        <input type="number" step="1" class="form-control" id="${lastTotal}${jettyTypeNumber}" name="${lastTotal}${jettyTypeNumber}" value="0" readonly>
+                    </div>
+                </div>
+            </div>
+                `);
+                
+                storages(`#${select}${jettyTypeNumber}`, `#${specSelect}${jettyTypeNumber}`, `#${unitCost}${jettyTypeNumber}`, `#${unit}${jettyTypeNumber}`, `#${qty}${jettyTypeNumber}`, `#${lastTotal}${jettyTypeNumber}`); 
+            })
+        }
+        addFieldStorageTank('Propane Storage Tank', '#propaneStorageTankNumber', '#propaneStorageTankButton', ".propaneStorageTankWrapper",'propaneStorageTankSelect', 'propaneStorageTankSpecSelect', 'propaneStorageTankUnitCost', 'propaneStorageTankUnit', 'propaneStorageTankQty', 'propaneStorageTankTotal', 
+        `
+        <% propaneStorageTank.facilityTypes.forEach(jettyTypeFacilityType => { %>
+            <option value="<%= JSON.stringify(jettyTypeFacilityType) %>"><%= jettyTypeFacilityType.facilityName %></option>
+        <% }) %>
+        `);
+        addFieldStorageTank('Butane Storage Tank', '#butaneStorageTankNumber', '#butaneStorageTankButton', ".butaneStorageTankWrapper",'butaneStorageTankSelect', 'butaneStorageTankSpecSelect', 'butaneStorageTankUnitCost', 'butaneStorageTankUnit', 'butaneStorageTankQty', 'butaneStorageTankTotal', 
+        `
+        <% butaneStorageTank.facilityTypes.forEach(jettyTypeFacilityType => { %>
+            <option value="<%= JSON.stringify(jettyTypeFacilityType) %>"><%= jettyTypeFacilityType.facilityName %></option>
+        <% }) %>
+        `);
+        addFieldStorageTank('Mixed Storage Tank', '#mixedStorageTankNumber', '#mixedStorageTankButton', ".mixedStorageTankWrapper",'mixedStorageTankSelect', 'mixedStorageTankSpecSelect', 'mixedStorageTankUnitCost', 'mixedStorageTankUnit', 'mixedStorageTankQty', 'mixedStorageTankTotal', 
+        `
+        <% mixedStorageTank.facilityTypes.forEach(jettyTypeFacilityType => { %>
+            <option value="<%= JSON.stringify(jettyTypeFacilityType) %>"><%= jettyTypeFacilityType.facilityName %></option>
+        <% }) %>
+        `);
+    });
+
+    //jetty type
+    $(function(){
+        function receiving(select, unitCost, unit, qty, lastTotal){
+            $(select).on('change', function () {
+                var type = $(this).val();
+                var typeJSON = $.parseJSON(type);
+                // console.log(typeJSON)
+                
+                $(unitCost).val(typeJSON.unitCost);
+                $(unit).val(typeJSON.unit);
+                if($(qty).val() == 0){
+                    $(qty).val(1);
+                }
+                var total = Number(Number($(qty).val()) * Number($(unitCost).val()));
+                $(lastTotal).val(total);
+            });
+            $(qty).on('change', function () {
+                var total = Number(Number($(qty).val()) * Number($(unitCost).val()));
+                $(lastTotal).val(total);
+            });
+        }
+        receiving('#jettyTypeSelect1', '#jettyTypeUnitCost1', '#jettyTypeUnit1', '#jettyTypeQty1', '#jettyTypeTotal1');    
+        receiving('#jettyConnectionSelect', '#jettyConnectionUnitCost', '#jettyConnectionUnit', '#jettyConnectionQty', '#jettyConnectionTotal');
+        receiving('#unloadingFacilitySelect', '#unloadingFacilityUnitCost', '#unloadingFacilityUnit', '#unloadingFacilityQty', '#unloadingFacilityTotal');
+        receiving('#pipelineInstallationSelect', '#pipelineInstallationUnitCost', '#pipelineInstallationUnit', '#pipelineInstallationQty', '#pipelineInstallationTotal');
+        receiving('#mooringFacilitiesSelect1', '#mooringFacilitiesUnitCost1', '#mooringFacilitiesUnit1', '#mooringFacilitiesQty1', '#mooringFacilitiesTotal1');
+        receiving('#meteringSelect', '#meteringUnitCost', '#meteringUnit', '#meteringQty', '#meteringTotal');
+        
+        receiving('#loadingPumpSelect1', '#loadingPumpUnitCost1', '#loadingPumpUnit1', '#loadingPumpQty1', '#loadingPumpTotal1');
+        
+        receiving('#weightbridgeSelect', '#weightbridgeUnitCost', '#weightbridgeUnit', '#weightbridgeQty', '#weightbridgeTotal');
+
+        addField('Jetty Type', '#jettyTypeNumber', '#jettyTypeButton', ".jettyTypeWapper",'jettyTypeSelect', 'jettyTypeUnitCost', 'jettyTypeUnit', 'jettyTypeQty', 'jettyTypeTotal', 
+        `
+        <% jettyType.facilityTypes.forEach(jettyTypeFacilityType => { %>
+            <option value="<%= JSON.stringify(jettyTypeFacilityType) %>"><%= jettyTypeFacilityType.facilityName %></option>
+        <% }) %>
+        `);
+        addField('Mooring Facilities','#mooringFacilitiesNumber', '#mooringFacilitiesButton', ".mooringFacilitiesWrapper",'mooringFacilitiesSelect', 'mooringFacilitiesUnitCost', 'mooringFacilitiesUnit', 'mooringFacilitiesQty', 'mooringFacilitiesTotal', 
+        `
+        <% mooringFacilities.facilityTypes.forEach(jettyTypeFacilityType => { %>
+            <option value="<%= JSON.stringify(jettyTypeFacilityType) %>"><%= jettyTypeFacilityType.facilityName %></option>
+        <% }) %>
+        `
+        );
+        function addField (label, number, button, wrapper, select, unitCost, unit, qty, lastTotal, facilities){
+            var jettyTypeNumber = $(number).val();
+            $(button).on('click', () => {
+                var jettyTypeWapper = $(wrapper);
+                $(number).val(++jettyTypeNumber);
+                $(jettyTypeWapper).append(`
+                <div class="row">
+                    <div class="col-md-3">
+                        
+                        <div class="mb-3">
+                            <select class="form-control" id="${select}${jettyTypeNumber}">
+                                <option value="" selected disabled>Select a ${label}</option>
+                                ${facilities}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">$</span>
+                            </div>
+                            <input type="text" class="form-control" id="${unitCost}${jettyTypeNumber}" value="0">
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="${unit}${jettyTypeNumber}" value="" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="jettyTypeSpecification" value="">
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="mb-3">
+                            <input type="number" step="1" class="form-control" value="0" id="${qty}${jettyTypeNumber}">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">$</span>
+                            </div>
+                            <input type="number" step="1" class="form-control" id="${lastTotal}${jettyTypeNumber}" name="${lastTotal}${jettyTypeNumber}" value="0" readonly>
+                        </div>
+                    </div>
+                </div>
+                `);
+                receiving(`#${select}${jettyTypeNumber}`, `#${unitCost}${jettyTypeNumber}`, `#${unit}${jettyTypeNumber}`, `#${qty}${jettyTypeNumber}`, `#${lastTotal}${jettyTypeNumber}`);    
+            })
+        }
+
+
+        calculateManual(`#pipelineStorageUnitCost`, `#pipelineStorageQty`, `#pipelineStorageTotal`);
+        calculateManual(`#heatExhargerUnitCost`, `#heatExhargerQty`, `#heatExhargerTotal`);
+        calculateManual(`#boosterPumpUnitCost`, `#boosterPumpQty`, `#boosterPumpTotal`);
+        
+        calculateManual(`#bufferTankUnitCost`, `#bufferTankQty`, `#bufferTankTotal`);
+        calculateManual(`#loadingBayUnitCost`, `#loadingBayQty`, `#loadingBayTotal`);
+        calculateManual(`#carouselFillingUnitCost1`, `#carouselFillingQty1`, `#carouselFillingTotal1`);
+        calculateManual(`#fillingStationOthersUnitCost1`, `#fillingStationOthersQty1`, `#fillingStationOthersTotal1`);
+        
+        calculateManual(`#terminalAutomationUnitCost`, `#terminalAutomationQty`, `#terminalAutomationTotal`);
+
+        calculateManual(`#fireWaterPumpUnitCost`, `#fireWaterPumpQty`, `#fireWaterPumpTotal`);
+        calculateManual(`#fireHydrantsUnitCost`, `#fireHydrantsQty`, `#fireHydrantsTotal`);
+        calculateManual(`#fireExtinguisersUnitCost`, `#fireExtinguisersQty`, `#fireExtinguisersTotal`);
+        calculateManual(`#fireGasDetectorUnitCost`, `#fireGasDetectorQty`, `#fireGasDetectorTotal`);
+
+        calculateManual(`#flareUnitCost`, `#flareQty`, `#flareTotal`);
+        calculateManual(`#instrumentAirUnitCost`, `#instrumentAirQty`, `#instrumentAirTotal`);
+        calculateManual(`#emergencyPowerUnitCost`, `#emergencyPowerQty`, `#emergencyPowerTotal`);
+        calculateManual(`#dieselOilPumpUnitCost`, `#dieselOilPumpQty`, `#dieselOilPumpTotal`);
+        calculateManual(`#freshWaterPumpUnitCost`, `#freshWaterPumpQty`, `#freshWaterPumpTotal`);
+        calculateManual(`#oilPumpUnitCost`, `#oilPumpQty`, `#oilPumpTotal`);
+        calculateManual(`#dieselOilTankUnitCost`, `#dieselOilTankQty`, `#dieselOilTankTotal`);
+        calculateManual(`#freshWaterTankUnitCost`, `#freshWaterTankQty`, `#freshWaterTankTotal`);
+        calculateManual(`#oilTankUnitCost`, `#oilTankQty`, `#oilTankTotal`);
+
+        calculateManual(`#buildingUnitCost`, `#buildingQty`, `#buildingTotal`);
+        calculateManual(`#landRentUnitCost`, `#landRentQty`, `#landRentTotal`);
+
+        calculateManual(`#storageOthersUnitCost1`, `#storageOthersQty1`, `#storageOthersTotal1`);
+        calculateManual(`#receivingOthersUnitCost1`, `#receivingOthersQty1`, `#receivingOthersTotal1`);
+        function calculateManual(unitCost, qty, lastTotal){
+            $(unitCost).on('change', function () {
+                if($(qty).val() == 0){
+                    $(qty).val(1);
+                }
+                var total = Number(Number($(qty).val()) * Number($(unitCost).val()));
+                $(lastTotal).val(total);
+            });
+            $(qty).on('change', function () {
+                var total = Number(Number($(qty).val()) * Number($(unitCost).val()));
+                $(lastTotal).val(total);
+            });
+        }
+
+        addFieldOther('#carouselFillingNumber', '#carouselFillingButton', ".carouselFillingWrapper",'carouselFillingSelect', 'carouselFillingUnitCost', 'carouselFillingUnit', 'carouselFillingQty', 'carouselFillingTotal');
+        addFieldOther('#fillingStationOthersNumber', '#fillingStationOthersButton', ".fillingStationOthersWrapper",'fillingStationOthersSelect', 'fillingStationOthersUnitCost', 'fillingStationOthersTotalUnit', 'fillingStationOthersQty', 'fillingStationOthersTotal');
+        
+        addFieldOther('#storageOthersNumber', '#storageOthersButton', ".storageOthersWrapper",'storageOthersSelect', 'storageOthersUnitCost', 'storageOthersUnit', 'storageOthersQty', 'storageOthersTotal');
+        addFieldOther('#receivingOthersNumber', '#receivingOthersButton', ".receivingOthersWrapper",'receivingOthersSelect', 'receivingOthersUnitCost', 'receivingOthersUnit', 'receivingOthersQty', 'receivingOthersTotal');
+        function addFieldOther (number, button, wrapper, select, unitCost, unit, qty, lastTotal){
+            var jettyTypeNumber = $(number).val();
+            $(button).on('click', () => {
+                var jettyTypeWapper = $(wrapper);
+                $(number).val(++jettyTypeNumber);
+                $(jettyTypeWapper).append(`
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="${select}${jettyTypeNumber}" value="">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">$</span>
+                            </div>
+                            <input type="number" class="form-control" id="${unitCost}${jettyTypeNumber}" value="">
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="${unit}${jettyTypeNumber}" value="">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="receivingOthersSpecification1" value="">
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="mb-3">
+                            <input type="number" step="1" class="form-control" value="0" id="${qty}${jettyTypeNumber}">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">$</span>
+                            </div>
+                            <input type="number" step="1" class="form-control" id="${lastTotal}${jettyTypeNumber}" name="${lastTotal}${jettyTypeNumber}" value="0" readonly>
+                        </div>
+                    </div>
+                </div>
+                `);
+                calculateManual(`#${unitCost}${jettyTypeNumber}`, `#${qty}${jettyTypeNumber}`, `#${lastTotal}${jettyTypeNumber}`);    
+            })
+        }
+        
+    });
+
+</script>

@@ -11,7 +11,7 @@ const Receiving = require('./../models/Terimnal/receiving');
 const BunkerPriceSensitivity = require('./../models/bunker-price-sensitivity');
 const Topic = require('./../models/topic.model');
 const CostShipAge = require('./../models/cost-ship-age');
-
+const TypeCustom = require('./../models/type-custom.model');
 const createProject = async (req, res, next) => {
     try {
         const topicID = req.body.topicID;
@@ -42,7 +42,21 @@ const getProjectTerminalByID = async (req, res, next) => {
     try {
         const ProjectID = req.params.projectID;
         const project = await Project.findOne({_id: ObjectID(ProjectID)});
-        const terminals = await Terminal.find();
+        const terminalDatas = await Terminal.find();
+        let terminals = [];
+        terminalDatas.forEach(terminal => {
+            const data = {
+                _id: terminal._id,
+                terminalName: terminal.terminalName,
+                infrastructureCost: terminal.Capex.infrastructureCost,
+                taxPermit: terminal.Capex.taxPermit,
+                PMTFeed: terminal.Capex.PMTFeed,
+                totalCapex: terminal.Capex.totalCapex,
+                disposalPrice: terminal.Capex.disposalPrice,
+                totalOpex: terminal.Opex.totalOpex,
+            }
+            terminals.push(data);
+        });
         res.render('Terminal/terminal-summary', {
             layout: 'layouts/main-layout',
             title: project.name,
@@ -108,70 +122,175 @@ const getFormTerminal = async (req, res, next) => {
 const createTerminal = async (req, res, next) => {
     try {
         let jettyTypeTotal = 0;
+        let jettyTypeSubTotals = [];
         for (let i = 1; i <= Number(req.body.jettyTypeNumber); i++) {
+            jettyTypeSubTotals.push(Number(req.body['jettyTypeTotal'+i]));
             jettyTypeTotal += Number(req.body['jettyTypeTotal'+i])
         }
         const jettyConnectionTotal = Number(req.body.jettyConnectionTotal);
         const unloadingFacilityTotal = Number(req.body.unloadingFacilityTotal);
         const pipelineInstallationTotal = Number(req.body.pipelineInstallationTotal);
         let mooringFacilitiesTotal = 0;
+        let mooringFacilitiesSubTotals = [];
         for (let i = 1; i <= Number(req.body.mooringFacilitiesNumber); i++) {
+            mooringFacilitiesSubTotals.push(Number(req.body['mooringFacilitiesTotal'+i]));
             mooringFacilitiesTotal += Number(req.body['mooringFacilitiesTotal'+i]);
         }
         const meteringTotal = Number(req.body.meteringTotal);
         let receivingOthersTotal = 0;
+        let receivingOthersSubTotals = [];
         for (let i = 1; i <= Number(req.body.receivingOthersNumber); i++) {
+            receivingOthersSubTotals.push(Number(req.body['receivingOthersTotal'+i]))
             receivingOthersTotal += Number(req.body['receivingOthersTotal'+i]);
             
         }
         const receivingTotal = jettyTypeTotal+jettyConnectionTotal+unloadingFacilityTotal+pipelineInstallationTotal+mooringFacilitiesTotal+meteringTotal+receivingOthersTotal;
 
+        const Receiving = {
+            JettyType: {
+                jettyTypeNumber: Number(req.body.jettyTypeNumber),
+                jettyTypeSubTotals,
+                jettyTypeTotal
+            },
+            jettyConnectionTotal,
+            unloadingFacilityTotal,
+            pipelineInstallationTotal,
+            MooringFacility : {
+                mooringFacilitiesNumber: Number(req.body.mooringFacilitiesNumber),
+                mooringFacilitiesSubTotals,
+                mooringFacilitiesTotal
+            },
+            meteringTotal,
+            ReceivingOthers: {
+                receivingOthersNumber: Number(req.body.receivingOthersNumber),
+                receivingOthersSubTotals,
+                receivingOthersTotal
+            },
+            receivingTotal
+        }
+
         let propaneStorageTankTotal = 0;
+        let propaneStorageTankSubTotals = [];
         for (let i = 1; i <= Number(req.body.propaneStorageTankNumber); i++) {
+            propaneStorageTankSubTotals.push(Number(req.body['propaneStorageTankTotal'+i]));
             propaneStorageTankTotal += Number(req.body['propaneStorageTankTotal'+i]);
         }
         let butaneStorageTankTotal = 0;
+        let butaneStorageTankSubTotals = [];
         for (let i = 1; i <= Number(req.body.butaneStorageTankNumber); i++) {
+            butaneStorageTankSubTotals.push(Number(req.body['butaneStorageTankTotal'+i]));
             butaneStorageTankTotal += Number(req.body['butaneStorageTankTotal'+i]);
         } 
         let mixedStorageTankTotal = 0;
+        let mixedStorageTankSubTotals = [];
         for (let i = 1; i <= Number(req.body.mixedStorageTankNumber); i++) {
+            mixedStorageTankSubTotals.push(Number(req.body['mixedStorageTankTotal'+i]));
             mixedStorageTankTotal += Number(req.body['mixedStorageTankTotal'+i]);
         } 
         const pipelineStorageTotal = Number(req.body.pipelineStorageTotal);
         let loadingPumpTotal = 0;
+        let loadingPumpSubTotals = [];
         for (let i = 1; i <= Number(req.body.loadingPumpNumber); i++) {
+            loadingPumpSubTotals.push(Number(req.body['loadingPumpTotal'+i]));
             loadingPumpTotal += Number(req.body['loadingPumpTotal'+i]);
         } 
         const heatExhargerTotal = Number(req.body.heatExhargerTotal);
         const boosterPumpTotal = Number(req.body.boosterPumpTotal);
         let storageOthersTotal = 0;
+        let storageOthersSubTotals = [];
         for (let i = 1; i <= Number(req.body.storageOthersNumber); i++) {
+            storageOthersSubTotals.push(Number(req.body['storageOthersTotal'+i]));
             storageOthersTotal += Number(req.body['storageOthersTotal'+i]);
         } 
         const storagesTotal = propaneStorageTankTotal+butaneStorageTankTotal+mixedStorageTankTotal+pipelineStorageTotal+loadingPumpTotal+heatExhargerTotal+boosterPumpTotal+storageOthersTotal;
+
+        const Storage = {
+            PropaneStorageTank: {
+                propaneStorageTankNumber: Number(req.body.propaneStorageTankNumber),
+                propaneStorageTankSubTotals,
+                propaneStorageTankTotal
+            },
+            ButaneStorageTank: {
+                butaneStorageTankNumber: Number(req.body.butaneStorageTankNumber),
+                butaneStorageTankSubTotals,
+                butaneStorageTankTotal
+            },
+            MixedStorageTank: {
+                mixedStorageTankNumber: Number(req.body.mixedStorageTankNumber),
+                mixedStorageTankSubTotals,
+                mixedStorageTankTotal
+            },
+            pipelineStorageTotal,
+            LoadingPump: {
+                loadingPumpNumber: Number(req.body.loadingPumpNumber),
+                loadingPumpSubTotals,
+                loadingPumpTotal
+            },
+            heatExhargerTotal,
+            boosterPumpTotal,
+            StorageOthers : {
+                storageOthersNumber: Number(req.body.storageOthersNumber),
+                storageOthersSubTotals,
+                storageOthersTotal
+            }
+
+        }
 
         const loadingSkidTotal = Number(req.body.loadingSkidTotal);
         const bufferTankTotal = Number(req.body.bufferTankTotal);
         const weightbridgeTotal = Number(req.body.weightbridgeTotal);
         const loadingBayTotal = Number(req.body.loadingBayTotal);
         let carouselFillingTotal = 0;
+        let carouselFillingSubTotals = [];
         for (let i = 1; i <= Number(req.body.carouselFillingNumber); i++) {
+            carouselFillingSubTotals.push(Number(req.body['carouselFillingTotal'+i]));
             carouselFillingTotal += Number(req.body['carouselFillingTotal'+i]);
         } 
         let fillingStationOthersTotal = 0;
+        let fillingStationOthersSubTotals = [];
         for (let i = 1; i <= Number(req.body.fillingStationOthersNumber); i++) {
+            fillingStationOthersSubTotals.push(Number(req.body['fillingStationOthersTotal'+i]));
             fillingStationOthersTotal += Number(req.body['fillingStationOthersTotal'+i]);
         } 
         const fillingStationTotal = loadingSkidTotal+bufferTankTotal+weightbridgeTotal+loadingBayTotal+carouselFillingTotal+fillingStationOthersTotal;
 
+        const LPGFillingStation = {
+            loadingSkidTotal,
+            bufferTankTotal,
+            weightbridgeTotal,
+            loadingBayTotal,
+            CarouselFilling: {
+                carouselFillingNumber: Number(req.body.carouselFillingNumber),
+                carouselFillingSubTotals,
+                carouselFillingTotal
+            },
+            FillingStationOthers: {
+                fillingStationOthersNumber: Number(req.body.fillingStationOthersNumber),
+                fillingStationOthersSubTotals,
+                fillingStationOthersTotal
+            },
+            fillingStationTotal
+        }
+
         const terminalAutomationTotal = Number(req.body.terminalAutomationTotal);
+
+        const ControlRoom = {
+            terminalAutomationTotal
+        }
 
         const fireWaterPumpTotal = Number(req.body.fireWaterPumpTotal);
         const fireHydrantsTotal = Number(req.body.fireHydrantsTotal);
         const fireExtinguisersTotal = Number(req.body.fireExtinguisersTotal);
         const fireGasDetectorTotal = Number(req.body.fireGasDetectorTotal);
         const fireSystemTotal = fireWaterPumpTotal+fireHydrantsTotal+fireExtinguisersTotal+fireGasDetectorTotal;
+
+        const FirefightingSystem = {
+            fireWaterPumpTotal,
+            fireHydrantsTotal,
+            fireExtinguisersTotal,
+            fireGasDetectorTotal,
+            fireSystemTotal,
+        }
 
         const flareTotal = Number(req.body.flareTotal);
         const instrumentAirTotal = Number(req.body.instrumentAirTotal);
@@ -184,8 +303,27 @@ const createTerminal = async (req, res, next) => {
         const oilTankTotal = Number(req.body.oilTankTotal);
         const utilityTotal = flareTotal+instrumentAirTotal+emergencyPowerTotal+dieselOilPumpTotal+freshWaterPumpTotal+oilPumpTotal+dieselOilTankTotal+freshWaterTankTotal+oilTankTotal;
 
+        const Utility = {
+            flareTotal,
+            instrumentAirTotal,
+            emergencyPowerTotal,
+            dieselOilPumpTotal,
+            freshWaterPumpTotal,
+            oilPumpTotal,
+            dieselOilTankTotal,
+            freshWaterTankTotal,
+            oilTankTotal,
+            utilityTotal,
+        }
+
         const buildingTotal = Number(req.body.buildingTotal);
-        const landRentTotal = Number(req.body.buildingTotal);
+        const OfficeBuilding = {
+            buildingTotal
+        }
+        const landRentTotal = Number(req.body.landRentTotal);
+        const LandRent = {
+            landRentTotal
+        }
         
         const infrastructureCost = receivingTotal+storagesTotal+fillingStationTotal+terminalAutomationTotal+fireSystemTotal+utilityTotal+buildingTotal+landRentTotal;
         const taxPermit = Number(infrastructureCost * 25/100);
@@ -193,13 +331,321 @@ const createTerminal = async (req, res, next) => {
         const totalCapex = infrastructureCost+taxPermit+PMTFeed;
         const disposalPrice = Number((unloadingFacilityTotal+loadingPumpTotal+bufferTankTotal+weightbridgeTotal+carouselFillingTotal+emergencyPowerTotal) * (30/100)) ;
         
+        const Capex = {
+            infrastructureCost,
+            taxPermit,
+            PMTFeed,
+            totalCapex,
+            disposalPrice,
+        }
+
+        const opexStorageCapacity = Number(req.body.opexInput);
+        const jettyRentCapacity = Number(req.body.jettyRentCapacity);
+        const jettyRentUnloading = Number(req.body.jettyRentUnloading);
+        const jettyRentCost = Number(req.body.jettyRentCost);
         const totalOpex = Number(req.body.opexResult);
+
+        const Opex = {
+            opexStorageCapacity,
+            jettyRentCapacity,
+            jettyRentUnloading,
+            jettyRentCost,
+            totalOpex,
+        }
+
         const terminalName = req.body.terminalName;
-        const terminal = {terminalName,infrastructureCost,taxPermit,PMTFeed,totalCapex,disposalPrice,totalOpex};
+        // const terminal = {terminalName,infrastructureCost,taxPermit,PMTFeed,totalCapex,disposalPrice,totalOpex};
         const ProjectID = req.body.ProjectID;
+
+        const terminal = {
+            terminalName,
+            Receiving,
+            Storage,
+            LPGFillingStation,
+            ControlRoom,
+            FirefightingSystem,
+            Utility,
+            OfficeBuilding,
+            LandRent,
+            Capex,
+            Opex
+        }
 
         const newTerminal = new Terminal(terminal);
         await newTerminal.save();
+        res.redirect(`/project/${ProjectID}/terminal`);
+    } catch (error) {
+        res.render('error', {
+            layout: 'layouts/main-layout',
+            message: error,
+            status: 400
+        });
+    }
+}
+
+const updateTerminal = async (req, res, next) => {
+    try {
+        let jettyTypeTotal = 0;
+        let jettyTypeSubTotals = [];
+        for (let i = 1; i <= Number(req.body.jettyTypeNumber); i++) {
+            jettyTypeSubTotals.push(Number(req.body['jettyTypeTotal'+i]));
+            jettyTypeTotal += Number(req.body['jettyTypeTotal'+i])
+        }
+        const jettyConnectionTotal = Number(req.body.jettyConnectionTotal);
+        const unloadingFacilityTotal = Number(req.body.unloadingFacilityTotal);
+        const pipelineInstallationTotal = Number(req.body.pipelineInstallationTotal);
+        let mooringFacilitiesTotal = 0;
+        let mooringFacilitiesSubTotals = [];
+        for (let i = 1; i <= Number(req.body.mooringFacilitiesNumber); i++) {
+            mooringFacilitiesSubTotals.push(Number(req.body['mooringFacilitiesTotal'+i]));
+            mooringFacilitiesTotal += Number(req.body['mooringFacilitiesTotal'+i]);
+        }
+        const meteringTotal = Number(req.body.meteringTotal);
+        let receivingOthersTotal = 0;
+        let receivingOthersSubTotals = [];
+        for (let i = 1; i <= Number(req.body.receivingOthersNumber); i++) {
+            receivingOthersSubTotals.push(Number(req.body['receivingOthersTotal'+i]))
+            receivingOthersTotal += Number(req.body['receivingOthersTotal'+i]);
+            
+        }
+        const receivingTotal = jettyTypeTotal+jettyConnectionTotal+unloadingFacilityTotal+pipelineInstallationTotal+mooringFacilitiesTotal+meteringTotal+receivingOthersTotal;
+
+        const Receiving = {
+            JettyType: {
+                jettyTypeNumber: Number(req.body.jettyTypeNumber),
+                jettyTypeSubTotals,
+                jettyTypeTotal
+            },
+            jettyConnectionTotal,
+            unloadingFacilityTotal,
+            pipelineInstallationTotal,
+            MooringFacility : {
+                mooringFacilitiesNumber: Number(req.body.mooringFacilitiesNumber),
+                mooringFacilitiesSubTotals,
+                mooringFacilitiesTotal
+            },
+            meteringTotal,
+            ReceivingOthers: {
+                receivingOthersNumber: Number(req.body.receivingOthersNumber),
+                receivingOthersSubTotals,
+                receivingOthersTotal
+            },
+            receivingTotal
+        }
+
+        let propaneStorageTankTotal = 0;
+        let propaneStorageTankSubTotals = [];
+        for (let i = 1; i <= Number(req.body.propaneStorageTankNumber); i++) {
+            propaneStorageTankSubTotals.push(Number(req.body['propaneStorageTankTotal'+i]));
+            propaneStorageTankTotal += Number(req.body['propaneStorageTankTotal'+i]);
+        }
+        let butaneStorageTankTotal = 0;
+        let butaneStorageTankSubTotals = [];
+        for (let i = 1; i <= Number(req.body.butaneStorageTankNumber); i++) {
+            butaneStorageTankSubTotals.push(Number(req.body['butaneStorageTankTotal'+i]));
+            butaneStorageTankTotal += Number(req.body['butaneStorageTankTotal'+i]);
+        } 
+        let mixedStorageTankTotal = 0;
+        let mixedStorageTankSubTotals = [];
+        for (let i = 1; i <= Number(req.body.mixedStorageTankNumber); i++) {
+            mixedStorageTankSubTotals.push(Number(req.body['mixedStorageTankTotal'+i]));
+            mixedStorageTankTotal += Number(req.body['mixedStorageTankTotal'+i]);
+        } 
+        const pipelineStorageTotal = Number(req.body.pipelineStorageTotal);
+        let loadingPumpTotal = 0;
+        let loadingPumpSubTotals = [];
+        for (let i = 1; i <= Number(req.body.loadingPumpNumber); i++) {
+            loadingPumpSubTotals.push(Number(req.body['loadingPumpTotal'+i]));
+            loadingPumpTotal += Number(req.body['loadingPumpTotal'+i]);
+        } 
+        const heatExhargerTotal = Number(req.body.heatExhargerTotal);
+        const boosterPumpTotal = Number(req.body.boosterPumpTotal);
+        let storageOthersTotal = 0;
+        let storageOthersSubTotals = [];
+        for (let i = 1; i <= Number(req.body.storageOthersNumber); i++) {
+            storageOthersSubTotals.push(Number(req.body['storageOthersTotal'+i]));
+            storageOthersTotal += Number(req.body['storageOthersTotal'+i]);
+        } 
+        const storagesTotal = propaneStorageTankTotal+butaneStorageTankTotal+mixedStorageTankTotal+pipelineStorageTotal+loadingPumpTotal+heatExhargerTotal+boosterPumpTotal+storageOthersTotal;
+
+        const Storage = {
+            PropaneStorageTank: {
+                propaneStorageTankNumber: Number(req.body.propaneStorageTankNumber),
+                propaneStorageTankSubTotals,
+                propaneStorageTankTotal
+            },
+            ButaneStorageTank: {
+                butaneStorageTankNumber: Number(req.body.butaneStorageTankNumber),
+                butaneStorageTankSubTotals,
+                butaneStorageTankTotal
+            },
+            MixedStorageTank: {
+                mixedStorageTankNumber: Number(req.body.mixedStorageTankNumber),
+                mixedStorageTankSubTotals,
+                mixedStorageTankTotal
+            },
+            pipelineStorageTotal,
+            LoadingPump: {
+                loadingPumpNumber: Number(req.body.loadingPumpNumber),
+                loadingPumpSubTotals,
+                loadingPumpTotal
+            },
+            heatExhargerTotal,
+            boosterPumpTotal,
+            StorageOthers : {
+                storageOthersNumber: Number(req.body.storageOthersNumber),
+                storageOthersSubTotals,
+                storageOthersTotal
+            }
+
+        }
+
+        const loadingSkidTotal = Number(req.body.loadingSkidTotal);
+        const bufferTankTotal = Number(req.body.bufferTankTotal);
+        const weightbridgeTotal = Number(req.body.weightbridgeTotal);
+        const loadingBayTotal = Number(req.body.loadingBayTotal);
+        let carouselFillingTotal = 0;
+        let carouselFillingSubTotals = [];
+        for (let i = 1; i <= Number(req.body.carouselFillingNumber); i++) {
+            carouselFillingSubTotals.push(Number(req.body['carouselFillingTotal'+i]));
+            carouselFillingTotal += Number(req.body['carouselFillingTotal'+i]);
+        } 
+        let fillingStationOthersTotal = 0;
+        let fillingStationOthersSubTotals = [];
+        for (let i = 1; i <= Number(req.body.fillingStationOthersNumber); i++) {
+            fillingStationOthersSubTotals.push(Number(req.body['fillingStationOthersTotal'+i]));
+            fillingStationOthersTotal += Number(req.body['fillingStationOthersTotal'+i]);
+        } 
+        const fillingStationTotal = loadingSkidTotal+bufferTankTotal+weightbridgeTotal+loadingBayTotal+carouselFillingTotal+fillingStationOthersTotal;
+
+        const LPGFillingStation = {
+            loadingSkidTotal,
+            bufferTankTotal,
+            weightbridgeTotal,
+            loadingBayTotal,
+            CarouselFilling: {
+                carouselFillingNumber: Number(req.body.carouselFillingNumber),
+                carouselFillingSubTotals,
+                carouselFillingTotal
+            },
+            FillingStationOthers: {
+                fillingStationOthersNumber: Number(req.body.fillingStationOthersNumber),
+                fillingStationOthersSubTotals,
+                fillingStationOthersTotal
+            },
+            fillingStationTotal
+        }
+
+        const terminalAutomationTotal = Number(req.body.terminalAutomationTotal);
+
+        const ControlRoom = {
+            terminalAutomationTotal
+        }
+
+        const fireWaterPumpTotal = Number(req.body.fireWaterPumpTotal);
+        const fireHydrantsTotal = Number(req.body.fireHydrantsTotal);
+        const fireExtinguisersTotal = Number(req.body.fireExtinguisersTotal);
+        const fireGasDetectorTotal = Number(req.body.fireGasDetectorTotal);
+        const fireSystemTotal = fireWaterPumpTotal+fireHydrantsTotal+fireExtinguisersTotal+fireGasDetectorTotal;
+
+        const FirefightingSystem = {
+            fireWaterPumpTotal,
+            fireHydrantsTotal,
+            fireExtinguisersTotal,
+            fireGasDetectorTotal,
+            fireSystemTotal,
+        }
+
+        const flareTotal = Number(req.body.flareTotal);
+        const instrumentAirTotal = Number(req.body.instrumentAirTotal);
+        const emergencyPowerTotal = Number(req.body.emergencyPowerTotal);
+        const dieselOilPumpTotal = Number(req.body.dieselOilPumpTotal);
+        const freshWaterPumpTotal = Number(req.body.freshWaterPumpTotal);
+        const oilPumpTotal = Number(req.body.oilPumpTotal);
+        const dieselOilTankTotal = Number(req.body.dieselOilTankTotal);
+        const freshWaterTankTotal = Number(req.body.freshWaterTankTotal);
+        const oilTankTotal = Number(req.body.oilTankTotal);
+        const utilityTotal = flareTotal+instrumentAirTotal+emergencyPowerTotal+dieselOilPumpTotal+freshWaterPumpTotal+oilPumpTotal+dieselOilTankTotal+freshWaterTankTotal+oilTankTotal;
+
+        const Utility = {
+            flareTotal,
+            instrumentAirTotal,
+            emergencyPowerTotal,
+            dieselOilPumpTotal,
+            freshWaterPumpTotal,
+            oilPumpTotal,
+            dieselOilTankTotal,
+            freshWaterTankTotal,
+            oilTankTotal,
+            utilityTotal,
+        }
+
+        const buildingTotal = Number(req.body.buildingTotal);
+        const OfficeBuilding = {
+            buildingTotal
+        }
+        const landRentTotal = Number(req.body.landRentTotal);
+        const LandRent = {
+            landRentTotal
+        }
+        
+        const infrastructureCost = receivingTotal+storagesTotal+fillingStationTotal+terminalAutomationTotal+fireSystemTotal+utilityTotal+buildingTotal+landRentTotal;
+        const taxPermit = Number(infrastructureCost * 25/100);
+        const PMTFeed = Number(infrastructureCost * 5/100);
+        const totalCapex = infrastructureCost+taxPermit+PMTFeed;
+        const disposalPrice = Number((unloadingFacilityTotal+loadingPumpTotal+bufferTankTotal+weightbridgeTotal+carouselFillingTotal+emergencyPowerTotal) * (30/100)) ;
+        
+        const Capex = {
+            infrastructureCost,
+            taxPermit,
+            PMTFeed,
+            totalCapex,
+            disposalPrice,
+        }
+
+        const opexStorageCapacity = Number(req.body.opexInput);
+        const jettyRentCapacity = Number(req.body.jettyRentCapacity);
+        const jettyRentUnloading = Number(req.body.jettyRentUnloading);
+        const jettyRentCost = Number(req.body.jettyRentCost);
+        const totalOpex = Number(req.body.opexResult);
+
+        const Opex = {
+            opexStorageCapacity,
+            jettyRentCapacity,
+            jettyRentUnloading,
+            jettyRentCost,
+            totalOpex,
+        }
+
+        const terminalName = req.body.terminalName;
+        // const terminal = {terminalName,infrastructureCost,taxPermit,PMTFeed,totalCapex,disposalPrice,totalOpex};
+        const ProjectID = req.body.ProjectID;
+
+        const terminal = {
+            terminalName,
+            Receiving,
+            Storage,
+            LPGFillingStation,
+            ControlRoom,
+            FirefightingSystem,
+            Utility,
+            OfficeBuilding,
+            LandRent,
+            Capex,
+            Opex
+        }
+
+        const terminalID = req.params.terminalID;
+
+        await Terminal.updateOne(
+            { _id: terminalID},
+            {
+                $set: terminal
+            }
+        );
+
+        // const newTerminal = new Terminal(terminal);
+        // await newTerminal.save();
         res.redirect(`/project/${ProjectID}/terminal`);
     } catch (error) {
         res.render('error', {
@@ -399,6 +845,59 @@ const getTerminalCalculation = async (req, res, next) => {
             ProjectName: project.name
         });
     } catch (error) {
+        res.render('error', {
+            layout: 'layouts/main-layout',
+            message: error,
+            status: 400
+        });
+    }
+}
+
+const editTerminalByID = async (req, res, next) => {
+    try{
+        const TerminalID = req.params.terminalID;
+        const ProjectID = req.params.projectID;
+        const project = await Project.findOne({_id: ObjectID(ProjectID)});
+        const terminal = await Terminal.findOne({_id: ObjectID(TerminalID)});
+        const receivings = await Receiving.find();
+        const jettyType = receivings[0];
+        const jettyConnection = receivings[1];
+        const unloadingFacility = receivings[2];
+        const pipelineInstallation = receivings[3];
+        const mooringFacilities = receivings[4];
+        const metering = receivings[5];
+        
+        const storages = await Storage.find();
+        const propaneStorageTank = storages[0];
+        const butaneStorageTank = storages[1];
+        const mixedStorageTank = storages[2];
+        const loadingPump = receivings[6];
+        
+        const weightbridge = receivings[7];
+        const loadingSkid = storages[3];
+
+        res.render('Terminal/capex-edit', {
+            layout: 'layouts/main-layout',
+            title: 'Form',
+            terminal,
+            ProjectID: req.params.projectID,
+            ProjectName: project.name,
+            jettyType,
+            jettyConnection,
+            unloadingFacility,
+            pipelineInstallation,
+            mooringFacilities,
+            metering,
+            propaneStorageTank,
+            butaneStorageTank,
+            mixedStorageTank,
+            loadingPump,
+            weightbridge,
+            loadingSkid,
+            terminal
+        });
+    }
+    catch(error){
         res.render('error', {
             layout: 'layouts/main-layout',
             message: error,
@@ -1743,6 +2242,36 @@ const createCostShipAge = async (req, res, next) => {
     }
 }
 
+const createCustom = async (req, res, next) => {
+    try{
+        const data = {
+            name: "Putu Bagus Kertha Segara",
+            project: [
+                {
+                    name: 'Pertamina',
+                    job: 'Fullstack Dev'
+                },
+                {
+                    name: 'Kemenkes',
+                    jon: 'Expore Data'
+                },
+                {
+                    name: 'Ptrokimia',
+                    jon: 'Model Bisnis'
+                },
+            ],
+            hobi: 'Coding'
+        }
+
+        const newData = new TypeCustom({data});
+        const result = await newData.save()
+        res.send(result)
+    }
+    catch(error){
+
+    }
+}
+
 module.exports = {
     getProjectTerminalByID,
     getProjectTransportationByID,
@@ -1765,5 +2294,8 @@ module.exports = {
     getFormTransportationBunkerPriceSensitivity,
     createTransportationBunkerPriceSensitivity,
     getSummaryTransportationBunkerPriceSensitivity,
-    createCostShipAge
+    createCostShipAge,
+    createCustom,
+    editTerminalByID,
+    updateTerminal
 }

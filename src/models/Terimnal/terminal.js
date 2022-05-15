@@ -4,32 +4,48 @@ const Schema = mongoose.Schema;
 const terminalSchema = new Schema({
     terminalName: {
         type: String,
-        require: true
+        required: true
     },
-    infrastructureCost: {
-        type: Number,
-        require: true
+    Receiving:{
+        type: mongoose.Schema.Types.Mixed,
+        required: true
     },
-    taxPermit: {
-        type: Number,
-        require: true
+    Storage:{
+        type: mongoose.Schema.Types.Mixed,
+        required: true
     },
-    PMTFeed: {
-        type: Number,
-        require: true
+    LPGFillingStation:{
+        type: mongoose.Schema.Types.Mixed,
+        required: true
     },
-    totalCapex: {
-        type: Number,
-        require: true
+    ControlRoom:{
+        type: mongoose.Schema.Types.Mixed,
+        required: true
     },
-    disposalPrice: {
-        type: Number,
-        require: true
+    FirefightingSystem:{
+        type: mongoose.Schema.Types.Mixed,
+        required: true
     },
-    totalOpex: {
-        type: Number,
-        require: true
+    Utility:{
+        type: mongoose.Schema.Types.Mixed,
+        required: true
     },
+    OfficeBuilding:{
+        type: mongoose.Schema.Types.Mixed,
+        required: true
+    },
+    LandRent:{
+        type: mongoose.Schema.Types.Mixed,
+        required: true
+    },
+    Capex:{
+        type: mongoose.Schema.Types.Mixed,
+        required: true
+    },
+    Opex:{
+        type: mongoose.Schema.Types.Mixed,
+        required: true
+    }
 
 }, {timestamps: true,});
 
