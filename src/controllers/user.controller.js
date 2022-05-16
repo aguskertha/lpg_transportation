@@ -1,6 +1,7 @@
 const User = require('./../models/user.model');
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
+const ObjectID = require('mongodb').ObjectId;
 
 const register = async (req, res, next) => {
     try {
@@ -132,10 +133,100 @@ const loginPage = async (req, res, next) => {
     }
 }
 
+const getFormResetPassword = async (req, res, next) => {
+    try{
+        res.render('User/reset-password', {
+            layout: 'layouts/main-layout',
+            title: 'Reset Password'
+        })
+    }
+    catch(error){
+        res.render('error', {
+            layout: 'layouts/main-layout-no-nav',
+            message: error,
+            status: 400
+        });
+    }
+}
+const resetPassword = async (req, res, next) => {
+    try{
+        if(!req.user){
+            req.flash('error_msg', 'Login first');
+            res.redirect(`/user/login`)
+        }
+        const {password, newPassword, confirmNewPassword} = req.body;
+        const user = await User.findOne({ _id: ObjectID(req.user._id) });
+        if(!user){
+            throw 'User Not Found!';
+        }
+        let errors = [];
+        if(!password || !newPassword || !confirmNewPassword){
+            errors.push({message: 'Please fill in all fields!'});
+        }
+        
+        
+        if(confirmNewPassword.length < 6 || newPassword.length < 6){
+            errors.push({message: 'Password should be at least 6 characters!'});
+        }
+        else{
+            if(newPassword !== confirmNewPassword){
+                errors.push({message: 'Password not matched!'});
+            }
+        }
+
+        if(errors.length > 0 ){
+            res.render('User/reset-password', {
+                layout: 'layouts/main-layout-no-nav',
+                errors,
+                password,
+                newPassword,
+                confirmNewPassword,
+            });
+        }
+        else{
+            const validPassword = await bcrypt.compare(password, user.password);
+            if (!validPassword) {
+                errors.push({message: 'Invalid Password!'});
+                res.render('User/reset-password', {
+                    layout: 'layouts/main-layout-no-nav',
+                    errors,
+                    password,
+                    newPassword,
+                    confirmNewPassword,
+                });
+            }
+            else{
+                const hashedPassword = await bcrypt.hash(newPassword, 10);
+                if (hashedPassword) {
+                    await User.updateOne(
+                        { _id: ObjectID(req.user._id) },
+                        {
+                            $set: {
+                                password: hashedPassword
+                            }
+                        }
+                    );
+                    req.flash('success_msg', 'Password changed successfully!');
+                    res.redirect(`/topic`)
+                }
+            }
+        }
+    }
+    catch(error){
+        res.render('error', {
+            layout: 'layouts/main-layout-no-nav',
+            message: error,
+            status: 400
+        });
+    }
+}
+
 module.exports = {
     loginPage,
     registerPage,
     register,
     login,
-    logout
+    logout,
+    resetPassword,
+    getFormResetPassword
 }
