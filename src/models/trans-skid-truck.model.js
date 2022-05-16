@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const transSkidTruckSchema = new Schema({
+    ProjectID: {
+        type: String,
+        required: true
+    },
     DistributionArea: {
         distArea: {
             type: String,

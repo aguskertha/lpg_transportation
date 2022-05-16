@@ -27,8 +27,8 @@ const getProjectSkidTruckByID = async (req, res, next) => {
     try {
         const ProjectID = req.params.projectID;
         const project = await Project.findOne({_id : ObjectID(ProjectID)});
-        const transSkidTruckDatas = await TransSkidTruck.find();
-        const transSkidTruckBarges = await TransSkidTruckBarge.find();
+        const transSkidTruckDatas = await TransSkidTruck.find({ProjectID: ObjectID(ProjectID)});
+        const transSkidTruckBarges = await TransSkidTruckBarge.find({ProjectID: ObjectID(ProjectID)});
 
         let transSkidTrucks = [];
         transSkidTruckDatas.forEach(transSkidTruckData => {
@@ -250,6 +250,7 @@ const createTransportationSkidTruck = async (req, res, next) => {
         }
 
         const transSkidTruck = {
+            ProjectID,
             DistributionArea,
             SkidTruck,
             BasisData,
@@ -579,6 +580,7 @@ const createTransportationSkidTruck2 = async (req, res, next) => {
 
 
         const transSkidTruckBarge = {
+            ProjectID,
             DistributionArea,
             Barge,
             Tugboat,
@@ -685,6 +687,17 @@ const varDataTransSkidTruck = async (dataSend, transSkidTruck) => {
     }
 }
 
+const varDataTransSkidTruckBarge = async (dataSend, transSkidTruckBarge) => {
+    try{
+        dataSend.distArea = transSkidTruckBarge.DistributionArea.distArea
+
+        return dataSend;
+    }
+    catch(error){
+
+    }
+}
+
 const editTransportationSkidTruckByID = async (req, res, next) => {
     try {
         const ProjectID = req.params.projectID;
@@ -709,19 +722,19 @@ const editTransportationSkidTruckByID = async (req, res, next) => {
         
         const transSkidTruckBarge = await TransSkidTruckBarge.findOne({_id: ObjectID(skidTruckID)});
         if(transSkidTruckBarge){
-            // res.render('SkidTruck/form-case-2', {
-            //     layout: 'layouts/main-layout',
-            //     title: 'Form LPG Transportation',
-            //     ProjectID,
-            //     transSkidTruckBarge,
-            //     typeCase: {
-            //         name: 'Case 1',
-            //         slug: 'case-1'
-            //     },
-            //     unitConversion,
-            //     skidTruckID
-            // });
-            res.send('Still progress :D')
+            let dataSend = {
+                layout: 'layouts/main-layout',
+                title: 'Form LPG Transportation',
+                ProjectID,
+                transSkidTruckBarge,
+                typeCase: {
+                    name: 'Case 1',
+                    slug: 'case-1'
+                },
+                unitConversion,
+                skidTruckID
+            }
+            res.render('SkidTruck/form-case-2', await varDataTransSkidTruckBarge(dataSend, transSkidTruckBarge));
         }
     } catch (error) {
         res.render('error', {
