@@ -259,7 +259,7 @@ const createTransportationSkidTruck = async (req, res, next) => {
             RealFreightRate,
             ProposedFreight
         }
-        console.log(req.body.skidTruckID)
+
         if(req.body.skidTruckID){
             await TransSkidTruck.updateOne(
                 { _id: req.body.skidTruckID},
@@ -595,10 +595,21 @@ const createTransportationSkidTruck2 = async (req, res, next) => {
             ProposedFreightRateVesselTruck,
         }
 
-        const newTransSkidTruckBarge = new TransSkidTruckBarge(transSkidTruckBarge);
-        await newTransSkidTruckBarge.save()
-        res.redirect(`/project/${ProjectID}/skidtruck`)
-        
+        if(req.body.skidTruckID){
+            await TransSkidTruckBarge.updateOne(
+                { _id: req.body.skidTruckID},
+                {
+                    $set: transSkidTruckBarge
+                }
+            );
+            res.redirect(`/project/${ProjectID}/skidtruck`)
+        }
+        else{
+            const newTransSkidTruckBarge = new TransSkidTruckBarge(transSkidTruckBarge);
+            await newTransSkidTruckBarge.save()
+            res.redirect(`/project/${ProjectID}/skidtruck`)
+        }
+
     } catch (error) {
         res.render('error', {
             layout: 'layouts/main-layout',
@@ -690,6 +701,135 @@ const varDataTransSkidTruck = async (dataSend, transSkidTruck) => {
 const varDataTransSkidTruckBarge = async (dataSend, transSkidTruckBarge) => {
     try{
         dataSend.distArea = transSkidTruckBarge.DistributionArea.distArea
+        dataSend.distOrigin = transSkidTruckBarge.DistributionArea.distOrigin
+        dataSend.distDestination = transSkidTruckBarge.DistributionArea.distDestination
+        
+        dataSend.bargeVesselName = transSkidTruckBarge.Barge.bargeVesselName
+        dataSend.bargeTypeVessel = transSkidTruckBarge.Barge.bargeTypeVessel
+        dataSend.bargeCargoCapacityCBM = transSkidTruckBarge.Barge.bargeCargoCapacityCBM
+        dataSend.bargeCargoCapacityMT = transSkidTruckBarge.Barge.bargeCargoCapacityMT
+        dataSend.bargeIMONumber = transSkidTruckBarge.Barge.bargeIMONumber
+        dataSend.bargeMMSINumber = transSkidTruckBarge.Barge.bargeMMSINumber
+        dataSend.bargeCallSign = transSkidTruckBarge.Barge.bargeCallSign
+        dataSend.bargeGrossTonnage = transSkidTruckBarge.Barge.bargeGrossTonnage
+        dataSend.bargeSummerDWT = transSkidTruckBarge.Barge.bargeSummerDWT
+        dataSend.bargeLengthBreadth = transSkidTruckBarge.Barge.bargeLengthBreadth
+        dataSend.bargeYearBuilt = transSkidTruckBarge.Barge.bargeYearBuilt
+        dataSend.bargeShipAge = transSkidTruckBarge.Barge.bargeShipAge
+        dataSend.bargeCrewNumber = transSkidTruckBarge.Barge.bargeCrewNumber
+        dataSend.bargeSFOC = transSkidTruckBarge.Barge.bargeSFOC
+        
+        dataSend.tugboatVesselName = transSkidTruckBarge.Tugboat.tugboatVesselName
+        dataSend.tugboatTypeVessel = transSkidTruckBarge.Tugboat.tugboatTypeVessel
+        dataSend.tugboatIMONumber = transSkidTruckBarge.Tugboat.tugboatIMONumber
+        dataSend.tugboatMMSINumber = transSkidTruckBarge.Tugboat.tugboatMMSINumber
+        dataSend.tugboatCallSign = transSkidTruckBarge.Tugboat.tugboatCallSign
+        dataSend.tugboatGrossTonnage = transSkidTruckBarge.Tugboat.tugboatGrossTonnage
+        dataSend.tugboatSummerDWT = transSkidTruckBarge.Tugboat.tugboatSummerDWT
+        dataSend.tugboatLengthBreadth = transSkidTruckBarge.Tugboat.tugboatLengthBreadth
+        dataSend.tugboatYearBuilt = transSkidTruckBarge.Tugboat.tugboatYearBuilt
+        dataSend.tugboatShipAge = transSkidTruckBarge.Tugboat.tugboatShipAge
+        dataSend.tugboatCrewNumber = transSkidTruckBarge.Tugboat.tugboatCrewNumber
+        dataSend.tugboatSFOC = transSkidTruckBarge.Tugboat.tugboatSFOC
+        
+        dataSend.skidTruckCargoCapacity = transSkidTruckBarge.SkidTruck.skidTruckCargoCapacity
+        dataSend.skidTruckHeadSpec = transSkidTruckBarge.SkidTruck.skidTruckHeadSpec
+        dataSend.skidTruckSpeed = transSkidTruckBarge.SkidTruck.skidTruckSpeed
+        dataSend.skidTruckFuelConsume = transSkidTruckBarge.SkidTruck.skidTruckFuelConsume
+
+        dataSend.basisDataLPGPriceUSD = transSkidTruckBarge.BasisData.basisDataLPGPriceUSD
+        dataSend.basisDataLPGPriceRp = transSkidTruckBarge.BasisData.basisDataLPGPriceRp
+        dataSend.basisDataLPGPriceRpKg = transSkidTruckBarge.BasisData.basisDataLPGPriceRpKg
+        dataSend.basisDataSolarPrice = transSkidTruckBarge.BasisData.basisDataSolarPrice
+        dataSend.basisDataRentalPriceMonth = transSkidTruckBarge.BasisData.basisDataRentalPriceMonth
+        dataSend.basisDataRentalPriceDay = transSkidTruckBarge.BasisData.basisDataRentalPriceDay
+        dataSend.basisDataDriverSalaryMonth = transSkidTruckBarge.BasisData.basisDataDriverSalaryMonth
+        dataSend.basisDataDriverSalaryDay = transSkidTruckBarge.BasisData.basisDataDriverSalaryDay
+        dataSend.basisDataAssistDriverSalaryMonth = transSkidTruckBarge.BasisData.basisDataAssistDriverSalaryMonth
+        dataSend.basisDataAssistDriverSalaryDay = transSkidTruckBarge.BasisData.basisDataAssistDriverSalaryDay
+        dataSend.basisDataMisEtc = transSkidTruckBarge.BasisData.basisDataMisEtc
+        dataSend.basisDataRiskFactor = transSkidTruckBarge.BasisData.basisDataRiskFactor
+        
+        dataSend.deliveryVoyagePortLoading = transSkidTruckBarge.DeliveryData.Voyage.deliveryVoyagePortLoading
+        dataSend.deliveryVoyagePortDischarge = transSkidTruckBarge.DeliveryData.Voyage.deliveryVoyagePortDischarge
+        dataSend.deliveryVoyageDistanceNM = transSkidTruckBarge.DeliveryData.Voyage.deliveryVoyageDistanceNM
+        dataSend.deliveryVoyageSpeedVessel = transSkidTruckBarge.DeliveryData.Voyage.deliveryVoyageSpeedVessel
+        dataSend.deliveryVoyageLadenTo = transSkidTruckBarge.DeliveryData.Voyage.deliveryVoyageLadenTo
+        dataSend.deliveryVoyageBallastTo = transSkidTruckBarge.DeliveryData.Voyage.deliveryVoyageBallastTo
+        dataSend.deliveryVoyagePumpPort1 = transSkidTruckBarge.DeliveryData.Voyage.deliveryVoyagePumpPort1
+        dataSend.deliveryVoyagePumpPort2 = transSkidTruckBarge.DeliveryData.Voyage.deliveryVoyagePumpPort2
+        dataSend.deliveryVoyageTotalLoadingTime = transSkidTruckBarge.DeliveryData.Voyage.deliveryVoyageTotalLoadingTime
+        dataSend.deliveryVoyageEnterWaitTimePOL = transSkidTruckBarge.DeliveryData.Voyage.deliveryVoyageEnterWaitTimePOL
+        dataSend.deliveryVoyageDiscPumpPort1 = transSkidTruckBarge.DeliveryData.Voyage.deliveryVoyageDiscPumpPort1
+        dataSend.deliveryVoyageDiscTotalLoadingTime = transSkidTruckBarge.DeliveryData.Voyage.deliveryVoyageDiscTotalLoadingTime
+        dataSend.deliveryVoyageDiscEnterWaitTimePOL = transSkidTruckBarge.DeliveryData.Voyage.deliveryVoyageDiscEnterWaitTimePOL
+        dataSend.deliveryVoyageCalendarDays = transSkidTruckBarge.DeliveryData.Voyage.deliveryVoyageCalendarDays
+        dataSend.deliveryVoyageDockingEtc = transSkidTruckBarge.DeliveryData.Voyage.deliveryVoyageDockingEtc
+        dataSend.deliveryVoyageMobilization = transSkidTruckBarge.DeliveryData.Voyage.deliveryVoyageMobilization
+        
+        dataSend.deliveryTruckOrigin = transSkidTruckBarge.DeliveryData.Trucking.deliveryTruckOrigin
+        dataSend.deliveryTruckDestination = transSkidTruckBarge.DeliveryData.Trucking.deliveryTruckDestination
+        dataSend.deliveryTruckLPGFillRate = transSkidTruckBarge.DeliveryData.Trucking.deliveryTruckLPGFillRate
+        dataSend.deliveryTruckNumberLPGFill = transSkidTruckBarge.DeliveryData.Trucking.deliveryTruckNumberLPGFill
+        dataSend.deliveryTruckLPGDiscRate = transSkidTruckBarge.DeliveryData.Trucking.deliveryTruckLPGDiscRate
+        dataSend.deliveryTruckNumberConnSPBE = transSkidTruckBarge.DeliveryData.Trucking.deliveryTruckNumberConnSPBE
+        dataSend.deliveryTruckDistanceTruckingKM = transSkidTruckBarge.DeliveryData.Trucking.deliveryTruckDistanceTruckingKM
+        dataSend.deliveryTruckDistanceTruckingMile = transSkidTruckBarge.DeliveryData.Trucking.deliveryTruckDistanceTruckingMile
+        dataSend.deliveryTruckTotalTruckingTimeTrip = transSkidTruckBarge.DeliveryData.Trucking.deliveryTruckTotalTruckingTimeTrip
+        dataSend.deliveryTruckNumberTruckingDelivery = transSkidTruckBarge.DeliveryData.Trucking.deliveryTruckNumberTruckingDelivery
+        
+        dataSend.bunkeringPortIdleMFO = transSkidTruckBarge.CostComponent.BunkeringCost.bunkeringPortIdleMFO
+        dataSend.bunkeringPortIdleMDO = transSkidTruckBarge.CostComponent.BunkeringCost.bunkeringPortIdleMDO
+        dataSend.bunkeringPortIdleMGO = transSkidTruckBarge.CostComponent.BunkeringCost.bunkeringPortIdleMGO
+        dataSend.bunkeringPortWorkingMFO = transSkidTruckBarge.CostComponent.BunkeringCost.bunkeringPortWorkingMFO
+        dataSend.bunkeringPortWorkingMDO = transSkidTruckBarge.CostComponent.BunkeringCost.bunkeringPortWorkingMDO
+        dataSend.bunkeringPortWorkingMGO = transSkidTruckBarge.CostComponent.BunkeringCost.bunkeringPortWorkingMGO
+        dataSend.bunkeringAtSeaMFO = transSkidTruckBarge.CostComponent.BunkeringCost.bunkeringAtSeaMFO
+        dataSend.bunkeringAtSeaMDO = transSkidTruckBarge.CostComponent.BunkeringCost.bunkeringAtSeaMDO
+        dataSend.bunkeringAtSeaMGO = transSkidTruckBarge.CostComponent.BunkeringCost.bunkeringAtSeaMGO
+        dataSend.bunkeringBunkerPriceIDR = transSkidTruckBarge.CostComponent.BunkeringCost.bunkeringBunkerPriceIDR
+        dataSend.bunkeringBunkerPriceUSD = transSkidTruckBarge.CostComponent.BunkeringCost.bunkeringBunkerPriceUSD
+        
+        dataSend.bunkeringBargeLoadingMaster = transSkidTruckBarge.CostComponent.ManningCrewCost.Barge.bunkeringBargeLoadingMaster
+        dataSend.bunkeringBargeBoatswain = transSkidTruckBarge.CostComponent.ManningCrewCost.Barge.bunkeringBargeBoatswain
+        
+        dataSend.bunkeringTugboatDeckMaster = transSkidTruckBarge.CostComponent.ManningCrewCost.Tugboat.bunkeringTugboatDeckMaster
+        dataSend.bunkeringTugboatDeckChiefOfficer = transSkidTruckBarge.CostComponent.ManningCrewCost.Tugboat.bunkeringTugboatDeckChiefOfficer
+        dataSend.bunkeringTugboatDeckOfficer = transSkidTruckBarge.CostComponent.ManningCrewCost.Tugboat.bunkeringTugboatDeckOfficer
+        dataSend.bunkeringTugboatDeckRadioOperator = transSkidTruckBarge.CostComponent.ManningCrewCost.Tugboat.bunkeringTugboatDeckRadioOperator
+        dataSend.bunkeringTugboatDeckBoatswain = transSkidTruckBarge.CostComponent.ManningCrewCost.Tugboat.bunkeringTugboatDeckBoatswain
+        dataSend.bunkeringTugboatDeckAbleBodied = transSkidTruckBarge.CostComponent.ManningCrewCost.Tugboat.bunkeringTugboatDeckAbleBodied
+        dataSend.bunkeringTugboatDeckOrdinarySeamen = transSkidTruckBarge.CostComponent.ManningCrewCost.Tugboat.bunkeringTugboatDeckOrdinarySeamen
+        dataSend.bunkeringTugboatDeckChef = transSkidTruckBarge.CostComponent.ManningCrewCost.Tugboat.bunkeringTugboatDeckChef
+        dataSend.bunkeringTugboatDeckAssistantChef = transSkidTruckBarge.CostComponent.ManningCrewCost.Tugboat.bunkeringTugboatDeckAssistantChef
+        dataSend.bunkeringTugboatDeckOthers = transSkidTruckBarge.CostComponent.ManningCrewCost.Tugboat.bunkeringTugboatDeckOthers
+        dataSend.bunkeringTugboatEngineChiefEngineer = transSkidTruckBarge.CostComponent.ManningCrewCost.Tugboat.bunkeringTugboatEngineChiefEngineer
+        dataSend.bunkeringTugboatEngineChiefMachinist = transSkidTruckBarge.CostComponent.ManningCrewCost.Tugboat.bunkeringTugboatEngineChiefMachinist
+        dataSend.bunkeringTugboatEngineMachinist = transSkidTruckBarge.CostComponent.ManningCrewCost.Tugboat.bunkeringTugboatEngineMachinist
+        dataSend.bunkeringTugboatEngineEngineForemen = transSkidTruckBarge.CostComponent.ManningCrewCost.Tugboat.bunkeringTugboatEngineEngineForemen
+        dataSend.bunkeringTugboatEngineOiler = transSkidTruckBarge.CostComponent.ManningCrewCost.Tugboat.bunkeringTugboatEngineOiler
+        dataSend.bunkeringTugboatEngineWiper = transSkidTruckBarge.CostComponent.ManningCrewCost.Tugboat.bunkeringTugboatEngineWiper
+        dataSend.bunkeringTugboatEngineOthers = transSkidTruckBarge.CostComponent.ManningCrewCost.Tugboat.bunkeringTugboatEngineOthers
+        
+        dataSend.portCostChargeRoundTrip = transSkidTruckBarge.CostComponent.PortCost.portCostChargeRoundTrip
+        
+        dataSend.portCostLasUnlasPOLTrip = transSkidTruckBarge.CostComponent.CargoCostHandling.portCostLasUnlasPOLTrip
+        dataSend.portCostLasUnlasPODTrip = transSkidTruckBarge.CostComponent.CargoCostHandling.portCostLasUnlasPODTrip
+        
+        dataSend.vesselCharterCostCharterRateDay = transSkidTruckBarge.CostComponent.VesselCharterCost.vesselCharterCostCharterRateDay
+        
+        dataSend.insuranceCostCrew = transSkidTruckBarge.CostComponent.InsuranceCost.insuranceCostCrew
+        dataSend.insuranceCostShip = transSkidTruckBarge.CostComponent.InsuranceCost.insuranceCostShip
+        dataSend.insuranceCostTotal = transSkidTruckBarge.CostComponent.InsuranceCost.insuranceCostTotal
+        
+        dataSend.dockRepairMTDockingCost = transSkidTruckBarge.CostComponent.DockRepairMTCost.dockRepairMTDockingCost
+        dataSend.dockRepairMTRepairStoreCost = transSkidTruckBarge.CostComponent.DockRepairMTCost.dockRepairMTRepairStoreCost
+        dataSend.dockRepairMTLubeOilCost = transSkidTruckBarge.CostComponent.DockRepairMTCost.dockRepairMTLubeOilCost
+        dataSend.dockRepairMTTotal = transSkidTruckBarge.CostComponent.DockRepairMTCost.dockRepairMTTotal
+        
+        dataSend.otherCostVictually = transSkidTruckBarge.CostComponent.OtherCost.otherCostVictually
+        dataSend.otherCostAdmin = transSkidTruckBarge.CostComponent.OtherCost.otherCostAdmin
+        dataSend.otherCostTotal = transSkidTruckBarge.CostComponent.OtherCost.otherCostTotal
 
         return dataSend;
     }
@@ -728,8 +868,8 @@ const editTransportationSkidTruckByID = async (req, res, next) => {
                 ProjectID,
                 transSkidTruckBarge,
                 typeCase: {
-                    name: 'Case 1',
-                    slug: 'case-1'
+                    name: 'Case 2',
+                    slug: 'case-2'
                 },
                 unitConversion,
                 skidTruckID

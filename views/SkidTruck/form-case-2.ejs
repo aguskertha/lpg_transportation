@@ -2,6 +2,9 @@
 <h1 align="center"><%= title %> </h1>
 <h3 align="center"><%= typeCase.name %></h3>
 <form method="post" action="/project/<%= ProjectID %>/skidtruck/form/<%= typeCase.slug %>">
+<% if (typeof skidTruckID != 'undefined') { %>
+    <input type="hidden" name="skidTruckID" value="<%= skidTruckID %>">
+<% }%>
 <input type="hidden" id="unitConversion" value="<%= JSON.stringify(unitConversion) %> ">
 <div class="row">
     <div class="col-md-5">
