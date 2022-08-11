@@ -2184,10 +2184,15 @@ const getSummaryTransportationBunkerPriceSensitivity = async (req, res, next) =>
         //     break
         // }
 
+        const POL = transportationBunkerPriceSensitivitys[0].Voyage.POL;
+        const POD = transportationBunkerPriceSensitivitys[0].Voyage.POD;
+
         res.render('Transportation/summary-transportation',{
             layout: 'layouts/main-layout',
             transportationBunkerPriceSensitivitys,
             project,
+            POL,
+            POD,
             title: 'Bunker Price Sensitivity'
         })
     } catch (error) {

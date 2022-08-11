@@ -48,92 +48,61 @@
     </ol>
 </nav>
 <h1 class="mt-3" align="center"><%= title %></h1>
-<h3 class="mt-3" align="center"><%= project.name %></h3>
+<h3 class="mt-3" align="center"><%= POL %> - <%= POD %></h3>
+
 <div class="container-fluid mt-4">
 <% var file_name = (project.name); %> 
-<button onclick="ExportToExcel('<%= file_name %>','.xlsx')" class="btn btn-success">Export Excel</button>
-<table id="table_data" class="table table-condensed table-hover table-bordered table-hideable">
+<button onclick="ExportToExcel('<%= file_name %>','.xlsx')" class="btn btn-success"><i class="fa fa-file-excel-o" aria-hidden="true"></i></button>
+<button onclick="generateTable('<%= file_name %>')" class="btn btn-danger"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
+<input type="hidden" id="POL" value="<%= POL %>">
+<input type="hidden" id="POD" value="<%= POD %>">
+
+<br>
+<br>
+<% 
+const rupiah = (number)=>{
+    return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR"
+    }).format(number);
+}
+%> 
+<table id="table_data" width="100%" style="font-size:11px;" class="table table-condensed table-hover table-bordered table-hideable">
     <thead>
-        <!-- transportationBunkerPriceSensitivitys -->
         <tr>
-            <th colspan="4"><a class="restore-columns" href="#">Some columns hidden - click to show all</a></th>
-          </tr>
-        <tr style="white-space: nowrap;" align="center">
-            <th>#</th>
-            <th>Bunker Cost
-                <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
-                    <i class="fa fa-eye-slash"></i>  
-                </button>
+            <th rowspan="2">Harga BBM (per Liter)
             </th>
-            <th>Calculated Real Freight
-                USD/kg/nm
-                <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
-                    <i class="fa fa-eye-slash"></i>  
-                </button>
+            <th colspan="6">Tarif per kg tiap Kategori Usia Kapal (tahun)</th>
+        </tr>
+        <tr>
+            <th>0 s.d. 5
             </th>
-            <th>Calculated Real Freight
-                IDR/kg/nm
-                <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
-                    <i class="fa fa-eye-slash"></i>  
-                </button>
+            <th> >5 s.d. 10
             </th>
-            <th>Proposed Freight
-                USD/kg/nm
-                <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
-                    <i class="fa fa-eye-slash"></i>  
-                </button>
+            <th> >10 s.d. 15
             </th>
-            <th>Proposed Freight
-                IDR/kg/nm
-                <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
-                    <i class="fa fa-eye-slash"></i>  
-                </button>
+            <th> >15 s.d. 20
             </th>
-            <th>Comparison Freight
-                USD/kg/nm
-                <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
-                    <i class="fa fa-eye-slash"></i>  
-                </button>
+            <th> >20 s.d. 25
             </th>
-            <th>Comparison Freight
-                IDR/kg/nm
-                <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
-                    <i class="fa fa-eye-slash"></i>  
-                </button>
+            <th> >25 s.d. 30
             </th>
-            <th>Total Operating Cost
-                USD
-                <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
-                    <i class="fa fa-eye-slash"></i>  
-                </button>
-            </th>
-            <th>Freight Cost Ship Age
-                <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
-                    <i class="fa fa-eye-slash"></i>  
-                </button>
-            </th>
-           
         </tr>
     </thead>
     <tbody>
         <% for( let i = 0; i < transportationBunkerPriceSensitivitys.length; i++ ) { %>
         <% const transportation = transportationBunkerPriceSensitivitys[i]; %> 
         <tr style="white-space: nowrap;" >
-            <th scope="row"><%= i+1 %></th>
-            <input type="hidden" name="" id="transportation<%= i %>" value="<%= JSON.stringify(transportation) %>">
-            <td>Rp<%= transportation.BunkeringCalculation.bunkerPriceIDRMDO %></td>
-            <td>$<%= transportation.RealFreightRate.unitCostMassCargo_USD_KG_NM.toFixed(7) %></td>
-            <td>Rp<%= transportation.RealFreightRate.unitCostMassCargo_IDR_KG_NM.toFixed(4) %></td>
-            <td>$<%= transportation.ProposedFreight.proposedFreight_USD_KG_NM.toFixed(7) %></td>
-            <td>Rp<%= transportation.ProposedFreight.proposedFreight_IDR_KG_NM.toFixed(4) %></td>
-            <td>$<%= transportation.ProposedFreight.proposedFreight_USD_MT.toFixed(4) %></td>
-            <td>Rp<%= transportation.ProposedFreight.proposedFreight_IDR_MT.toFixed(4) %></td>
-            <td>$<%= transportation.TotalCost.totalCostAfterTax.toFixed(4) %></td>
-            <td>
-                <!-- <a class="btn btn-warning btn-sm" href="" role="button"><i class="fa fa-edit"></i> Info</a> -->
-                <button class="btn btn-info" data-toggle="modal" id="buttonCostShipAge" data-target="#modalFormCreate" onclick="doSomething('<%= i %>')"> <i class="fa fa-eye"></i> Info</button>
-            </td>
-          
+            <!-- <th scope="row"><%= i+1 %></th> -->
+            <td><%= rupiah(transportation.BunkeringCalculation.bunkerPriceIDRMDO) %></td>
+            <td><%= rupiah(transportation.freightCostShipAges[0].feeOnShipAge_IDR_MT.toFixed(4)) %></td>
+            <td><%= rupiah(transportation.freightCostShipAges[1].feeOnShipAge_IDR_MT.toFixed(4)) %></td>
+            <td><%= rupiah(transportation.freightCostShipAges[2].feeOnShipAge_IDR_MT.toFixed(4)) %></td>
+            <td><%= rupiah(transportation.freightCostShipAges[3].feeOnShipAge_IDR_MT.toFixed(4)) %></td>
+            <td><%= rupiah(transportation.freightCostShipAges[4].feeOnShipAge_IDR_MT.toFixed(4)) %></td>
+            <td><%= rupiah(transportation.freightCostShipAges[5].feeOnShipAge_IDR_MT.toFixed(4)) %></td>
+            
+            
         </tr>
         <% } %>
     </tbody>
@@ -199,7 +168,57 @@
 
 <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
+
 <script>
+    function generateTable(projectName) {
+        var POL = $('#POL').val()
+        var POD = $('#POD').val()
+        var doc = new jsPDF('p', 'pt', 'letter');
+        var y = 20;
+        var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight();
+        var pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth();
+        doc.setLineWidth(2);
+        let str = `${POL} - ${POD}`;
+        doc.setFontSize(8);
+        doc.text(str, 115, 50, {align: 'left'});
+        doc.autoTable({
+            html: '#table_data',
+            startY: 60,
+            theme: 'grid',
+            styles: {
+                fontSize: 8,
+                font: 'helvetica',
+            },
+            columnStyles: {
+                0: {cellWidth: 75},
+                1: {cellWidth: 75},
+                2: {cellWidth: 75},
+                3: {cellWidth: 75},
+                4: {cellWidth: 75},
+                5: {cellWidth: 75},
+            },
+            headStyles: {
+                fillColor: [255, 255, 255],
+                textColor: [0, 0, 0],
+                fontSize: 8,
+                padding: 0,
+                halign: 'center',
+                lineWidth: 0.75,
+                lineColor: [0, 0, 0],
+            },
+            bodyStyles: {
+                halign: 'center',
+                lineWidth: 0.75,
+                lineColor: [0, 0, 0]
+            },
+
+
+        })
+        doc.save(`${projectName} (${POL}-${POD})`);
+    }
     function doSomething(i){
         var data = `#transportation${i}`;
         var transportationStr = $(data).val();
@@ -235,11 +254,14 @@
     }
     
 function ExportToExcel(file_name, type, fn, dl) {
+    var POL = $('#POL').val()
+    var POD = $('#POD').val()
+    var name = `${file_name} (${POL}-${POD})`
     var elt = document.getElementById('table_data');
     var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
     return dl ?
         XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }):
-        XLSX.writeFile(wb, fn || (file_name + (type || 'xlsx')));
+        XLSX.writeFile(wb, fn || (name + (type || 'xlsx')));
 }
 </script>
 <script>

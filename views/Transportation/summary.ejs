@@ -110,13 +110,13 @@
             
             <td>
                 <% if (filteredTransportation.status == 1) { %>
-                    <a class="btn btn-success btn-sm" href="/project/<%= project._id %>/transportation/<%= filteredTransportation.id %>/summary" role="button"><i class="fa fa-info"></i> Info</a>
+                    <a class="btn btn-info btn-sm" href="/project/<%= project._id %>/transportation/<%= filteredTransportation.id %>/summary" role="button"><i class="fa fa-list"></i> Info</a>
                 <% }%>
-                <a class="btn btn-secondary btn-sm" href="/project/<%= project._id %>/form/<%= filteredTransportation.id %>/bunker-price-sensitivity" role="button"><i class="fa fa-edit"></i>Bunker</a>
                 <a class="btn btn-warning btn-sm" href="/project/<%= project._id %>/transportation/<%= filteredTransportation.id %>/edit" role="button"><i class="fa fa-edit"></i> Edit</a>
-                <a class="btn btn-info btn-sm" href="/project/<%= project._id %>/transportation/<%= filteredTransportation.id %>/duplicate" role="button"><i class="fa fa-files-o"></i> Duplicate</a>
                 <a class="btn btn-danger btn-sm" onclick="confirmDelete('<%= project._id %>','<%= filteredTransportation.id %>')" role="button"><i class="fa fa-trash"></i> Delete</a>
-                <a role="button" class="btn btn-warning btn-sm w-auto" id="btn-testi" data-bs-toggle="modal" data-bs-target="#modalTransfer" onclick="transferTransportation('<%= project._id %>', '<%= filteredTransportation.id %>')" ><i class="fa fa-exchange" aria-hidden="true"></i> Transfer</a>
+                <a class="btn btn-secondary btn-sm" href="/project/<%= project._id %>/form/<%= filteredTransportation.id %>/bunker-price-sensitivity" role="button"><i class="fa fa-edit"></i>Bunker</a>
+                <a class="btn btn-dark btn-sm" href="/project/<%= project._id %>/transportation/<%= filteredTransportation.id %>/duplicate" role="button"><i class="fa fa-files-o"></i> Duplicate</a>
+                <a role="button" class="btn btn-primary btn-sm w-auto" id="btn-testi" data-bs-toggle="modal" data-bs-target="#modalTransfer" onclick="transferTransportation('<%= project._id %>', '<%= filteredTransportation.id %>')" ><i class="fa fa-exchange" aria-hidden="true"></i> Transfer</a>
             </td>
         </tr>
         <% } %>
