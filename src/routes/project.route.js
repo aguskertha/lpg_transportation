@@ -25,7 +25,8 @@ const {
     createCostShipAge,
     createCustom,
     editTerminalByID,
-    updateTerminal
+    updateTerminal,
+    transferTransportation
 } = require('./../controllers/project.controller');
 
 const { 
@@ -58,6 +59,7 @@ router.get('/:projectID/terminal/:terminalID/edit', editTerminalByID);
 router.post('/:projectID/terminal/:terminalID/update', updateTerminal);
 router.get('/:projectID/terminal/form', getFormTerminal);
 router.get('/:projectID/transportation', getProjectTransportationByID);
+router.post('/:projectID/transportation/transfer', transferTransportation);
 router.get('/:projectID/transportation/:transportationID/edit', editTransportationByID);
 router.get('/:projectID/transportation/:transportationID/duplicate', duplicateTransportationByID);
 router.get('/:projectID/transportation/:transportationID/delete', deleteTransportationByID);

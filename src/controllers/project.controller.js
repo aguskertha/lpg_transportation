@@ -23,11 +23,11 @@ const createProject = async (req, res, next) => {
         const newProject = new Project(project);
         await newProject.save();
         res.redirect('/topic/'+topicID);
-        res.render('Topic/topic',{
-            layout: 'layouts/main-layout',
-            topicID,
-            topics
-        })
+        // res.render('Topic/topic',{
+        //     layout: 'layouts/main-layout',
+        //     topicID,
+        //     topics
+        // })
 
     } catch (error) {
         res.render('error', {
@@ -927,11 +927,17 @@ const getProjectTransportationByID = async (req, res, next) => {
             }
             filteredTransportations.push(filteredTransportation);
         });
+
+        const topic = await Topic.findOne({slug: "transportation"})
+        const projects = await Project.find({topicID: topic._id, _id: {$ne: ProjectID}})
+
         res.render('Transportation/summary', {
             layout: 'layouts/main-layout',
             title: 'Summary LPG Transportation',
             filteredTransportations,
-            project
+            project,
+            topic,
+            projects
         });
     } catch (error) {
         res.render('error', {
@@ -1930,6 +1936,31 @@ const deleteTransportationByID = async (req, res, next) => {
     }
 }
 
+const transferTransportation = async (req, res, next) => {
+    try {
+        const {projectID, transportationID, transferProjectID} = req.body
+        const transportation = await Transportation.findOne({_id: ObjectID(transportationID)})
+        if(!transportation) throw 'Transportation not found!'
+        const anotherProject = await Project.findOne({_id: ObjectID(transferProjectID)})
+        if(!anotherProject) throw 'Route not found!'
+        await Transportation.updateOne(
+            { _id: transportationID},
+            {
+                $set: {
+                    ProjectID: transferProjectID
+                }
+            }
+        );
+        res.redirect(`/project/${projectID}/transportation`);
+    } catch (error) {
+        res.render('error', {
+            layout: 'layouts/main-layout',
+            message: error,
+            status: 400
+        });
+    }
+}
+
 const getFormTransportationBunkerPriceSensitivity = async (req, res, next) => {
     try{
         const transportationID = req.params.transportationID;
@@ -2299,5 +2330,6 @@ module.exports = {
     createCostShipAge,
     createCustom,
     editTerminalByID,
-    updateTerminal
+    updateTerminal,
+    transferTransportation
 }
