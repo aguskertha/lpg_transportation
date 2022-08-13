@@ -973,9 +973,9 @@
           $(wrapperCargoTank).append(
             `<div class="mb-3">
           <label class="form-label">No ${i} Cargo Tank full capacity</label>
-          <div class="popup" onclick="showPopUp('cargoTank${i}')">
+          <div class="popup" onclick="showPopUp('cargoTankPop${i}')">
             <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
-            <span class="popuptext" id="cargoTank${i}">Data from Q88</span>
+            <span class="popuptext" id="cargoTankPop${i}">Data from Q88</span>
           </div>
           <div class="input-group mb-3">
             <input type="number" step="any" class="form-control" id="cargoTank${i}" name="cargoTank${i}" required>
@@ -988,6 +988,10 @@
           $(wrapperPumpLoadingRate).append(
             `<div class="mb-3">
           <label class="form-label">No ${i} Pump</label>
+          <div class="popup" onclick="showPopUp('pumpLoadingRatePop${i}')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="pumpLoadingRatePop${i}">Data from Q88</span>
+          </div>
           <div class="input-group mb-3">
             <input type="number" step="any" class="form-control" id="pumpLoadingRate${i}" name="pumpLoadingRate${i}" required>
             <div class="input-group-append">
@@ -999,6 +1003,10 @@
           $(wrapperPumpDischareRate).append(
             `<div class="mb-3">
           <label class="form-label">No ${i} Pump</label>
+          <div class="popup" onclick="showPopUp('pumpDischargeRatePop${i}')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="pumpDischargeRatePop${i}">Data from Q88</span>
+          </div>
           <div class="input-group mb-3">
             <input type="number" step="any" class="form-control" id="pumpDischargeRate${i}" name="pumpDischargeRate${i}" required>
             <div class="input-group-append">

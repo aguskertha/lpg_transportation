@@ -145,7 +145,7 @@
         </div>
         
         <div class="mb-3">
-          <label class="form-label">crewNumber</label>
+          <label class="form-label">Crew Number</label>
           <div class="popup" onclick="showPopUp('crewNumberPop')">
             <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
             <span class="popuptext" id="crewNumberPop">Data from Q88 or Generate from <a href="/public/images/Crew.jpg" target="_blank">KM 70 1998</a></span>
@@ -963,6 +963,10 @@
         $(wrapperCargoTank).append(
             `<div class="mb-3">
           <label class="form-label">No ${i+1} Cargo Tank full capacity</label>
+          <div class="popup" onclick="showPopUp('cargoTankPop${i}')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="cargoTankPop${i}">Data from Q88</span>
+          </div>
           <div class="input-group mb-3">
             <input type="number" step="any" class="form-control" id="cargoTank${i+1}" name="cargoTank${i+1}" value="${JSON.stringify(Number(convert(cargoTankJSON[i])))}" required>
             <div class="input-group-append">
@@ -974,6 +978,10 @@
           $(wrapperPumpLoadingRate).append(
             `<div class="mb-3">
           <label class="form-label">No ${i+1} Pump</label>
+          <div class="popup" onclick="showPopUp('pumpLoadingRatePop${i}')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="pumpLoadingRatePop${i}">Data from Q88</span>
+          </div>
           <div class="input-group mb-3">
             <input type="number" step="any" class="form-control" id="pumpLoadingRate${i+1}" name="pumpLoadingRate${i+1}" value="${JSON.stringify(Number(convert(pumpLoadingRateJSON[i])))}" required>
             <div class="input-group-append">
@@ -985,6 +993,10 @@
           $(wrapperPumpDischareRate).append(
             `<div class="mb-3">
           <label class="form-label">No ${i+1} Pump</label>
+          <div class="popup" onclick="showPopUp('pumpDischargeRatePop${i}')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="pumpDischargeRatePop${i}">Data from Q88</span>
+          </div>
           <div class="input-group mb-3">
             <input type="number" step="any" class="form-control" id="pumpDischargeRate${i+1}" name="pumpDischargeRate${i+1}" value="${JSON.stringify(Number(convert(pumpDischargeRateJSON[i])))}" required>
             <div class="input-group-append">

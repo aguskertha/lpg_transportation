@@ -34,6 +34,10 @@
         
         <div class="mb-3">
           <label class="form-label">Ship Capacity</label>
+          <div class="popup" onclick="showPopUp('shipCapacityPop')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="shipCapacityPop">Data from Q88</span>
+          </div>
           <div class="input-group mb-3">
             <input type="number" step="any" class="form-control" id="shipCapacityCBM" name="shipCapacityCBM" value="<%= transportation.Ship.shipCapacityCBM %>" required>
             <div class="input-group-append">
@@ -60,16 +64,28 @@
         
         <div class="mb-3">
           <label class="form-label">MMSI Number</label>
+          <div class="popup" onclick="showPopUp('MMSINumberPop')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="MMSINumberPop">Data from Q88</span>
+          </div>
           <input type="text" class="form-control" id="MMSINumber" name="MMSINumber" value="<%= transportation.Ship.MMSINumber %>">
         </div>
         
         <div class="mb-3">
           <label class="form-label">Call Sign</label>
+          <div class="popup" onclick="showPopUp('callSignPop')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="callSignPop">Data from Q88</span>
+          </div>
           <input type="text" class="form-control" id="callSign" name="callSign" value="<%= transportation.Ship.callSign %>">
         </div>
         
         <div class="mb-3">
           <label class="form-label">Gross Tonnage</label>
+          <div class="popup" onclick="showPopUp('grossTonnagePop')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="grossTonnagePop">Data from Q88</span>
+          </div>
           <div class="input-group mb-3">
             <input type="number" step="any" class="form-control" id="grossTonnage" name="grossTonnage" value="<%= transportation.Ship.grossTonnage %>">
             <div class="input-group-append">
@@ -80,6 +96,10 @@
         
         <div class="mb-3">
           <label class="form-label">Summer DWT</label>
+          <div class="popup" onclick="showPopUp('summerDWTPop')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="summerDWTPop">Data from Q88</span>
+          </div>
           <div class="input-group mb-3">
             <input type="number" step="any" class="form-control" id="summerDWT" name="summerDWT" value="<%= transportation.Ship.summerDWT %>">
             <div class="input-group-append">
@@ -90,6 +110,10 @@
         
         <div class="mb-3">
           <label class="form-label">Length Overall x Breadth Extreme:</label>
+          <div class="popup" onclick="showPopUp('lengthOverallPop')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="lengthOverallPop">Data from Q88</span>
+          </div>
           <div class="input-group mb-3">
             <input type="text" class="form-control" id="lengthOverall" name="lengthOverall" value="<%= transportation.Ship.lengthOverall %>">
             <div class="input-group-append">
@@ -100,11 +124,19 @@
         
         <div class="mb-3">
           <label class="form-label">Year Built</label>
+          <div class="popup" onclick="showPopUp('yearBuiltPop')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="yearBuiltPop">Data from Q88</span>
+          </div>
           <input type="number" step="any" class="form-control" id="yearBuilt" name="yearBuilt" value="<%= transportation.Ship.yearBuilt %>">
         </div>
         
         <div class="mb-3">
           <label class="form-label">Ship Age</label>
+          <div class="popup" onclick="showPopUp('shipAgePop')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="shipAgePop">Data from Q88</span>
+          </div>
           <div class="input-group mb-3">
             <input type="number" step="any" class="form-control" id="shipAge" name="shipAge" value="<%= transportation.Ship.shipAge %>" required>
             <div class="input-group-append">
@@ -114,7 +146,11 @@
         </div>
         
         <div class="mb-3">
-          <label class="form-label">crewNumber</label>
+          <label class="form-label"> Crew Number</label>
+          <div class="popup" onclick="showPopUp('crewNumberPop')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="crewNumberPop">Data from Q88 or Generate from <a href="/public/images/Crew.jpg" target="_blank">KM 70 1998</a></span>
+          </div>
           <div class="input-group mb-3">
             <input type="number" step="any" class="form-control" id="crewNumber" name="crewNumber" value="<%= transportation.Ship.crewNumber %>" required>
             <div class="input-group-append">
@@ -125,6 +161,10 @@
         
         <div class="mb-3">
           <label class="form-label">SFOC</label>
+          <div class="popup" onclick="showPopUp('SFOCPop')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="SFOCPop">Data from engine maker or generated from <a href="/public/images/SFOC.jpg" target="_blank">estimation</a></span>
+          </div>
           <div class="input-group mb-3">
             <input type="number" step="any" class="form-control" id="SFOC" name="SFOC" value="<%= transportation.Ship.SFOC %>" required>
             <div class="input-group-append">
@@ -153,16 +193,28 @@
         
         <div class="mb-3">
           <label class="form-label">MMSI Number</label>
+          <div class="popup" onclick="showPopUp('MMSINumber_tugboatPop')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="MMSINumber_tugboatPop">Data from Q88</span>
+          </div>
           <input type="text" class="form-control" id="MMSINumber_tugboat" value="<%= transportation.Tugboat.MMSINumber %>" name="MMSINumber_tugboat">
         </div>
         
         <div class="mb-3">
           <label class="form-label">Call Sign</label>
+          <div class="popup" onclick="showPopUp('callSign_tugboatPop')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="callSign_tugboatPop">Data from Q88</span>
+          </div>
           <input type="text" class="form-control" id="callSign_tugboat" value="<%= transportation.Tugboat.callSign %>" name="callSign_tugboat">
         </div>
         
         <div class="mb-3">
           <label class="form-label">Gross Tonnage</label>
+          <div class="popup" onclick="showPopUp('grossTonnage_tugboatPop')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="grossTonnage_tugboatPop">Data from Q88</span>
+          </div>
           <div class="input-group mb-3">
             <input type="number" step="any" class="form-control" value="0" id="grossTonnage_tugboat" value="<%= transportation.Tugboat.grossTonnage %>" name="grossTonnage_tugboat">
             <div class="input-group-append">
@@ -173,6 +225,10 @@
         
         <div class="mb-3">
           <label class="form-label">Summer DWT</label>
+          <div class="popup" onclick="showPopUp('summerDWT_tugboatPop')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="summerDWT_tugboatPop">Data from Q88</span>
+          </div>
           <div class="input-group mb-3">
             <input type="number" step="any" class="form-control" value="0" id="summerDWT_tugboat" value="<%= transportation.Tugboat.summerDWT %>" name="summerDWT_tugboat">
             <div class="input-group-append">
@@ -183,6 +239,10 @@
         
         <div class="mb-3">
           <label class="form-label">Length Overall x Breadth Extreme:</label>
+          <div class="popup" onclick="showPopUp('lengthOverall_tugboatPop')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="lengthOverall_tugboatPop">Data from Q88</span>
+          </div>
           <div class="input-group mb-3">
             <input type="text" class="form-control" value="0" id="lengthOverall_tugboat" value="<%= transportation.Tugboat.lengthOverall %>" name="lengthOverall_tugboat">
             <div class="input-group-append">
@@ -193,11 +253,19 @@
         
         <div class="mb-3">
           <label class="form-label">Year Built</label>
+          <div class="popup" onclick="showPopUp('yearBuilt_tugboatPop')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="yearBuilt_tugboatPop">Data from Q88</span>
+          </div>
           <input type="number" step="any" class="form-control" value="0" id="yearBuilt_tugboat" value="<%= transportation.Tugboat.yearBuilt %>" name="yearBuilt_tugboat">
         </div>
         
         <div class="mb-3">
           <label class="form-label">Ship Age</label>
+          <div class="popup" onclick="showPopUp('shipAge_tugboatPop')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="shipAge_tugboatPop">Data from Q88</span>
+          </div>
           <div class="input-group mb-3">
             <input type="number" step="any" class="form-control" id="shipAge_tugboat" value="<%= transportation.Tugboat.shipAge %>" name="shipAge_tugboat" required>
             <div class="input-group-append">
@@ -208,6 +276,10 @@
         
         <div class="mb-3">
           <label class="form-label">crewNumber</label>
+          <div class="popup" onclick="showPopUp('crewNumber_tugboatPop')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="crewNumber_tugboatPop">Data from Q88 or Generate from <a href="/public/images/Crew.jpg" target="_blank">KM 70 1998</a></span>
+          </div>
           <div class="input-group mb-3">
             <input type="number" step="any" class="form-control" id="crewNumber_tugboat" value="<%= transportation.Tugboat.crewNumber %>" name="crewNumber_tugboat" required>
             <div class="input-group-append">
@@ -218,6 +290,10 @@
         
         <div class="mb-3">
           <label class="form-label">SFOC</label>
+          <div class="popup" onclick="showPopUp('SFOC_tugboatPop')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="SFOC_tugboatPop">Data from engine maker or generated from <a href="/public/images/SFOC.jpg" target="_blank">estimation</a></span>
+          </div>
           <div class="input-group mb-3">
             <input type="number" step="any" class="form-control" id="SFOC_tugboat" value="<%= transportation.Tugboat.SFOC %>" name="SFOC_tugboat" required>
             <div class="input-group-append">
@@ -250,6 +326,10 @@
       
       <div class="mb-3">
         <label class="form-label">Distance in Nautical Miles</label>
+        <div class="popup" onclick="showPopUp('distancePop')">
+          <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+          <span class="popuptext" id="distancePop">Generated using find ports button or estimating the route manually</span>
+        </div>
         <div class="input-group mb-3">
           <input type="number" step="any" class="form-control" id="distance" name="distance" value="<%= transportation.Voyage.distance %>" required>
           <div class="input-group-append">
@@ -260,6 +340,10 @@
       
       <div class="mb-3">
         <label class="form-label">Service Speed of Vessel</label>
+        <div class="popup" onclick="showPopUp('serviceSpeedVesselPop')">
+          <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+          <span class="popuptext" id="serviceSpeedVesselPop">Data from Q88</span>
+        </div>
         <div class="input-group mb-3">
           <input type="number" step="any" class="form-control" id="serviceSpeedVessel" name="serviceSpeedVessel" value="<%= transportation.Voyage.serviceSpeedVessel %>" required>
           <div class="input-group-append">
@@ -283,6 +367,10 @@
           var cargoTankJS = '<%- JSON.stringify(transportation.ShipCargoTankFullCapacity.cargoTank) %>'; // test is now a valid js object
         </script>
         <label class="form-label">Number of cargo tank</label>
+        <div class="popup" onclick="showPopUp('numberOfCargoTankPop')">
+          <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+          <span class="popuptext" id="numberOfCargoTankPop">Data from Q88</span>
+        </div>
         <div class="input-group mb-3">
           <input type="number" step="any" class="form-control" id="numberOfCargoTank" name="numberOfCargoTank" value="<%= transportation.ShipCargoTankFullCapacity.numberOfCargoTank %>" required>
           <div class="input-group-append">
@@ -298,7 +386,11 @@
   <br>
   <div class="row">
     <div class="col-md-12">
-      <h2>TURNAROUND VOYAGE</h2>
+      <a class="h2 text-black" style="text-decoration:none;">TURNAROUND VOYAGE</a>
+      <div class="popup" onclick="showPopUp('turnAroundVoyagePop')">
+        <i class="fa fa-info-circle fa-2x" aria-hidden="true" style="color:turquoise"></i>
+        <span class="popuptext" id="turnAroundVoyagePop">Data from Q88 or generated from <a href="/public/images/TurnAroundVoyage.jpg" target="_blank">estimation</a></span>
+      </div>
     </div>
   </div>
   <div class="row">
@@ -321,7 +413,11 @@
   <br>
   <div class="row">
     <div class="col-md-5">
-      <h2>BUNKERING CALCULATION</h2>
+      <a class="h2 text-black" style="text-decoration:none;">BUNKERING CALCULATION</a>
+      <div class="popup" onclick="showPopUp('bunkeringPop')">
+        <i class="fa fa-info-circle fa-2x" aria-hidden="true" style="color:turquoise"></i>
+        <span class="popuptext" id="bunkeringPop">Bunker can be estimated or input by actual bunker consumption</span>
+      </div>
     </div>
   </div>
   <div class="row">
@@ -452,7 +548,11 @@
   <br>
   <div class="row">
     <div class="col-md-6">
-      <h2>MANNING/CREW COST</h2>
+      <a class="h2 text-black" style="text-decoration:none;">MANNING CREW COST</a>
+      <div class="popup" onclick="showPopUp('crewCostPop')">
+        <i class="fa fa-info-circle fa-2x" aria-hidden="true" style="color:turquoise"></i>
+        <span class="popuptext" id="crewCostPop">Data from Q88 or Generate from <a href="/public/images/Crew.jpg" target="_blank">KM 70 1998</a></span>
+      </div>
     </div>
   </div>
   <div class="row mt-3">
@@ -757,7 +857,11 @@
   <br>
   <div class="row">
     <div class="col-md-5">
-      <h2>Port Cost</h2>
+      <a class="h2 text-black" style="text-decoration:none;">Port Cost</a>
+      <div class="popup" onclick="showPopUp('portChargesRoundTripPop')">
+        <i class="fa fa-info-circle fa-2x" aria-hidden="true" style="color:turquoise"></i>
+        <span class="popuptext" id="portChargesRoundTripPop">Fee charged for Berthing, Pilotting, and Tug of Ship</span>
+      </div>
     </div>
   </div>
   <div class="row">
@@ -779,7 +883,11 @@
   <br>
   <div class="row">
     <div class="col-md-5">
-      <h2>Cargo Handling Cost</h2>
+      <a class="h2 text-black" style="text-decoration:none;">Cargo Handling Cost</a>
+      <div class="popup" onclick="showPopUp('cargoHandlingPop')">
+        <i class="fa fa-info-circle fa-2x" aria-hidden="true" style="color:turquoise"></i>
+        <span class="popuptext" id="cargoHandlingPop">Fee charged if there is any third party invlovement during cargo handling operation</span>
+      </div>
     </div>
   </div>
   <div class="row">
@@ -810,7 +918,11 @@
   <br>
   <div class="row">
     <div class="col-md-5">
-      <h2>Vessel's Charter Cost</h2>
+      <a class="h2 text-black" style="text-decoration:none;">Vessel's Charter Cost</a>
+      <div class="popup" onclick="showPopUp('vesselCharterCostPop')">
+        <i class="fa fa-info-circle fa-2x" aria-hidden="true" style="color:turquoise"></i>
+        <span class="popuptext" id="vesselCharterCostPop">Fee charged if the operator is charter third party vessel</span>
+      </div>
     </div>
   </div>
   <div class="row">
@@ -831,7 +943,11 @@
   <br>
   <div class="row">
     <div class="col-md-8">
-      <h2>Insurance Cost (if relevant with charter scheme)</h2>
+      <a class="h2 text-black" style="text-decoration:none;">Insurance Cost (if relevant with charter scheme)</a>
+      <div class="popup" onclick="showPopUp('insuranceCostPop')">
+        <i class="fa fa-info-circle fa-2x" aria-hidden="true" style="color:turquoise"></i>
+        <span class="popuptext" id="insuranceCostPop">Insurance cost for ship, barge (if any), and crew</span>
+      </div>
     </div>
   </div>
   <div class="row">
@@ -869,6 +985,10 @@
       
       <div class="mb-3">
         <label class="form-label">Docking Cost</label>
+        <div class="popup" onclick="showPopUp('dockingCostPop')">
+          <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+          <span class="popuptext" id="dockingCostPop">Docking cost per year </span>
+        </div>
         <div class="input-group mb-3">
           <input type="number" step="any" class="form-control" id="dockingCost" name="dockingCost" value="<%= transportation.DockingRepairMaintenanceCost.dockingCost %>" required>
           <div class="input-group-append">
@@ -878,6 +998,10 @@
       </div>
       <div class="mb-3">
         <label class="form-label">Repair and Stores Cost</label>
+        <div class="popup" onclick="showPopUp('repairStoreCostPop')">
+          <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+          <span class="popuptext" id="repairStoreCostPop">Repair and spare parts cost</span>
+        </div>
         <div class="input-group mb-3">
           <input type="number" step="any" class="form-control" id="repairStoreCost" name="repairStoreCost" value="<%= transportation.DockingRepairMaintenanceCost.repairStoreCost %>" required>
           <div class="input-group-append">
@@ -887,6 +1011,10 @@
       </div>
       <div class="mb-3">
         <label class="form-label">Lube Oil Cost</label>
+        <div class="popup" onclick="showPopUp('lubeOilCostPop')">
+          <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+          <span class="popuptext" id="lubeOilCostPop">Lube oil cost for main engine and auxilliary engine</span>
+        </div>
         <div class="input-group mb-3">
           <input type="number" step="any" class="form-control" id="lubeOilCost" name="lubeOilCost" value="<%= transportation.DockingRepairMaintenanceCost.lubeOilCost %>" required>
           <div class="input-group-append">
@@ -901,7 +1029,11 @@
   <br>
   <div class="row">
     <div class="col-md-8">
-      <h2>Other Cost</h2>
+      <a class="h2 text-black" style="text-decoration:none;">Other Cost</a>
+      <div class="popup" onclick="showPopUp('otherCostPop')">
+        <i class="fa fa-info-circle fa-2x" aria-hidden="true" style="color:turquoise"></i>
+        <span class="popuptext" id="otherCostPop">Provision for food, fresh water, supplies, etc</span>
+      </div>
     </div>
   </div>
   <div class="row">
@@ -983,6 +1115,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
   $(function() {
+    function showPopUp(pop) {
+      var popup = document.getElementById(pop);
+      popup.classList.toggle("show");
+    }
     function convert(value) {
         return value && value['$numberDecimal'] ? value['$numberDecimal'] : 0;
     }
@@ -1000,6 +1136,10 @@
         $(wrapperCargoTank).append(
             `<div class="mb-3">
           <label class="form-label">No ${i+1} Cargo Tank full capacity</label>
+          <div class="popup" onclick="showPopUp('cargoTankPop${i}')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="cargoTankPop${i}">Data from Q88</span>
+          </div>
           <div class="input-group mb-3">
             <input type="number" step="any" class="form-control" id="cargoTank${i+1}" name="cargoTank${i+1}" value="${JSON.stringify(Number(convert(cargoTankJSON[i])))}" required>
             <div class="input-group-append">
@@ -1011,6 +1151,10 @@
           $(wrapperPumpLoadingRate).append(
             `<div class="mb-3">
           <label class="form-label">No ${i+1} Pump</label>
+          <div class="popup" onclick="showPopUp('pumpLoadingRatePop${i}')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="pumpLoadingRatePop${i}">Data from Q88</span>
+          </div>
           <div class="input-group mb-3">
             <input type="number" step="any" class="form-control" id="pumpLoadingRate${i+1}" name="pumpLoadingRate${i+1}" value="${JSON.stringify(Number(convert(pumpLoadingRateJSON[i])))}" required>
             <div class="input-group-append">
@@ -1022,6 +1166,10 @@
           $(wrapperPumpDischareRate).append(
             `<div class="mb-3">
           <label class="form-label">No ${i+1} Pump</label>
+          <div class="popup" onclick="showPopUp('pumpDischargeRatePop${i}')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="pumpDischargeRatePop${i}">Data from Q88</span>
+          </div>
           <div class="input-group mb-3">
             <input type="number" step="any" class="form-control" id="pumpDischargeRate${i+1}" name="pumpDischargeRate${i+1}" value="${JSON.stringify(Number(convert(pumpDischargeRateJSON[i])))}" required>
             <div class="input-group-append">
