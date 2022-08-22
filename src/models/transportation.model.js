@@ -9,6 +9,10 @@ const Transportation = mongoose.model('Transportation', {
         type: Number,
         require: true
     },
+    isNegotiation: {
+        type: String,
+        require: true
+    },
     TypeFreight: {
         name: {
             type: String,

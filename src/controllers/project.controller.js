@@ -1057,6 +1057,7 @@ const getFormTransportationFreightVoyage = async (req, res, next) => {
 
 const createTransportation = async (req, res, next) => {
     try {
+
         const unitConversion = await UnitConversion.find();
         const transportation = {};
 
@@ -1206,10 +1207,22 @@ const createTransportation = async (req, res, next) => {
         const docking = 30;
         const mobilization = 0;
         const effectiveDays = calendarDaysYear-docking;
-        const numberRoundTripYear = Number(Math.floor(effectiveDays/totalTurnRoundTime));
+        let numberRoundTripYear = Number(Math.floor(effectiveDays/totalTurnRoundTime));
+
+        if(req.body.isNegotiation == "true")
+        {
+            numberRoundTripYear = req.body.numberRoundTripYearNego;
+        }
+
         const idleDaysYear = effectiveDays - (totalTurnRoundTime*numberRoundTripYear);
         const totalCargoCarryCapacityYearCBM = numberRoundTripYear * shipCargoTankOperationalCapacity.totalCapacityOpCBM;
-        const totalCargoCarryCapacityYearKG = numberRoundTripYear * shipCargoTankOperationalCapacity.totalCapacityOpKG;
+        let totalCargoCarryCapacityYearKG = numberRoundTripYear * shipCargoTankOperationalCapacity.totalCapacityOpKG;
+        
+        if(req.body.isNegotiation == "true")
+        {
+            totalCargoCarryCapacityYearKG = req.body.totalCargoCarryCapacityYearKGNego;
+        }
+
         const totalCargoCarryCapacityYearMMBTU = totalCargoCarryCapacityYearKG * convertToFloat(unitConversion[0].KGtoMMBTU);
 
         const turnAroundVoyage = {
@@ -1434,8 +1447,7 @@ const createTransportation = async (req, res, next) => {
             ratioRevenue
         }
         transportation.ProposedFreight = proposedFreight;
-        // console.log(transportation.ProposedFreight)
-        console.log(transportation.BunkeringCalculation)
+        transportation.isNegotiation = req.body.isNegotiation;
         const newTransportation = new Transportation(transportation);
         await newTransportation.save();
         res.redirect(`/project/${req.body.ProjectID}/form/${newTransportation._id}/bunker-price-sensitivity`);
@@ -1485,6 +1497,9 @@ const editTransportationByID = async (req, res, next) => {
 
 const updateTransportationByID = async (req, res, next) => {
     try {
+
+        console.log(req.body)
+
         const transportationID = req.body.TransportationID;
         const transportationDB = await Transportation.findOne({_id: ObjectID(transportationID)});
         if(!transportationDB){
@@ -1647,10 +1662,22 @@ const updateTransportationByID = async (req, res, next) => {
         const docking = 30;
         const mobilization = 0;
         const effectiveDays = calendarDaysYear-docking;
-        const numberRoundTripYear = Number(Math.floor(effectiveDays/totalTurnRoundTime));
+        let numberRoundTripYear = Number(Math.floor(effectiveDays/totalTurnRoundTime));
+
+        if(req.body.isNegotiation == "true")
+        {
+            numberRoundTripYear = req.body.numberRoundTripYearNego;
+        }
+
         const idleDaysYear = effectiveDays - (totalTurnRoundTime*numberRoundTripYear);
         const totalCargoCarryCapacityYearCBM = numberRoundTripYear * shipCargoTankOperationalCapacity.totalCapacityOpCBM;
-        const totalCargoCarryCapacityYearKG = numberRoundTripYear * shipCargoTankOperationalCapacity.totalCapacityOpKG;
+        let totalCargoCarryCapacityYearKG = numberRoundTripYear * shipCargoTankOperationalCapacity.totalCapacityOpKG;
+        
+        if(req.body.isNegotiation == "true")
+        {
+            totalCargoCarryCapacityYearKG = req.body.totalCargoCarryCapacityYearKGNego;
+        }
+
         const totalCargoCarryCapacityYearMMBTU = totalCargoCarryCapacityYearKG * convertToFloat(unitConversion[0].KGtoMMBTU);
        
         const turnAroundVoyage = {
@@ -1689,12 +1716,6 @@ const updateTransportationByID = async (req, res, next) => {
         const bunkerPriceIDRMFO = 0;
         const bunkerPriceIDRMDO = 0;
         const bunkerPriceIDRMGO = 0;
-        console.log(portIdleMDO)
-        console.log(portWorkingMDO)
-        console.log(atSeaMDO)
-        // const bunkerPriceIDRMFO = Number(req.body.bunkerPriceIDRMFO);
-        // const bunkerPriceIDRMDO = Number(req.body.bunkerPriceIDRMDO);
-        // const bunkerPriceIDRMGO = Number(req.body.bunkerPriceIDRMGO);
         const bunkerConsumeTripMFO = (turnAroundVoyage.totalTurnRoundTime*atSeaMFO) + ((turnAroundVoyage.totalLoadingTime+turnAroundVoyage.totalDischargeTime)*portWorkingMFO) + ((turnAroundVoyage.enterWaitTimePOD+turnAroundVoyage.enterWaitTimePOL)*portIdleMFO);
         const bunkerConsumeTripMDO = (turnAroundVoyage.totalTurnRoundTime*atSeaMDO) + ((turnAroundVoyage.totalLoadingTime+turnAroundVoyage.totalDischargeTime)*portWorkingMDO) + ((turnAroundVoyage.enterWaitTimePOD+turnAroundVoyage.enterWaitTimePOL)*portIdleMDO);
         const bunkerConsumeTripMGO = (turnAroundVoyage.totalTurnRoundTime*atSeaMGO) + ((turnAroundVoyage.totalLoadingTime+turnAroundVoyage.totalDischargeTime)*portWorkingMGO) + ((turnAroundVoyage.enterWaitTimePOD+turnAroundVoyage.enterWaitTimePOL)*portIdleMGO);
@@ -1884,6 +1905,7 @@ const updateTransportationByID = async (req, res, next) => {
             ratioRevenue
         }
         transportation.ProposedFreight = proposedFreight;
+        transportation.isNegotiation = req.body.isNegotiation;
         transportation.status = 0;
 
         // console.log(transportation.BunkeringCalculation)

@@ -277,12 +277,39 @@
       </script>
       <div class="pumpDischareRateWrapper">
       </div>
+      <h5>NUMBER OF VOYAGE</h5>
+      <% if (transportation.isNegotiation == "true") { %>
+        <input type="hidden" name="isNegotiation" id="isNegotiation" value="true">
+      <% }else{ %>
+        <input type="hidden" name="isNegotiation" id="isNegotiation" value="false">
+      <% } %>
+      <button type="button" class="btn btn-primary" onclick="confirmNegotiation()" id="">Negotiation</button>
+      <div class="mb-3">
+        <div class="numberOfVoyageWrapper">
+          <% if (transportation.isNegotiation == "true") { %>
+            <label class="form-label">Number of Round Trip per Year</label>
+            <div class="input-group mb-3">
+              <input type="number" step="any" class="form-control" id="numberRoundTripYearNego" name="numberRoundTripYearNego" onchange="changeTotalCargoCarryCapacity()" value="<%= transportation.TurnAroundVoyage.numberRoundTripYear %>" required>
+              <div class="input-group-append">
+                <span class="input-group-text">days</span>
+              </div>
+            </div>
+            <label class="form-label">Total Cargo Carrying Capacity per Year</label>
+            <div class="input-group mb-3">
+              <input type="number" step="any" class="form-control" id="totalCargoCarryCapacityYearKGNego" name="totalCargoCarryCapacityYearKGNego" value="<%= transportation.TurnAroundVoyage.totalCargoCarryCapacityYearKG %>" required>
+              <div class="input-group-append">
+                <span class="input-group-text">KG</span>
+              </div>
+            </div>
+          <% } %>
+        </div>
+      </div>
     </div>
   </div>
 
   <br>
   <div class="row">
-    <div class="col-md-5">
+    <div class="col-md-6">
       <a class="h2 text-black" style="text-decoration:none;">BUNKERING CALCULATION</a>
       <div class="popup" onclick="showPopUp('bunkeringPop')">
         <i class="fa fa-info-circle fa-2x" aria-hidden="true" style="color:turquoise"></i>
@@ -941,6 +968,53 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
+  function changeTotalCargoCarryCapacity(){
+    var numberRoundTripYearNego = $("#numberRoundTripYearNego").val();
+    var totalCargoCarryCapacityYearKGNego = $("#totalCargoCarryCapacityYearKGNego");
+    var numberOfCargoTank = $("#numberOfCargoTank").val();
+    var loadingFactor = 100;
+    let totalCapacityOpCBM = 0;
+    for (let index = 1; index <= numberOfCargoTank; index++) {
+      var cargoTank = $(`#cargoTank${index}`).val()
+      var cargoTankOp = loadingFactor / 100 * Number(cargoTank)
+      totalCapacityOpCBM += Number(cargoTankOp);
+    }
+    const totalCapacityOpLitre = totalCapacityOpCBM / 0.001
+    const totalCapacityOpKG = totalCapacityOpLitre / 1.777
+    totalCargoCarryCapacityYearKGNego.val(Number(numberRoundTripYearNego * totalCapacityOpKG))
+  }
+
+  function confirmNegotiation(){
+    var numberOfVoyageWrapper = $(".numberOfVoyageWrapper");
+    var isNegotiation = $("#isNegotiation");
+    var result = confirm('Are you sure to negotiation?');
+    if (result) {
+      $(numberOfVoyageWrapper).empty();
+      $(isNegotiation).val("true");
+      $(numberOfVoyageWrapper).append(
+        `
+        <label class="form-label">Number of Round Trip per Year</label>
+        <div class="input-group mb-3">
+          <input type="number" step="any" class="form-control" id="numberRoundTripYearNego" name="numberRoundTripYearNego" onchange="changeTotalCargoCarryCapacity()" value="0" required>
+          <div class="input-group-append">
+            <span class="input-group-text">days</span>
+          </div>
+        </div>
+        <label class="form-label">Total Cargo Carrying Capacity per Year</label>
+        <div class="input-group mb-3">
+          <input type="number" step="any" class="form-control" id="totalCargoCarryCapacityYearKGNego" name="totalCargoCarryCapacityYearKGNego" value="0" required>
+          <div class="input-group-append">
+            <span class="input-group-text">KG</span>
+          </div>
+        </div>
+        `
+      )
+    }
+    else{
+      $(numberOfVoyageWrapper).empty();
+      $(isNegotiation).val("false");
+    }
+  }
   function showPopUp(pop) {
     var popup = document.getElementById(pop);
     popup.classList.toggle("show");
