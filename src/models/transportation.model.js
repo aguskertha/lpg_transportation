@@ -394,83 +394,83 @@ const Transportation = mongoose.model('Transportation', {
     CrewCost: {
         DeckDept: {
             deckMaster: {
-                type: "Decimal128",
+                type: mongoose.Schema.Types.Mixed,
                 require: true
             },
             deckChiefOfficer: {
-                type: "Decimal128",
+                type: mongoose.Schema.Types.Mixed,
                 require: true
             },
             deckOfficer: {
-                type: "Decimal128",
+                type: mongoose.Schema.Types.Mixed,
                 require: true
             },
             deckRadioOperator: {
-                type: "Decimal128",
+                type: mongoose.Schema.Types.Mixed,
                 require: true
             },
             deckBoatswain : {
-                type: "Decimal128",
+                type: mongoose.Schema.Types.Mixed,
                 require: true
             },
             deckAbleBodied : {
-                type: "Decimal128",
+                type: mongoose.Schema.Types.Mixed,
                 require: true
             },
             deckOrdinarySeamen : {
-                type: "Decimal128",
+                type: mongoose.Schema.Types.Mixed,
                 require: true
             },
             deckChef : {
-                type: "Decimal128",
+                type: mongoose.Schema.Types.Mixed,
                 require: true
             },
             deckAssistantChef : {
-                type: "Decimal128",
+                type: mongoose.Schema.Types.Mixed,
                 require: true
             },
             deckOthers : {
-                type: "Decimal128",
+                type: mongoose.Schema.Types.Mixed,
                 require: true
             },
         },
         EngineDept: {
             engineChiefEngineer : {
-                type: "Decimal128",
+                type: mongoose.Schema.Types.Mixed,
                 require: true
             },
             engineChiefMachinist : {
-                type: "Decimal128",
+                type: mongoose.Schema.Types.Mixed,
                 require: true
             },
             engineMachinist : {
-                type: "Decimal128",
+                type: mongoose.Schema.Types.Mixed,
                 require: true
             },
             engineForemen : {
-                type: "Decimal128",
+                type: mongoose.Schema.Types.Mixed,
                 require: true
             },
             engineOiler : {
-                type: "Decimal128",
+                type: mongoose.Schema.Types.Mixed,
                 require: true
             },
             engineWiper : {
-                type: "Decimal128",
+                type: mongoose.Schema.Types.Mixed,
                 require: true
             },
             engineOthers : {
-                type: "Decimal128",
+                type: mongoose.Schema.Types.Mixed,
                 require: true
             },
         },
         Barge: {
             bargeLoadingMaster : {
-                type: "Decimal128",
+                type: mongoose.Schema.Types.Mixed,
                 require: true
             },
             bargeBoatswain : {
-                type: "Decimal128",
+                type: mongoose.Schema.Types.Mixed,
                 require: true
             },
         },

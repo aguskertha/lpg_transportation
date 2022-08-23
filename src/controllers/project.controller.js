@@ -1307,27 +1307,96 @@ const createTransportation = async (req, res, next) => {
         transportation.BunkeringCalculation = bunkeringCalculation;
         
         //CREW COST
-        const deckMaster = Number(req.body.deckMaster);
-        const deckChiefOfficer = Number(req.body.deckChiefOfficer);
-        const deckOfficer = Number(req.body.deckOfficer);
-        const deckRadioOperator = Number(req.body.deckRadioOperator);
-        const deckBoatswain = Number(req.body.deckBoatswain);
-        const deckAbleBodied = Number(req.body.deckAbleBodied);
-        const deckOrdinarySeamen = Number(req.body.deckOrdinarySeamen);
-        const deckChef = Number(req.body.deckChef);
-        const deckAssistantChef = Number(req.body.deckAssistantChef);
-        const deckOthers = Number(req.body.deckOthers);
+        const deckMaster = {
+            qty: Number(req.body.deckMasterQty),
+            price: Number(req.body.deckMasterPrice),
+            total: Number(req.body.deckMaster)
+        }
+        const deckChiefOfficer = {
+            qty: Number(req.body.deckChiefOfficerQty),
+            price: Number(req.body.deckChiefOfficerPrice),
+            total: Number(req.body.deckChiefOfficer)
+        }
+        const deckOfficer = {
+            qty: Number(req.body.deckOfficerQty),
+            price: Number(req.body.deckOfficerPrice),
+            total: Number(req.body.deckOfficer)
+        }
+        const deckRadioOperator = {
+            qty: Number(req.body.deckRadioOperatorQty),
+            price: Number(req.body.deckRadioOperatorPrice),
+            total: Number(req.body.deckRadioOperator)
+        }
+        const deckBoatswain = {
+            qty: Number(req.body.deckBoatswainQty),
+            price: Number(req.body.deckBoatswainPrice),
+            total: Number(req.body.deckBoatswain)
+        }
+        const deckAbleBodied = {
+            qty: Number(req.body.deckAbleBodiedQty),
+            price: Number(req.body.deckAbleBodiedPrice),
+            total: Number(req.body.deckAbleBodied)
+        }
+        const deckOrdinarySeamen = {
+            qty: Number(req.body.deckOrdinarySeamenQty),
+            price: Number(req.body.deckOrdinarySeamenPrice),
+            total: Number(req.body.deckOrdinarySeamen)
+        }
+        const deckChef = {
+            qty: Number(req.body.deckChefQty),
+            price: Number(req.body.deckChefPrice),
+            total: Number(req.body.deckChef)
+        }
+        const deckAssistantChef = {
+            qty: Number(req.body.deckAssistantChefQty),
+            price: Number(req.body.deckAssistantChefPrice),
+            total: Number(req.body.deckAssistantChef)
+        }
+        const deckOthers = {
+            qty: Number(req.body.deckOthersQty),
+            price: Number(req.body.deckOthersPrice),
+            total: Number(req.body.deckOthers)
+        }
         const deckDept = {deckMaster, deckChiefOfficer, deckOfficer, deckRadioOperator, deckBoatswain, deckAbleBodied, deckOrdinarySeamen, deckChef, deckAssistantChef, deckOthers};
-        const engineChiefEngineer = Number(req.body.engineChiefEngineer);
-        const engineChiefMachinist = Number(req.body.engineChiefMachinist);
-        const engineMachinist = Number(req.body.engineMachinist);
-        const engineForemen = Number(req.body.engineForemen);
-        const engineOiler = Number(req.body.engineOiler);
-        const engineWiper = Number(req.body.engineWiper);
-        const engineOthers = Number(req.body.engineOthers);
+        
+        const engineChiefEngineer = {
+            qty: Number(req.body.engineChiefEngineerQty),
+            price: Number(req.body.engineChiefEngineerPrice),
+            total: Number(req.body.engineChiefEngineer)
+        }
+        const engineChiefMachinist = {
+            qty: Number(req.body.engineChiefMachinistQty),
+            price: Number(req.body.engineChiefMachinistPrice),
+            total: Number(req.body.engineChiefMachinist)
+        }
+        const engineMachinist = {
+            qty: Number(req.body.engineMachinistQty),
+            price: Number(req.body.engineMachinistPrice),
+            total: Number(req.body.engineMachinist)
+        }
+        const engineForemen = {
+            qty: Number(req.body.engineForemenQty),
+            price: Number(req.body.engineForemenPrice),
+            total: Number(req.body.engineForemen)
+        }
+        const engineOiler = {
+            qty: Number(req.body.engineOilerQty),
+            price: Number(req.body.engineOilerPrice),
+            total: Number(req.body.engineOiler)
+        }
+        const engineWiper = {
+            qty: Number(req.body.engineWiperQty),
+            price: Number(req.body.engineWiperPrice),
+            total: Number(req.body.engineWiper)
+        }
+        const engineOthers = {
+            qty: Number(req.body.engineOthersQty),
+            price: Number(req.body.engineOthersPrice),
+            total: Number(req.body.engineOthers)
+        }
         const engineDept = {engineChiefEngineer, engineChiefMachinist, engineMachinist, engineForemen, engineOiler, engineWiper, engineOthers};
-        const sumDeckDept = (deckMaster+deckChiefOfficer+deckOfficer+deckRadioOperator+deckBoatswain+deckAbleBodied+deckOrdinarySeamen+deckChef+deckAssistantChef+deckOthers);
-        const sumEngineDept = (engineChiefEngineer+ engineChiefMachinist+ engineMachinist+ engineForemen+ engineOiler+ engineWiper+ engineOthers);
+        const sumDeckDept = (deckMaster.total+deckChiefOfficer.total+deckOfficer.total+deckRadioOperator.total+deckBoatswain.total+deckAbleBodied.total+deckOrdinarySeamen.total+deckChef.total+deckAssistantChef.total+deckOthers.total);
+        const sumEngineDept = (engineChiefEngineer.total+ engineChiefMachinist.total+ engineMachinist.total+ engineForemen.total+ engineOiler.total+ engineWiper.total+ engineOthers.total);
         const totalCrewCostMonth = sumDeckDept + sumEngineDept;
         const totalCrewCostYear = totalCrewCostMonth * 13;
 
@@ -1759,27 +1828,96 @@ const updateTransportationByID = async (req, res, next) => {
         transportation.BunkeringCalculation = bunkeringCalculation;
         
         //CREW COST
-        const deckMaster = Number(req.body.deckMaster);
-        const deckChiefOfficer = Number(req.body.deckChiefOfficer);
-        const deckOfficer = Number(req.body.deckOfficer);
-        const deckRadioOperator = Number(req.body.deckRadioOperator);
-        const deckBoatswain = Number(req.body.deckBoatswain);
-        const deckAbleBodied = Number(req.body.deckAbleBodied);
-        const deckOrdinarySeamen = Number(req.body.deckOrdinarySeamen);
-        const deckChef = Number(req.body.deckChef);
-        const deckAssistantChef = Number(req.body.deckAssistantChef);
-        const deckOthers = Number(req.body.deckOthers);
+        const deckMaster = {
+            qty: Number(req.body.deckMasterQty),
+            price: Number(req.body.deckMasterPrice),
+            total: Number(req.body.deckMaster)
+        }
+        const deckChiefOfficer = {
+            qty: Number(req.body.deckChiefOfficerQty),
+            price: Number(req.body.deckChiefOfficerPrice),
+            total: Number(req.body.deckChiefOfficer)
+        }
+        const deckOfficer = {
+            qty: Number(req.body.deckOfficerQty),
+            price: Number(req.body.deckOfficerPrice),
+            total: Number(req.body.deckOfficer)
+        }
+        const deckRadioOperator = {
+            qty: Number(req.body.deckRadioOperatorQty),
+            price: Number(req.body.deckRadioOperatorPrice),
+            total: Number(req.body.deckRadioOperator)
+        }
+        const deckBoatswain = {
+            qty: Number(req.body.deckBoatswainQty),
+            price: Number(req.body.deckBoatswainPrice),
+            total: Number(req.body.deckBoatswain)
+        }
+        const deckAbleBodied = {
+            qty: Number(req.body.deckAbleBodiedQty),
+            price: Number(req.body.deckAbleBodiedPrice),
+            total: Number(req.body.deckAbleBodied)
+        }
+        const deckOrdinarySeamen = {
+            qty: Number(req.body.deckOrdinarySeamenQty),
+            price: Number(req.body.deckOrdinarySeamenPrice),
+            total: Number(req.body.deckOrdinarySeamen)
+        }
+        const deckChef = {
+            qty: Number(req.body.deckChefQty),
+            price: Number(req.body.deckChefPrice),
+            total: Number(req.body.deckChef)
+        }
+        const deckAssistantChef = {
+            qty: Number(req.body.deckAssistantChefQty),
+            price: Number(req.body.deckAssistantChefPrice),
+            total: Number(req.body.deckAssistantChef)
+        }
+        const deckOthers = {
+            qty: Number(req.body.deckOthersQty),
+            price: Number(req.body.deckOthersPrice),
+            total: Number(req.body.deckOthers)
+        }
         const deckDept = {deckMaster, deckChiefOfficer, deckOfficer, deckRadioOperator, deckBoatswain, deckAbleBodied, deckOrdinarySeamen, deckChef, deckAssistantChef, deckOthers};
-        const engineChiefEngineer = Number(req.body.engineChiefEngineer);
-        const engineChiefMachinist = Number(req.body.engineChiefMachinist);
-        const engineMachinist = Number(req.body.engineMachinist);
-        const engineForemen = Number(req.body.engineForemen);
-        const engineOiler = Number(req.body.engineOiler);
-        const engineWiper = Number(req.body.engineWiper);
-        const engineOthers = Number(req.body.engineOthers);
+        
+        const engineChiefEngineer = {
+            qty: Number(req.body.engineChiefEngineerQty),
+            price: Number(req.body.engineChiefEngineerPrice),
+            total: Number(req.body.engineChiefEngineer)
+        }
+        const engineChiefMachinist = {
+            qty: Number(req.body.engineChiefMachinistQty),
+            price: Number(req.body.engineChiefMachinistPrice),
+            total: Number(req.body.engineChiefMachinist)
+        }
+        const engineMachinist = {
+            qty: Number(req.body.engineMachinistQty),
+            price: Number(req.body.engineMachinistPrice),
+            total: Number(req.body.engineMachinist)
+        }
+        const engineForemen = {
+            qty: Number(req.body.engineForemenQty),
+            price: Number(req.body.engineForemenPrice),
+            total: Number(req.body.engineForemen)
+        }
+        const engineOiler = {
+            qty: Number(req.body.engineOilerQty),
+            price: Number(req.body.engineOilerPrice),
+            total: Number(req.body.engineOiler)
+        }
+        const engineWiper = {
+            qty: Number(req.body.engineWiperQty),
+            price: Number(req.body.engineWiperPrice),
+            total: Number(req.body.engineWiper)
+        }
+        const engineOthers = {
+            qty: Number(req.body.engineOthersQty),
+            price: Number(req.body.engineOthersPrice),
+            total: Number(req.body.engineOthers)
+        }
         const engineDept = {engineChiefEngineer, engineChiefMachinist, engineMachinist, engineForemen, engineOiler, engineWiper, engineOthers};
-        const sumDeckDept = (deckMaster+deckChiefOfficer+deckOfficer+deckRadioOperator+deckBoatswain+deckAbleBodied+deckOrdinarySeamen+deckChef+deckAssistantChef+deckOthers);
-        const sumEngineDept = (engineChiefEngineer+ engineChiefMachinist+ engineMachinist+ engineForemen+ engineOiler+ engineWiper+ engineOthers);
+        const sumDeckDept = (deckMaster.total+deckChiefOfficer.total+deckOfficer.total+deckRadioOperator.total+deckBoatswain.total+deckAbleBodied.total+deckOrdinarySeamen.total+deckChef.total+deckAssistantChef.total+deckOthers.total);
+        const sumEngineDept = (engineChiefEngineer.total+ engineChiefMachinist.total+ engineMachinist.total+ engineForemen.total+ engineOiler.total+ engineWiper.total+ engineOthers.total);
         const totalCrewCostMonth = sumDeckDept + sumEngineDept;
         const totalCrewCostYear = totalCrewCostMonth * 13;
         const crewCost = {
@@ -1932,12 +2070,14 @@ const duplicateTransportationByID = async (req, res, next) => {
         const transportation = await Transportation.findOne({_id: ObjectID(TransportationID)});
         transportation._id = ObjectID();
         
-        const bunkerPriceSensitivity = await BunkerPriceSensitivity.findOne({_id: transportation.bunkerPriceSensitivityID})
-        if(bunkerPriceSensitivity == null) throw 'Bunker not found!'
-        bunkerPriceSensitivity._id = ObjectID();
-        await BunkerPriceSensitivity.insertMany(bunkerPriceSensitivity)
+        if(transportation.status == 1){
+            const bunkerPriceSensitivity = await BunkerPriceSensitivity.findOne({_id: transportation.bunkerPriceSensitivityID})
+            if(bunkerPriceSensitivity == null) throw 'Bunker not found!'
+            bunkerPriceSensitivity._id = ObjectID();
+            await BunkerPriceSensitivity.insertMany(bunkerPriceSensitivity)
+            transportation.bunkerPriceSensitivityID = bunkerPriceSensitivity._id
+        }
 
-        transportation.bunkerPriceSensitivityID = bunkerPriceSensitivity._id
         await Transportation.insertMany(transportation)
 
         // await BunkerPriceSensitivity.inse (bunkerPriceSensitivity);

@@ -276,15 +276,15 @@
   <div class="row">
     <div class="col-md-12">
       <a class="h2 text-black" style="text-decoration:none;">TURNAROUND VOYAGE</a>
-      <div class="popup" onclick="showPopUp('turnAroundVoyagePop')">
-        <i class="fa fa-info-circle fa-2x" aria-hidden="true" style="color:turquoise"></i>
-        <span class="popuptext" id="turnAroundVoyagePop">Data from Q88 or generated from <a href="/public/images/TurnAroundVoyage.jpg" target="_blank">estimation</a></span>
-      </div>
     </div>
   </div>
   <div class="row">
     <div class="col-md-5">
-      <h5>LOADING RATE</h5>
+      <a class="h5 text-black" style="text-decoration:none;">LOADING RATE</a>
+      <div class="popup" onclick="showPopUp('turnAroundVoyagePop')">
+        <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+        <span class="popuptext" id="turnAroundVoyagePop">Data from Q88 or generated from <a href="/public/images/TurnAroundVoyage.jpg" target="_blank">estimation</a></span>
+      </div>
       <div class="pumpLoadingRateWrapper">
       </div>
       <h5>DISCHARGE RATE</h5>
@@ -477,10 +477,10 @@
           <tr>
             <th scope="row">Master</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckMasterQty" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckMasterQty" name="deckMasterQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckMasterPrice" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckMasterPrice" name="deckMasterPrice" required>
             </td>
             <td>
               <input type="number" step="any" class="form-control" value="0" id="deckMaster" name="deckMaster" required>
@@ -489,10 +489,10 @@
           <tr>
             <th scope="row">Chief Officer</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckChiefOfficerQty"  required>
+              <input type="number" step="any" class="form-control" value="0" id="deckChiefOfficerQty" name="deckChiefOfficerQty"  required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckChiefOfficerPrice"  required>
+              <input type="number" step="any" class="form-control" value="0" id="deckChiefOfficerPrice" name="deckChiefOfficerPrice" required>
             </td>
             <td>
               <input type="number" step="any" class="form-control" value="0" id="deckChiefOfficer" name="deckChiefOfficer" required>
@@ -501,10 +501,10 @@
           <tr>
             <th scope="row">Deck Officer</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckOfficerQty" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckOfficerQty" name="deckOfficerQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckOfficerPrice" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckOfficerPrice" name="deckOfficerPrice" required>
             </td>
             <td>
               <input type="number" step="any" class="form-control" value="0" id="deckOfficer" name="deckOfficer"  required>
@@ -513,10 +513,10 @@
           <tr>
             <th scope="row">Radio Operator</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckRadioOperatorQty" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckRadioOperatorQty" name="deckRadioOperatorQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckRadioOperatorPrice" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckRadioOperatorPrice" name="deckRadioOperatorPrice" required>
             </td>
             <td>
               <input type="number" step="any" class="form-control" value="0" id="deckRadioOperator" name="deckRadioOperator"  required>
@@ -525,10 +525,10 @@
           <tr>
             <th scope="row">Boatswain</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckBoatswainQty" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckBoatswainQty" name="deckBoatswainQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckBoatswainPrice" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckBoatswainPrice" name="deckBoatswainPrice" required>
             </td>
             <td>
               <input type="number" step="any" class="form-control" value="0" id="deckBoatswain" name="deckBoatswain"  required>
@@ -537,10 +537,10 @@
           <tr>
             <th scope="row">Able Bodied</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckAbleBodiedQty" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckAbleBodiedQty" name="deckAbleBodiedQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckAbleBodiedPrice" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckAbleBodiedPrice" name="deckAbleBodiedPrice" required>
             </td>
             <td>
               <input type="number" step="any" class="form-control" value="0" id="deckAbleBodied" name="deckAbleBodied"  required>
@@ -549,10 +549,10 @@
           <tr>
             <th scope="row">Ordinary Seamen</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckOrdinarySeamenQty" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckOrdinarySeamenQty" name="deckOrdinarySeamenQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckOrdinarySeamenPrice" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckOrdinarySeamenPrice" name="deckOrdinarySeamenPrice" required>
             </td>
             <td>
               <input type="number" step="any" class="form-control" value="0" id="deckOrdinarySeamen" name="deckOrdinarySeamen"  required>
@@ -561,10 +561,10 @@
           <tr>
             <th scope="row">Chef</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckChefQty" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckChefQty" name="deckChefQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckChefPrice" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckChefPrice" name="deckChefPrice" required>
             </td>
             <td>
               <input type="number" step="any" class="form-control" value="0" id="deckChef" name="deckChef"  required>
@@ -573,10 +573,10 @@
           <tr>
             <th scope="row">Assistant Chef</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckAssistantChefQty" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckAssistantChefQty" name="deckAssistantChefQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckAssistantChefPrice" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckAssistantChefPrice" name="deckAssistantChefPrice" required>
             </td>
             <td>
               <input type="number" step="any" class="form-control" value="0" id="deckAssistantChef" name="deckAssistantChef"  required>
@@ -585,10 +585,10 @@
           <tr>
             <th scope="row">Others</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckOthersQty" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckOthersQty" name="deckOthersQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckOthersPrice" required>
+              <input type="number" step="any" class="form-control" value="0" id="deckOthersPrice" name="deckOthersPrice" required>
             </td>
             <td>
               <input type="number" step="any" class="form-control" value="0" id="deckOthers" name="deckOthers"  required>
@@ -615,10 +615,10 @@
           <tr>
             <th scope="row">Chief Engineer</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineChiefEngineerQty" required>
+              <input type="number" step="any" class="form-control" value="0" id="engineChiefEngineerQty" name="engineChiefEngineerQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineChiefEngineerPrice" required>
+              <input type="number" step="any" class="form-control" value="0" id="engineChiefEngineerPrice" name="engineChiefEngineerPrice" required>
             </td>
             <td>
               <input type="number" step="any" class="form-control" value="0" id="engineChiefEngineer" name="engineChiefEngineer"  required>
@@ -627,10 +627,10 @@
           <tr>
             <th scope="row">Chief Machinist</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineChiefMachinistQty" required>
+              <input type="number" step="any" class="form-control" value="0" id="engineChiefMachinistQty" name="engineChiefMachinistQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineChiefMachinistPrice" required>
+              <input type="number" step="any" class="form-control" value="0" id="engineChiefMachinistPrice" name="engineChiefMachinistPrice" required>
             </td>
             <td>
               <input type="number" step="any" class="form-control" value="0" id="engineChiefMachinist" name="engineChiefMachinist"  required>
@@ -639,10 +639,10 @@
           <tr>
             <th scope="row">Machinist</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineMachinistQty" required>
+              <input type="number" step="any" class="form-control" value="0" id="engineMachinistQty" name="engineMachinistQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineMachinistPrice" required>
+              <input type="number" step="any" class="form-control" value="0" id="engineMachinistPrice" name="engineMachinistPrice" required>
             </td>
             <td>
               <input type="number" step="any" class="form-control" value="0" id="engineMachinist" name="engineMachinist"  required>
@@ -651,10 +651,10 @@
           <tr>
             <th scope="row">Foremen</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineForemenQty" required>
+              <input type="number" step="any" class="form-control" value="0" id="engineForemenQty" name="engineForemenQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineForemenPrice" required>
+              <input type="number" step="any" class="form-control" value="0" id="engineForemenPrice" name="engineForemenPrice" required>
             </td>
             <td>
               <input type="number" step="any" class="form-control" value="0" id="engineForemen" name="engineForemen"  required>
@@ -663,10 +663,10 @@
           <tr>
             <th scope="row">Oiler</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineOilerQty" required>
+              <input type="number" step="any" class="form-control" value="0" id="engineOilerQty" name="engineOilerQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineOilerPrice" required>
+              <input type="number" step="any" class="form-control" value="0" id="engineOilerPrice" name="engineOilerPrice" required>
             </td>
             <td>
               <input type="number" step="any" class="form-control" value="0" id="engineOiler" name="engineOiler"  required>
@@ -675,10 +675,10 @@
           <tr>
             <th scope="row">Wiper</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineWiperQty" required>
+              <input type="number" step="any" class="form-control" value="0" id="engineWiperQty" name="engineWiperQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineWiperPrice" required>
+              <input type="number" step="any" class="form-control" value="0" id="engineWiperPrice" name="engineWiperPrice" required>
             </td>
             <td>
               <input type="number" step="any" class="form-control" value="0" id="engineWiper" name="engineWiper"  required>
@@ -687,10 +687,10 @@
           <tr>
             <th scope="row">Others</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineOthersQty" required>
+              <input type="number" step="any" class="form-control" value="0" id="engineOthersQty" name="engineOthersQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineOthersPrice" required>
+              <input type="number" step="any" class="form-control" value="0" id="engineOthersPrice" name="engineOthersPrice" required>
             </td>
             <td>
               <input type="number" step="any" class="form-control" value="0" id="engineOthers" name="engineOthers"  required>
