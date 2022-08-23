@@ -406,15 +406,15 @@
   <div class="row">
     <div class="col-md-12">
       <a class="h2 text-black" style="text-decoration:none;">TURNAROUND VOYAGE</a>
-      <div class="popup" onclick="showPopUp('turnAroundVoyagePop')">
-        <i class="fa fa-info-circle fa-2x" aria-hidden="true" style="color:turquoise"></i>
-        <span class="popuptext" id="turnAroundVoyagePop">Data from Q88 or generated from <a href="/public/images/TurnAroundVoyage.jpg" target="_blank">estimation</a></span>
-      </div>
     </div>
   </div>
   <div class="row">
     <div class="col-md-5">
-      <h5>LOADING RATE</h5>
+      <a class="h5 text-black" style="text-decoration:none;">LOADING RATE</a>
+      <div class="popup" onclick="showPopUp('turnAroundVoyagePop')">
+        <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+        <span class="popuptext" id="turnAroundVoyagePop">Data from Q88 or generated from <a href="/public/images/TurnAroundVoyage.jpg" target="_blank">estimation</a></span>
+      </div>
       <div class="pumpLoadingRateWrapper">
       </div>
       <h5>DISCHARGE RATE</h5>
@@ -599,10 +599,10 @@
           <tr>
             <th scope="row">Loading Master</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="bargeLoadingMasterQty" required>
+              <input type="number" step="any" class="form-control" value="0" id="bargeLoadingMasterQty" name="bargeLoadingMasterQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="bargeLoadingMasterPrice" required>
+              <input type="number" step="any" class="form-control" value="0" id="bargeLoadingMasterPrice" name="bargeLoadingMasterPrice" required>
             </td>
             <td>
               <input type="number" step="any" class="form-control" value="0" id="bargeLoadingMaster" name="bargeLoadingMaster"  required>
@@ -611,10 +611,10 @@
           <tr>
             <th scope="row">Boatswain</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="bargeBoatswainQty" required>
+              <input type="number" step="any" class="form-control" value="0" id="bargeBoatswainQty" name="bargeBoatswainQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="bargeBoatswainPrice" required>
+              <input type="number" step="any" class="form-control" value="0" id="bargeBoatswainPrice" name="bargeBoatswainPrice" required>
             </td>
             <td>
               <input type="number" step="any" class="form-control" value="0" id="bargeBoatswain" name="bargeBoatswain"  required>

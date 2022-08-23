@@ -1408,11 +1408,19 @@ const createTransportation = async (req, res, next) => {
         };
         if(req.params.typeFreightSlug === 'barge' && req.params.typeVoyageSlug === 'single_trip'){
             const barge = {
-                bargeLoadingMaster: req.body.bargeLoadingMaster,
-                bargeBoatswain: req.body.bargeBoatswain
+                bargeLoadingMaster: {
+                    qty: req.body.bargeLoadingMasterQty,
+                    price: req.body.bargeLoadingMasterPrice,
+                    total: req.body.bargeLoadingMaster,
+                },
+                bargeBoatswain: {
+                    qty: req.body.bargeBoatswainQty,
+                    price: req.body.bargeBoatswainPrice,
+                    total: req.body.bargeBoatswain,
+                }
             }
             crewCost.Barge = barge;
-            crewCost.totalCrewCostMonth += (Number(barge.bargeLoadingMaster) + Number(barge.bargeBoatswain));
+            crewCost.totalCrewCostMonth += (Number(barge.bargeLoadingMaster.total) + Number(barge.bargeBoatswain.total));
             crewCost.totalCrewCostYear = crewCost.totalCrewCostMonth * 13;
         }
         transportation.CrewCost = crewCost;
@@ -1928,11 +1936,19 @@ const updateTransportationByID = async (req, res, next) => {
         };
         if(transportation.TypeFreight.slug === 'barge' && transportation.TypeVoyage.slug === 'single_trip'){
             const barge = {
-                bargeLoadingMaster: req.body.bargeLoadingMaster,
-                bargeBoatswain: req.body.bargeBoatswain
+                bargeLoadingMaster: {
+                    qty: req.body.bargeLoadingMasterQty,
+                    price: req.body.bargeLoadingMasterPrice,
+                    total: req.body.bargeLoadingMaster,
+                },
+                bargeBoatswain: {
+                    qty: req.body.bargeBoatswainQty,
+                    price: req.body.bargeBoatswainPrice,
+                    total: req.body.bargeBoatswain,
+                }
             }
             crewCost.Barge = barge;
-            crewCost.totalCrewCostMonth += (Number(barge.bargeLoadingMaster) + Number(barge.bargeBoatswain));
+            crewCost.totalCrewCostMonth += (Number(barge.bargeLoadingMaster.total) + Number(barge.bargeBoatswain.total));
             crewCost.totalCrewCostYear = crewCost.totalCrewCostMonth * 13;
         }
         transportation.CrewCost = crewCost;
