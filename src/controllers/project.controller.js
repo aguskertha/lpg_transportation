@@ -1505,13 +1505,13 @@ const updateTransportationByID = async (req, res, next) => {
         if(!transportationDB){
             throw "Transportation not found!"
         }
-        if(transportationDB.bunkerPriceSensitivityID){
-            const bunkerPriceSensitivity = await BunkerPriceSensitivity.findOne({_id: ObjectID(transportationDB.bunkerPriceSensitivityID)});
-            if(!bunkerPriceSensitivity){
-                throw "Bunker not found!"
-            }
-            await BunkerPriceSensitivity.deleteOne({_id : ObjectID(transportationDB.bunkerPriceSensitivityID)});
-        }
+        // if(transportationDB.bunkerPriceSensitivityID){
+        //     const bunkerPriceSensitivity = await BunkerPriceSensitivity.findOne({_id: ObjectID(transportationDB.bunkerPriceSensitivityID)});
+        //     if(!bunkerPriceSensitivity){
+        //         throw "Bunker not found!"
+        //     }
+        //     await BunkerPriceSensitivity.deleteOne({_id : ObjectID(transportationDB.bunkerPriceSensitivityID)});
+        // }
         const unitConversion = await UnitConversion.find();
         const transportation = {};
 
@@ -1906,9 +1906,9 @@ const updateTransportationByID = async (req, res, next) => {
         }
         transportation.ProposedFreight = proposedFreight;
         transportation.isNegotiation = req.body.isNegotiation;
-        transportation.status = 0;
+        transportation.status = transportationDB.status;
+        transportation.bunkerPriceSensitivityID = transportationDB.bunkerPriceSensitivityID
 
-        // console.log(transportation.BunkeringCalculation)
         await Transportation.updateOne(
             { _id: req.body.TransportationID},
             {
@@ -1931,9 +1931,19 @@ const duplicateTransportationByID = async (req, res, next) => {
         const TransportationID = req.params.transportationID;
         const transportation = await Transportation.findOne({_id: ObjectID(TransportationID)});
         transportation._id = ObjectID();
-        Transportation.insertMany(transportation, (error, result)=>{
-            res.redirect(`/project/${ProjectID}/transportation`);
-        });
+        
+        const bunkerPriceSensitivity = await BunkerPriceSensitivity.findOne({_id: transportation.bunkerPriceSensitivityID})
+        if(bunkerPriceSensitivity == null) throw 'Bunker not found!'
+        bunkerPriceSensitivity._id = ObjectID();
+        await BunkerPriceSensitivity.insertMany(bunkerPriceSensitivity)
+
+        transportation.bunkerPriceSensitivityID = bunkerPriceSensitivity._id
+        await Transportation.insertMany(transportation)
+
+        // await BunkerPriceSensitivity.inse (bunkerPriceSensitivity);
+        res.redirect(`/project/${ProjectID}/transportation`);
+        // Transportation.insertMany(transportation, (error, result)=>{
+        // });
     } catch (error) {
         res.render('error', {
             layout: 'layouts/main-layout',
@@ -1947,7 +1957,15 @@ const deleteTransportationByID = async (req, res, next) => {
     try {
         const ProjectID = req.params.projectID;
         const TransportationID = req.params.transportationID;
+        const transportation = await Transportation.findOne({_id: ObjectID(TransportationID)})
+        if(!transportation) throw 'Transportation not found!'
         await Transportation.deleteOne({_id : ObjectID(TransportationID)});
+        if(transportation.status == 1)
+        {
+            const bunkerPriceSensitivity = await BunkerPriceSensitivity.findOne({_id: ObjectID(transportation.bunkerPriceSensitivityID)})
+            if(!bunkerPriceSensitivity) throw 'Bunker not found!'
+            await BunkerPriceSensitivity.deleteOne({_id: ObjectID(bunkerPriceSensitivity._id)});
+        }
         res.redirect(`/project/${ProjectID}/transportation`);
     } catch (error) {
         res.render('error', {
