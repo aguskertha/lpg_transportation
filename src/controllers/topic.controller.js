@@ -54,8 +54,88 @@ const getTopicByID = async (req, res, next) => {
         });
     }
 }
+
+const renderAdminTopic = async (req, res, next) => {
+    try {
+        const topics = await Topic.find().sort({createdAt: -1});
+        res.render('Topic/topic-list', {
+            layout: 'layouts/main-layout',
+            topics
+        });
+    } catch (error) {
+        res.render('error', {
+            layout: 'layouts/main-layout',
+            message: error,
+            status: 400
+        });
+    }
+}
+
+const createAdminTopic = async (req, res, next) => {
+    try {
+        const {name, slug} = req.body
+        const newTopic = await Topic({name, slug})
+        await newTopic.save()
+        res.redirect('/topic/admin')
+
+    } catch (error) {
+        res.render('error', {
+            layout: 'layouts/main-layout',
+            message: error,
+            status: 400
+        });
+    }
+}
+
+const updateAdminTopic = async (req, res, next) => {
+    try {
+        const {topicID, name, slug} = req.body
+        if(topicID == ""){
+            await createAdminTopic(req, res, next)
+            return
+        }
+        const topic = await Topic.findOne({_id: ObjectID(topicID)})
+        if(!topic) throw 'Topic not found!'
+        await Topic.updateOne(
+            { _id: topicID},
+            {
+                $set: {
+                    name: name,
+                    slug: slug
+                }
+            }
+        );
+        res.redirect('/topic/admin')
+    } catch (error) {
+        res.render('error', {
+            layout: 'layouts/main-layout',
+            message: error,
+            status: 400
+        });
+    }
+}
+
+const deleteAdminTopicByID = async (req, res, next) => {
+    try {
+        const topicID = req.params.topicID
+        const topic = await Topic.findOne({_id: ObjectID(topicID)})
+        if(!topic) throw 'Topic not found!'
+        await Topic.deleteOne({_id: ObjectID(topicID)})
+        res.redirect('/topic/admin')
+    } catch (error) {
+        res.render('error', {
+            layout: 'layouts/main-layout',
+            message: error,
+            status: 400
+        });
+    }
+}
+
 module.exports = {
     createTopic,
     getTopics,
-    getTopicByID
+    getTopicByID,
+    renderAdminTopic,
+    updateAdminTopic,
+    deleteAdminTopicByID
 }

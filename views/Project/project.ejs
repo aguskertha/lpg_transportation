@@ -34,8 +34,11 @@
                                 else if(topic.slug == 'terminal'){
                                     link = `/project/${projects[i]._id}/terminal`;
                                 }
-                                else if(topicID == '61f52f76f7c18127007285a2'){
+                                else if(topic.slug == 'skidtruck'){
                                     link = `/project/${projects[i]._id}/skidtruck`;
+                                }
+                                else{
+                                    link = `/topic`;
                                 }
                             %> 
                             <a class="btn btn-info btn-sm" href="<%= link %>" role="button"><i class="fa fa-list"></i> Info</a>
