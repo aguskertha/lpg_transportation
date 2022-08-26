@@ -8,10 +8,10 @@ const typeFreightRouter = require('./type-freight.route');
 const {ensureAuthenticated} = require('./../middleware/auth');
 
 router.use('/', indexRouter);
-router.use('/topic', topicRouter);
+router.use('/topic', ensureAuthenticated, topicRouter);
 router.use('/project', ensureAuthenticated, projectRouter);
 router.use('/user', userRouter);
-router.use('/type-voyage', typeVoyageRouter);
-router.use('/type-freight', typeFreightRouter);
+router.use('/type-voyage', ensureAuthenticated, typeVoyageRouter);
+router.use('/type-freight', ensureAuthenticated, typeFreightRouter);
 
 module.exports = router;
