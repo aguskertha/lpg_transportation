@@ -17,6 +17,8 @@
   <input type="hidden" value="<%= transportation.ProjectID %>" class="form-control" name="ProjectID">
   <input type="hidden" value="<%= currentYear %>" class="form-control" id="currentYear">
   <input type="hidden" value="<%= CBMtoMT %>" class="form-control" id="CBMtoMT">
+  <input type="hidden" value="<%= unitCBMtoLitre %>" class="form-control" id="unitCBMtoLitre">
+  <input type="hidden" value="<%= unitKGtoLitre %>" class="form-control" id="unitKGtoLitre">
   <input type="hidden" value="<%= transportation.id %>" class="form-control" name="TransportationID">
   
   <div class="row">
@@ -407,6 +409,33 @@
       </script>
       <div class="pumpDischareRateWrapper">
       </div>
+      <h5>NUMBER OF VOYAGE</h5>
+      <% if (transportation.isNegotiation == "true") { %>
+        <input type="hidden" name="isNegotiation" id="isNegotiation" value="true">
+      <% }else{ %>
+        <input type="hidden" name="isNegotiation" id="isNegotiation" value="false">
+      <% } %>
+      <button type="button" class="btn btn-primary" onclick="confirmNegotiation()" id="">Negotiation</button>
+      <div class="mb-3">
+        <div class="numberOfVoyageWrapper">
+          <% if (transportation.isNegotiation == "true") { %>
+            <label class="form-label">Number of Round Trip per Year</label>
+            <div class="input-group mb-3">
+              <input type="number" step="any" class="form-control" id="numberRoundTripYearNego" name="numberRoundTripYearNego" onchange="changeTotalCargoCarryCapacity()" value="<%= transportation.TurnAroundVoyage.numberRoundTripYear %>" required>
+              <div class="input-group-append">
+                <span class="input-group-text">days</span>
+              </div>
+            </div>
+            <label class="form-label">Total Cargo Carrying Capacity per Year</label>
+            <div class="input-group mb-3">
+              <input type="number" step="any" class="form-control" id="totalCargoCarryCapacityYearKGNego" name="totalCargoCarryCapacityYearKGNego" value="<%= transportation.TurnAroundVoyage.totalCargoCarryCapacityYearKG %>" required>
+              <div class="input-group-append">
+                <span class="input-group-text">KG</span>
+              </div>
+            </div>
+          <% } %>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -629,121 +658,121 @@
           <tr>
             <th scope="row">Master</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckMasterQty" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckMaster.qty %>" id="deckMasterQty" name="deckMasterQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckMasterPrice" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckMaster.price %>" id="deckMasterPrice" name="deckMasterPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckMaster %>" id="deckMaster" name="deckMaster" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckMaster.total %>" id="deckMaster" name="deckMaster" required>
             </td>
           </tr>
           <tr>
             <th scope="row">Chief Officer</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckChiefOfficerQty"  required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckChiefOfficer.qty %>" id="deckChiefOfficerQty" name="deckChiefOfficerQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckChiefOfficerPrice"  required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckChiefOfficer.price %>" id="deckChiefOfficerPrice" name="deckChiefOfficerPrice"  required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckChiefOfficer %>" id="deckChiefOfficer" name="deckChiefOfficer" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckChiefOfficer.total %>" id="deckChiefOfficer" name="deckChiefOfficer" required>
             </td>
           </tr>
           <tr>
             <th scope="row">Deck Officer</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckOfficerQty" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckOfficer.qty %>" id="deckOfficerQty" name="deckOfficerQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckOfficerPrice" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckOfficer.price %>" id="deckOfficerPrice" name="deckOfficerPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckOfficer %>" id="deckOfficer" name="deckOfficer"  required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckOfficer.total %>" id="deckOfficer" name="deckOfficer"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Radio Operator</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckRadioOperatorQty" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckRadioOperator.qty %>" id="deckRadioOperatorQty" name="deckRadioOperatorQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckRadioOperatorPrice" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckRadioOperator.price %>" id="deckRadioOperatorPrice" name="deckRadioOperatorPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckRadioOperator %>" id="deckRadioOperator" name="deckRadioOperator"  required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckRadioOperator.total %>" id="deckRadioOperator" name="deckRadioOperator"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Boatswain</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckBoatswainQty" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckBoatswain.qty %>" id="deckBoatswainQty" name="deckBoatswainQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckBoatswainPrice" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckBoatswain.price %>" id="deckBoatswainPrice" name="deckBoatswainPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckBoatswain %>" id="deckBoatswain" name="deckBoatswain"  required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckBoatswain.total %>" id="deckBoatswain" name="deckBoatswain"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Able Bodied</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckAbleBodiedQty" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckAbleBodied.qty %>" id="deckAbleBodiedQty" name="deckAbleBodiedQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckAbleBodiedPrice" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckAbleBodied.price %>" id="deckAbleBodiedPrice" name="deckAbleBodiedPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckAbleBodied %>" id="deckAbleBodied" name="deckAbleBodied"  required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckAbleBodied.total %>" id="deckAbleBodied" name="deckAbleBodied"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Ordinary Seamen</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckOrdinarySeamenQty" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckOrdinarySeamen.qty %>" id="deckOrdinarySeamenQty" name="deckOrdinarySeamenQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckOrdinarySeamenPrice" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckOrdinarySeamen.price %>" id="deckOrdinarySeamenPrice" name="deckOrdinarySeamenPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckOrdinarySeamen %>" id="deckOrdinarySeamen" name="deckOrdinarySeamen"  required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckOrdinarySeamen.total %>" id="deckOrdinarySeamen" name="deckOrdinarySeamen"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Chef</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckChefQty" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckChef.qty %>" id="deckChefQty" name="deckChefQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckChefPrice" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckChef.price %>" id="deckChefPrice" name="deckChefPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckChef %>" id="deckChef" name="deckChef"  required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckChef.total %>" id="deckChef" name="deckChef"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Assistant Chef</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckAssistantChefQty" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckAssistantChef.qty %>" id="deckAssistantChefQty" name="deckAssistantChefQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckAssistantChefPrice" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckAssistantChef.price %>" id="deckAssistantChefPrice" name="deckAssistantChefPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckAssistantChef %>" id="deckAssistantChef" name="deckAssistantChef"  required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckAssistantChef.total %>" id="deckAssistantChef" name="deckAssistantChef"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Others</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckOthersQty" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckOthers.qty %>" id="deckOthersQty" name="deckOthersQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckOthersPrice" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckOthers.price %>" id="deckOthersPrice" name="deckOthersPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckOthers %>" id="deckOthers" name="deckOthers"  required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckOthers.total %>" id="deckOthers" name="deckOthers"  required>
             </td>
           </tr>
           
@@ -767,85 +796,85 @@
           <tr>
             <th scope="row">Chief Engineer</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineChiefEngineerQty" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineChiefEngineer.qty %>" id="engineChiefEngineerQty" name="engineChiefEngineerQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineChiefEngineerPrice" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineChiefEngineer.price %>" id="engineChiefEngineerPrice" name="engineChiefEngineerPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineChiefEngineer %>" id="engineChiefEngineer" name="engineChiefEngineer"  required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineChiefEngineer.total %>" id="engineChiefEngineer" name="engineChiefEngineer"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Chief Machinist</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineChiefMachinistQty" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineChiefMachinist.qty %>" id="engineChiefMachinistQty" name="engineChiefMachinistQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineChiefMachinistPrice" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineChiefMachinist.price %>" id="engineChiefMachinistPrice" name="engineChiefMachinistPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineChiefMachinist %>" id="engineChiefMachinist" name="engineChiefMachinist"  required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineChiefMachinist.total %>" id="engineChiefMachinist" name="engineChiefMachinist"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Machinist</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineMachinistQty" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineMachinist.qty %>" id="engineMachinistQty" name="engineMachinistQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineMachinistPrice" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineMachinist.price %>" id="engineMachinistPrice" name="engineMachinistPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineMachinist %>" id="engineMachinist" name="engineMachinist"  required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineMachinist.total %>" id="engineMachinist" name="engineMachinist"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Foremen</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineForemenQty" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineForemen.qty %>" id="engineForemenQty" name="engineForemenQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineForemenPrice" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineForemen.price %>" id="engineForemenPrice" name="engineForemenPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineForemen %>" id="engineForemen" name="engineForemen"  required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineForemen.total %>" id="engineForemen" name="engineForemen"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Oiler</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineOilerQty" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineOiler.qty %>" id="engineOilerQty" name="engineOilerQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineOilerPrice" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineOiler.price %>" id="engineOilerPrice" name="engineOilerPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineOiler %>" id="engineOiler" name="engineOiler"  required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineOiler.total %>" id="engineOiler" name="engineOiler"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Wiper</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineWiperQty" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineWiper.qty %>" id="engineWiperQty" name="engineWiperQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineWiperPrice" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineWiper.price %>" id="engineWiperPrice" name="engineWiperPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineWiper %>" id="engineWiper" name="engineWiper"  required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineWiper.total %>" id="engineWiper" name="engineWiper"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Others</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineOthersQty" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineOthers.qty %>" id="engineOthersQty" name="engineOthersQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineOthersPrice" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineOthers.price %>" id="engineOthersPrice" name="engineOthersPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineOthers %>" id="engineOthers" name="engineOthers"  required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineOthers.total %>" id="engineOthers" name="engineOthers"  required>
             </td>
           </tr>
           
@@ -1114,6 +1143,55 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
+  function changeTotalCargoCarryCapacity(){
+    var unitCBMtoLitre = $('#unitCBMtoLitre').val()
+    var unitKGtoLitre = $('#unitKGtoLitre').val()
+    var numberRoundTripYearNego = $("#numberRoundTripYearNego").val();
+    var totalCargoCarryCapacityYearKGNego = $("#totalCargoCarryCapacityYearKGNego");
+    var numberOfCargoTank = $("#numberOfCargoTank").val();
+    var loadingFactor = 100;
+    let totalCapacityOpCBM = 0;
+    for (let index = 1; index <= numberOfCargoTank; index++) {
+      var cargoTank = $(`#cargoTank${index}`).val()
+      var cargoTankOp = loadingFactor / 100 * Number(cargoTank)
+      totalCapacityOpCBM += Number(cargoTankOp);
+    }
+    const totalCapacityOpLitre = totalCapacityOpCBM / Number(unitCBMtoLitre)
+    const totalCapacityOpKG = totalCapacityOpLitre / Number(unitKGtoLitre)
+    totalCargoCarryCapacityYearKGNego.val(Number(numberRoundTripYearNego * totalCapacityOpKG))
+  }
+
+  function confirmNegotiation(){
+    var numberOfVoyageWrapper = $(".numberOfVoyageWrapper");
+    var isNegotiation = $("#isNegotiation");
+    var result = confirm('Are you sure to negotiation?');
+    if (result) {
+      $(numberOfVoyageWrapper).empty();
+      $(isNegotiation).val("true");
+      $(numberOfVoyageWrapper).append(
+        `
+        <label class="form-label">Number of Round Trip per Year</label>
+        <div class="input-group mb-3">
+          <input type="number" step="any" class="form-control" id="numberRoundTripYearNego" name="numberRoundTripYearNego" onchange="changeTotalCargoCarryCapacity()" value="0" required>
+          <div class="input-group-append">
+            <span class="input-group-text">days</span>
+          </div>
+        </div>
+        <label class="form-label">Total Cargo Carrying Capacity per Year</label>
+        <div class="input-group mb-3">
+          <input type="number" step="any" class="form-control" id="totalCargoCarryCapacityYearKGNego" name="totalCargoCarryCapacityYearKGNego" value="0" required>
+          <div class="input-group-append">
+            <span class="input-group-text">KG</span>
+          </div>
+        </div>
+        `
+      )
+    }
+    else{
+      $(numberOfVoyageWrapper).empty();
+      $(isNegotiation).val("false");
+    }
+  }
   $(function() {
     function showPopUp(pop) {
       var popup = document.getElementById(pop);

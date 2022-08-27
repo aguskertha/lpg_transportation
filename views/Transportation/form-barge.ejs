@@ -40,6 +40,8 @@
   <input type="hidden" value="<%= ProjectID %>" class="form-control" name="ProjectID">
   <input type="hidden" value="<%= currentYear %>" class="form-control" id="currentYear">
   <input type="hidden" value="<%= CBMtoMT %>" class="form-control" id="CBMtoMT">
+  <input type="hidden" value="<%= unitCBMtoLitre %>" class="form-control" id="unitCBMtoLitre">
+  <input type="hidden" value="<%= unitKGtoLitre %>" class="form-control" id="unitKGtoLitre">
   
   <div class="row">
     <div class="col-md-5">
@@ -419,6 +421,13 @@
       </div>
       <h5>DISCHARGE RATE</h5>
       <div class="pumpDischareRateWrapper">
+      </div>
+      <h5>NUMBER OF VOYAGE</h5>
+      <input type="hidden" name="isNegotiation" id="isNegotiation" value="false">
+      <button type="button" class="btn btn-primary" onclick="confirmNegotiation()" id="">Negotiation</button>
+      <div class="mb-3">
+        <div class="numberOfVoyageWrapper">
+        </div>
       </div>
     </div>
   </div>
@@ -1127,6 +1136,57 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
+
+function changeTotalCargoCarryCapacity(){
+  var unitCBMtoLitre = $('#unitCBMtoLitre').val()
+  var unitKGtoLitre = $('#unitKGtoLitre').val()
+  var numberRoundTripYearNego = $("#numberRoundTripYearNego").val();
+  var totalCargoCarryCapacityYearKGNego = $("#totalCargoCarryCapacityYearKGNego");
+  var numberOfCargoTank = $("#numberOfCargoTank").val();
+  var loadingFactor = 100;
+  let totalCapacityOpCBM = 0;
+  for (let index = 1; index <= numberOfCargoTank; index++) {
+    var cargoTank = $(`#cargoTank${index}`).val()
+    var cargoTankOp = loadingFactor / 100 * Number(cargoTank)
+    totalCapacityOpCBM += Number(cargoTankOp);
+  }
+  const totalCapacityOpLitre = totalCapacityOpCBM / Number(unitCBMtoLitre)
+  const totalCapacityOpKG = totalCapacityOpLitre / Number(unitKGtoLitre)
+  totalCargoCarryCapacityYearKGNego.val(Number(numberRoundTripYearNego * totalCapacityOpKG))
+}
+
+function confirmNegotiation(){
+    var numberOfVoyageWrapper = $(".numberOfVoyageWrapper");
+    var isNegotiation = $("#isNegotiation");
+    var result = confirm('Are you sure to negotiation?');
+    if (result) {
+      $(numberOfVoyageWrapper).empty();
+      $(isNegotiation).val("true");
+      $(numberOfVoyageWrapper).append(
+        `
+        <label class="form-label">Number of Round Trip per Year</label>
+        <div class="input-group mb-3">
+          <input type="number" step="any" class="form-control" id="numberRoundTripYearNego" name="numberRoundTripYearNego" onchange="changeTotalCargoCarryCapacity()" value="0" required>
+          <div class="input-group-append">
+            <span class="input-group-text">days</span>
+          </div>
+        </div>
+        <label class="form-label">Total Cargo Carrying Capacity per Year</label>
+        <div class="input-group mb-3">
+          <input type="number" step="any" class="form-control" id="totalCargoCarryCapacityYearKGNego" name="totalCargoCarryCapacityYearKGNego" value="0" required>
+          <div class="input-group-append">
+            <span class="input-group-text">KG</span>
+          </div>
+        </div>
+        `
+      )
+    }
+    else{
+      $(numberOfVoyageWrapper).empty();
+      $(isNegotiation).val("false");
+    }
+  }
+
   function showPopUp(pop) {
     var popup = document.getElementById(pop);
     popup.classList.toggle("show");

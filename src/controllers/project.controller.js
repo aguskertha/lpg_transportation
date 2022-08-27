@@ -1026,6 +1026,8 @@ const getFormTransportationFreightVoyage = async (req, res, next) => {
         const unitConversion = await UnitConversion.find();
         const crewDatas = await CrewData.find().sort({'total':1});
         const project = await Project.findOne({_id: ObjectID(ProjectID)});
+        const unitKGtoLitre = convertToFloat(unitConversion[0].KGtoLitre);
+        const unitCBMtoLitre = convertToFloat(unitConversion[0].CBMtoLitre);
         if(!project){
             throw "project not found!";
         }
@@ -1044,7 +1046,9 @@ const getFormTransportationFreightVoyage = async (req, res, next) => {
             currentYear: new Date().getFullYear(),
             CBMtoMT : convertToFloat(unitConversion[0].CBMtoMT),
             crewDatas,
-            projectName: project.name
+            projectName: project.name,
+            unitKGtoLitre,
+            unitCBMtoLitre
         });
     } catch (error) {
         res.render('error', {
@@ -1544,6 +1548,8 @@ const editTransportationByID = async (req, res, next) => {
         const crewDatas = await CrewData.find().sort({'total':1});
         const ProjectID = req.params.projectID;
         const project = await Project.findOne({_id: ObjectID(ProjectID)});
+        const unitKGtoLitre = convertToFloat(unitConversion[0].KGtoLitre);
+        const unitCBMtoLitre = convertToFloat(unitConversion[0].CBMtoLitre);
         if(!project){
             throw "project not found!";
         }
@@ -1560,7 +1566,9 @@ const editTransportationByID = async (req, res, next) => {
             crewDatas,
             ProjectID,
             projectName: project.name,
-            transportationName: transportation.Ship.shipName
+            transportationName: transportation.Ship.shipName,
+            unitKGtoLitre,
+            unitCBMtoLitre
         });
     } catch (error) {
         console.log(error)
@@ -2162,15 +2170,22 @@ const getFormTransportationBunkerPriceSensitivity = async (req, res, next) => {
         const transportationID = req.params.transportationID;
         const projectID = req.params.projectID;
         const project = await Project.findOne({_id: ObjectID(projectID)});
+        const transportation = await Transportation.findOne({_id: ObjectID(transportationID)})
         if(!project){
             throw "project not found!";
+        }
+        if(!transportation) throw 'Transportation not found!'
+        let bunkerPriceSensitivity = null
+        if(transportation.status == 1){
+            bunkerPriceSensitivity = await BunkerPriceSensitivity.findOne({_id: ObjectID(transportation.bunkerPriceSensitivityID)})
         }
         res.render('Transportation/form-bunker-price-sensitivity', {
             layout: 'layouts/main-layout',
             title: 'Form Bunker Price Sensitivity',
             transportationID,
             projectID,
-            projectName: project.name
+            projectName: project.name,
+            bunkerPriceSensitivity
         })
     }
     catch(error){

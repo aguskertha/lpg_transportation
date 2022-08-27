@@ -17,6 +17,8 @@
   <input type="hidden" value="<%= transportation.ProjectID %>" class="form-control" name="ProjectID">
   <input type="hidden" value="<%= currentYear %>" class="form-control" id="currentYear">
   <input type="hidden" value="<%= CBMtoMT %>" class="form-control" id="CBMtoMT">
+  <input type="hidden" value="<%= unitCBMtoLitre %>" class="form-control" id="unitCBMtoLitre">
+  <input type="hidden" value="<%= unitKGtoLitre %>" class="form-control" id="unitKGtoLitre">
   <input type="hidden" value="<%= transportation.id %>" class="form-control" name="TransportationID">
   
   <div class="row">
@@ -969,6 +971,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
   function changeTotalCargoCarryCapacity(){
+    var unitCBMtoLitre = $('#unitCBMtoLitre').val()
+    var unitKGtoLitre = $('#unitKGtoLitre').val()
     var numberRoundTripYearNego = $("#numberRoundTripYearNego").val();
     var totalCargoCarryCapacityYearKGNego = $("#totalCargoCarryCapacityYearKGNego");
     var numberOfCargoTank = $("#numberOfCargoTank").val();
@@ -979,8 +983,8 @@
       var cargoTankOp = loadingFactor / 100 * Number(cargoTank)
       totalCapacityOpCBM += Number(cargoTankOp);
     }
-    const totalCapacityOpLitre = totalCapacityOpCBM / 0.001
-    const totalCapacityOpKG = totalCapacityOpLitre / 1.777
+    const totalCapacityOpLitre = totalCapacityOpCBM / Number(unitCBMtoLitre)
+    const totalCapacityOpKG = totalCapacityOpLitre / Number(unitKGtoLitre)
     totalCargoCarryCapacityYearKGNego.val(Number(numberRoundTripYearNego * totalCapacityOpKG))
   }
 
