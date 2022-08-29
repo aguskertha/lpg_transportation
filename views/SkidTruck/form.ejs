@@ -21,8 +21,10 @@
 <% if (typeof typeCase != 'undefined'){ %>
     <% if (typeCase.slug === 'case-1') { %>
         <% include ./../SkidTruck/form-case-1 %> 
-    <% } else {%>
+    <% } else if (typeCase.slug === 'case-2') {%>
         <% include ./../SkidTruck/form-case-2 %> 
+    <% } else {%>
+        <% include ./../SkidTruck/form-case-3 %> 
     <% } %> 
 <% } %> 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

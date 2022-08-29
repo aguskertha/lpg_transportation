@@ -121,7 +121,7 @@
             <td>Rp<%= transSkidTruck.ProposedFreight.proposedFreight_IDR_MT.toFixed(4) %></td>
             <td>
                 <a class="btn btn-warning btn-sm" href="/project/<%= project._id %>/skidtruck/<%= transSkidTruck._id %>/edit" role="button"><i class="fa fa-edit"></i> Edit</a>
-                <a class="btn btn-info btn-sm" href="/project/<%= project._id %>/skidtruck/<%= transSkidTruck._id %>/duplicate" role="button"><i class="fa fa-files-o"></i> Duplicate</a>
+                <a class="btn btn-info btn-sm" onclick="return confirm('Are you sure to duplicate?')" href="/project/<%= project._id %>/skidtruck/<%= transSkidTruck._id %>/duplicate" role="button"><i class="fa fa-files-o"></i> Duplicate</a>
                 <a class="btn btn-danger btn-sm" onclick="confirmDelete('<%= project._id %>','<%= transSkidTruck._id %>')" role="button"><i class="fa fa-trash"></i> Delete</a>
             </td>
         </tr>

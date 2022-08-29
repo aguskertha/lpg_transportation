@@ -38,7 +38,8 @@ const {
     duplicateTransportationSkidTruckByID,
     deleteTransportationSkidTruckByID,
     editTransportationSkidTruckByID,
-    updateTransportationSkidTruckByID
+    updateTransportationSkidTruckByID,
+    createTransportationSkidTruck3
 } = require('./../controllers/transportation-skidtruck.controller');
 
 router.post('/', createProject);
@@ -77,6 +78,7 @@ router.get('/:projectID/skidtruck/form', getFormSkidTruck);
 router.get('/:projectID/skidtruck/form/:typeCase', getFormSkidTruckByCase);
 router.post('/:projectID/skidtruck/form/case-1', createTransportationSkidTruck);
 router.post('/:projectID/skidtruck/form/case-2', createTransportationSkidTruck2);
+router.post('/:projectID/skidtruck/form/case-3', createTransportationSkidTruck3);
 
 router.get('/custom', createCustom);
 module.exports = router;

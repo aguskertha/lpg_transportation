@@ -2,6 +2,7 @@ const ObjectID = require('mongodb').ObjectId;
 const Project = require('./../models/project.model')
 const TransSkidTruck = require('./../models/trans-skid-truck.model');
 const TransSkidTruckBarge = require('./../models/trans-skid-truck-barge.model');
+const TransSkidTruckOnly = require('./../models/trans-skid-truck-only.model');
 
 const cases = [
     {
@@ -11,6 +12,10 @@ const cases = [
     {
         name: 'Case 2',
         slug: 'case-2'
+    },
+    {
+        name: 'Case 3',
+        slug: 'case-3'
     },
 ];
 
@@ -29,6 +34,7 @@ const getProjectSkidTruckByID = async (req, res, next) => {
         const project = await Project.findOne({_id : ObjectID(ProjectID)});
         const transSkidTruckDatas = await TransSkidTruck.find({ProjectID: ObjectID(ProjectID)});
         const transSkidTruckBarges = await TransSkidTruckBarge.find({ProjectID: ObjectID(ProjectID)});
+        const transSkidTruckOnlyDatas = await TransSkidTruckOnly.find({ProjectID: ObjectID(ProjectID)});
 
         let transSkidTrucks = [];
         transSkidTruckDatas.forEach(transSkidTruckData => {
@@ -72,6 +78,29 @@ const getProjectSkidTruckByID = async (req, res, next) => {
                     proposedFreight_IDR_KG_NM: transSkidTruckBarge.ProposedFreightRateVesselTruck.proposedFreight_IDR_KG_NM,
                     proposedFreight_USD_MT: transSkidTruckBarge.ProposedFreightRateVesselTruck.proposedFreight_USD_MT,
                     proposedFreight_IDR_MT: transSkidTruckBarge.ProposedFreightRateVesselTruck.proposedFreight_IDR_MT,
+                }
+            }
+            transSkidTrucks.push(transSkidTruck);
+        });
+
+        transSkidTruckOnlyDatas.forEach(transSkidTruckData => {
+            const transSkidTruck = {
+                _id: transSkidTruckData._id,
+                TypeCase: 'Case 3',
+                DistributionArea: {
+                    distArea: transSkidTruckData.DistributionArea.distArea,
+                    distOrigin: transSkidTruckData.DistributionArea.distOrigin,
+                    distDestination: transSkidTruckData.DistributionArea.distDestination,
+                },
+                RealFreightRate: {
+                    unitCostMassCargo_USD_KG_NM: transSkidTruckData.RealFreightRate.unitCostMassCargo_USD_KG_NM,
+                    unitCostMassCargo_IDR_KG_NM: transSkidTruckData.RealFreightRate.unitCostMassCargo_IDR_KG_NM,
+                },
+                ProposedFreight: {
+                    proposedFreight_USD_KG_NM: transSkidTruckData.ProposedFreight.proposedFreight_USD_KG_NM,
+                    proposedFreight_IDR_KG_NM: transSkidTruckData.ProposedFreight.proposedFreight_IDR_KG_NM,
+                    proposedFreight_USD_MT: transSkidTruckData.ProposedFreight.proposedFreight_USD_MT,
+                    proposedFreight_IDR_MT: transSkidTruckData.ProposedFreight.proposedFreight_IDR_MT,
                 }
             }
             transSkidTrucks.push(transSkidTruck);
@@ -138,6 +167,134 @@ const getFormSkidTruckByCase = async (req, res, next) => {
         });
     }
     catch(error){
+        res.render('error', {
+            layout: 'layouts/main-layout',
+            message: error,
+            status: 400
+        });
+    }
+}
+
+const createTransportationSkidTruck3 = async (req, res, next) => {
+    try {
+        const ProjectID = req.params.projectID;
+        const DistributionArea = {
+            distArea: req.body.distArea,
+            distOrigin: req.body.distOrigin,
+            distDestination: req.body.distDestination
+        }
+
+        const SkidTruck = {
+            skidTruckCargoCapacity: Number(req.body.skidTruckCargoCapacity),
+            skidTruckHeadSpec: req.body.skidTruckHeadSpec,
+            skidTruckSpeed: Number(req.body.skidTruckSpeed),
+            skidTruckFuelConsume: Number(req.body.skidTruckFuelConsume),
+        }
+        
+        const BasisData = {
+            basisDataLPGPriceUSD: Number(req.body.basisDataLPGPriceUSD),
+            basisDataLPGPriceRp: Number(req.body.basisDataLPGPriceRp),
+            basisDataLPGPriceRpKg: Number(req.body.basisDataLPGPriceRpKg),
+            basisDataSolarPrice: Number(req.body.basisDataSolarPrice),
+            basisDataRentalPriceMonth: Number(req.body.basisDataRentalPriceMonth),
+            basisDataRentalPriceDay: Number(req.body.basisDataRentalPriceDay),
+            basisDataDriverSalaryMonth: Number(req.body.basisDataDriverSalaryMonth),
+            basisDataDriverSalaryDay: Number(req.body.basisDataDriverSalaryDay),
+            basisDataAssistDriverSalaryMonth: Number(req.body.basisDataAssistDriverSalaryMonth),
+            basisDataAssistDriverSalaryDay: Number(req.body.basisDataAssistDriverSalaryDay),
+            basisDataMisEtc: Number(req.body.basisDataMisEtc),
+            basisDataRiskFactor: Number(req.body.basisDataRiskFactor),
+        }
+        
+        const DeliveryData = {
+            deliveryDataOriginLPG: req.body.deliveryDataOriginLPG,
+            deliveryDataDestinationSPBE: req.body.deliveryDataDestinationSPBE,
+            deliveryDataDistanceTruckingOriginKM: Number(req.body.deliveryDataDistanceTruckingOriginKM),
+            deliveryDataDistanceTruckingOriginMile: Number(req.body.deliveryDataDistanceTruckingOriginMile),
+            deliveryDataTotalDistance: Number(req.body.deliveryDataTotalDistance),
+            deliveryDataLPGLoadUnload: Number(req.body.deliveryDataLPGLoadUnload),
+            deliveryDataNumberTrucking: Number(req.body.deliveryDataNumberTrucking),
+        }
+        DeliveryData.deliveryDataRoundTripTrucking = (((DeliveryData.deliveryDataDistanceTruckingOriginKM / SkidTruck.skidTruckSpeed) * BasisData.basisDataRiskFactor ) * 2) + (DeliveryData.deliveryDataLPGLoadUnload * 2);
+        DeliveryData.deliveryDataNumberTripYear = Math.ceil((98/100*365*12)/ Number(DeliveryData.deliveryDataRoundTripTrucking));
+        DeliveryData.deliveryDataTotalCargoDelivery = (DeliveryData.deliveryDataNumberTrucking * SkidTruck.skidTruckCargoCapacity);
+        DeliveryData.deliveryDataTotalCargoYearMT = (DeliveryData.deliveryDataTotalCargoDelivery * DeliveryData.deliveryDataNumberTripYear);
+        DeliveryData.deliveryDataTotalCargoYearKG = DeliveryData.deliveryDataTotalCargoYearMT * unitConversion.MTtoKG;
+        
+        const CostComponent = {
+            truckSkidCost : (BasisData.basisDataRentalPriceDay * DeliveryData.deliveryDataNumberTrucking * DeliveryData.deliveryDataNumberTripYear),
+            truckFuelCost: (SkidTruck.skidTruckFuelConsume * BasisData.basisDataSolarPrice * DeliveryData.deliveryDataNumberTripYear * DeliveryData.deliveryDataRoundTripTrucking * DeliveryData.deliveryDataNumberTrucking),
+            truckDriverCost: (DeliveryData.deliveryDataNumberTripYear * (BasisData.basisDataDriverSalaryDay + BasisData.basisDataAssistDriverSalaryDay) * DeliveryData.deliveryDataNumberTrucking),
+            tollCost: 0,
+            MiscCostTrucking: (BasisData.basisDataMisEtc * DeliveryData.deliveryDataNumberTrucking * DeliveryData.deliveryDataNumberTripYear),
+            
+            cargoInsurance: (0.05/100 * BasisData.basisDataLPGPriceRp * SkidTruck.skidTruckCargoCapacity * DeliveryData.deliveryDataNumberTrucking * DeliveryData.deliveryDataNumberTripYear),
+            truckLicenseSertifCost: (32000 * DeliveryData.deliveryDataNumberTrucking * DeliveryData.deliveryDataNumberTripYear),
+            maintenanceCost: (65000 * DeliveryData.deliveryDataNumberTrucking * DeliveryData.deliveryDataNumberTripYear),
+        }
+        CostComponent.deliveryCost = (CostComponent.truckSkidCost + CostComponent.truckFuelCost + CostComponent.truckDriverCost + CostComponent.tollCost +CostComponent.MiscCostTrucking)
+        CostComponent.otherCost = (CostComponent.cargoInsurance + CostComponent.truckLicenseSertifCost + CostComponent.maintenanceCost)
+        CostComponent.totalCostRP = (CostComponent.deliveryCost + CostComponent.otherCost);
+        CostComponent.totalCostUSD = (CostComponent.totalCostRP / unitConversion.USDtoRP);
+
+        const RealFreightRate = {
+            unitCostMassCargo_USD_KG: (CostComponent.totalCostUSD / DeliveryData.deliveryDataTotalCargoYearKG),
+            unitCostMassCargo_USD_MT: (CostComponent.totalCostUSD / DeliveryData.deliveryDataTotalCargoYearMT),
+            unitCostMassCargo_IDR_KG: (CostComponent.totalCostRP / DeliveryData.deliveryDataTotalCargoYearKG),
+            unitCostMassCargo_IDR_MT: (CostComponent.totalCostRP / DeliveryData.deliveryDataTotalCargoYearMT),
+            unitCost_USD_MMBTU: (CostComponent.totalCostUSD / (DeliveryData.deliveryDataTotalCargoYearKG * unitConversion.KGtoMMBTU)),
+            
+        }
+        RealFreightRate.unitCost_USD_MMBTU_NM = Number(RealFreightRate.unitCost_USD_MMBTU) / (DeliveryData.deliveryDataTotalDistance * unitConversion.KMtoNauticalMILE);
+        RealFreightRate.unitCostMassCargo_USD_KG_NM = (RealFreightRate.unitCostMassCargo_USD_KG / (DeliveryData.deliveryDataTotalDistance * unitConversion.KMtoNauticalMILE));
+        RealFreightRate.unitCostMassCargo_IDR_KG_NM = (CostComponent.totalCostRP / DeliveryData.deliveryDataTotalCargoYearKG / (DeliveryData.deliveryDataTotalDistance * unitConversion.KMtoNauticalMILE));
+
+        const profitMargin = Number(20/100);
+        const proposedFreight_USD_KG =  (RealFreightRate.unitCostMassCargo_USD_KG +(RealFreightRate.unitCostMassCargo_USD_KG * profitMargin));
+        const proposedFreight_IDR_KG =  (RealFreightRate.unitCostMassCargo_IDR_KG +(RealFreightRate.unitCostMassCargo_IDR_KG * profitMargin));
+        const proposedFreight_USD_MMBTU = (RealFreightRate.unitCost_USD_MMBTU + (profitMargin * RealFreightRate.unitCost_USD_MMBTU));
+        const ProposedFreight = {
+            profitMargin,
+            proposedFreight_USD_KG,
+            proposedFreight_USD_MT: proposedFreight_USD_KG * unitConversion.MTtoKG,
+            proposedFreight_IDR_KG,
+            proposedFreight_IDR_MT: proposedFreight_IDR_KG * unitConversion.MTtoKG,
+            proposedFreight_USD_MMBTU,
+            proposedFreight_USD_MMBTU_NM: (proposedFreight_USD_MMBTU/(DeliveryData.deliveryDataTotalDistance * unitConversion.KMtoNauticalMILE)),
+            proposedFreight_USD_KG_NM: (proposedFreight_USD_KG/(DeliveryData.deliveryDataTotalDistance * unitConversion.KMtoNauticalMILE)),
+            proposedFreight_IDR_KG_NM: (proposedFreight_IDR_KG/(DeliveryData.deliveryDataTotalDistance * unitConversion.KMtoNauticalMILE))
+        }
+        ProposedFreight.revenue = ProposedFreight.proposedFreight_USD_KG * DeliveryData.deliveryDataTotalCargoYearKG;
+        ProposedFreight.netRevenue = ProposedFreight.revenue - CostComponent.totalCostUSD;
+        ProposedFreight.ratioRevenue = ProposedFreight.netRevenue / CostComponent.totalCostUSD * 100;
+
+        const transSkidTruckOnly = {
+            ProjectID,
+            DistributionArea,
+            SkidTruck,
+            BasisData,
+            DeliveryData,
+            CostComponent,
+            RealFreightRate,
+            ProposedFreight
+        }
+        if(req.body.skidTruckID){
+            console.log("EDIT!")
+            await TransSkidTruckOnly.updateOne(
+                { _id: req.body.skidTruckID},
+                {
+                    $set: transSkidTruckOnly
+                }
+            );
+            res.redirect(`/project/${ProjectID}/skidtruck`)
+        }
+        else{
+            console.log("CREATE!")
+            const newTransSkidTruckOnly = new TransSkidTruckOnly(transSkidTruckOnly);
+            await newTransSkidTruckOnly.save();
+            res.redirect(`/project/${ProjectID}/skidtruck`)
+        }
+    } catch (error) {
         res.render('error', {
             layout: 'layouts/main-layout',
             message: error,
@@ -638,6 +795,14 @@ const duplicateTransportationSkidTruckByID = async (req, res, next) => {
                 res.redirect(`/project/${ProjectID}/skidtruck`)
             });
         }
+
+        const transSkidTruckOnly = await TransSkidTruckOnly.findOne({_id: ObjectID(skidTruckID)});
+        if(transSkidTruckOnly){
+            transSkidTruckOnly._id = ObjectID();
+            TransSkidTruckOnly.insertMany(transSkidTruckOnly, (error, result)=>{
+                res.redirect(`/project/${ProjectID}/skidtruck`)
+            });
+        }
         
     } catch (error) {
         res.render('error', {
@@ -645,6 +810,47 @@ const duplicateTransportationSkidTruckByID = async (req, res, next) => {
             message: error,
             status: 400
         });
+    }
+}
+
+const varDataTransSkidTruckOnly = async (dataSend, transSkidTruck) => {
+    try{
+
+        dataSend.distArea = transSkidTruck.DistributionArea.distArea;
+        dataSend.distOrigin = transSkidTruck.DistributionArea.distOrigin;
+        dataSend.distDestination = transSkidTruck.DistributionArea.distDestination;
+
+        dataSend.skidTruckCargoCapacity = transSkidTruck.SkidTruck.skidTruckCargoCapacity;
+        dataSend.skidTruckHeadSpec = transSkidTruck.SkidTruck.skidTruckHeadSpec;
+        dataSend.skidTruckSpeed = transSkidTruck.SkidTruck.skidTruckSpeed;
+        dataSend.skidTruckFuelConsume = transSkidTruck.SkidTruck.skidTruckFuelConsume;
+        
+        dataSend.basisDataLPGPriceUSD = transSkidTruck.BasisData.basisDataLPGPriceUSD;
+        dataSend.basisDataLPGPriceRp = transSkidTruck.BasisData.basisDataLPGPriceRp;
+        dataSend.basisDataLPGPriceRpKg = transSkidTruck.BasisData.basisDataLPGPriceRpKg;
+        dataSend.basisDataSolarPrice = transSkidTruck.BasisData.basisDataSolarPrice;
+        dataSend.basisDataRentalPriceMonth = transSkidTruck.BasisData.basisDataRentalPriceMonth;
+        dataSend.basisDataRentalPriceDay = transSkidTruck.BasisData.basisDataRentalPriceDay;
+        dataSend.basisDataDriverSalaryMonth = transSkidTruck.BasisData.basisDataDriverSalaryMonth;
+        dataSend.basisDataDriverSalaryDay = transSkidTruck.BasisData.basisDataDriverSalaryDay;
+        dataSend.basisDataAssistDriverSalaryMonth = transSkidTruck.BasisData.basisDataAssistDriverSalaryMonth;
+        dataSend.basisDataAssistDriverSalaryDay = transSkidTruck.BasisData.basisDataAssistDriverSalaryDay;
+        dataSend.basisDataMisEtc = transSkidTruck.BasisData.basisDataMisEtc;
+        dataSend.basisDataRiskFactor = transSkidTruck.BasisData.basisDataRiskFactor;
+        
+        dataSend.deliveryDataOriginLPG = transSkidTruck.DeliveryData.deliveryDataOriginLPG;
+        dataSend.deliveryDataDestinationSPBE = transSkidTruck.DeliveryData.deliveryDataDestinationSPBE;
+        dataSend.deliveryDataDistanceTruckingOriginKM = transSkidTruck.DeliveryData.deliveryDataDistanceTruckingOriginKM;
+        dataSend.deliveryDataDistanceTruckingOriginMile = transSkidTruck.DeliveryData.deliveryDataDistanceTruckingOriginMile;
+        dataSend.deliveryDataTotalDistance = transSkidTruck.DeliveryData.deliveryDataTotalDistance;
+        dataSend.deliveryDataLPGLoadUnload = transSkidTruck.DeliveryData.deliveryDataLPGLoadUnload;
+        dataSend.deliveryDataRoundTripSailling = transSkidTruck.DeliveryData.deliveryDataRoundTripSailling;
+        dataSend.deliveryDataNumberTrucking = transSkidTruck.DeliveryData.deliveryDataNumberTrucking;
+
+        return dataSend;
+    }
+    catch(error){
+
     }
 }
 
@@ -876,6 +1082,23 @@ const editTransportationSkidTruckByID = async (req, res, next) => {
             }
             res.render('SkidTruck/form-case-2', await varDataTransSkidTruckBarge(dataSend, transSkidTruckBarge));
         }
+
+        const transSkidTruckOnly = await TransSkidTruckOnly.findOne({_id: ObjectID(skidTruckID)});
+        if(transSkidTruckOnly){
+            let dataSend = {
+                layout: 'layouts/main-layout',
+                title: 'Form LPG Transportation',
+                ProjectID,
+                transSkidTruckOnly,
+                typeCase: {
+                    name: 'Case 3',
+                    slug: 'case-3'
+                },
+                unitConversion,
+                skidTruckID
+            }
+            res.render('SkidTruck/form-case-3', await varDataTransSkidTruckOnly(dataSend, transSkidTruckOnly));
+        }
     } catch (error) {
         res.render('error', {
             layout: 'layouts/main-layout',
@@ -912,6 +1135,12 @@ const deleteTransportationSkidTruckByID = async (req, res, next) => {
             res.redirect(`/project/${ProjectID}/skidtruck`)
         }
 
+        const transSkidTruckOnly = await TransSkidTruckOnly.findOne({_id: ObjectID(skidTruckID)});
+        if(transSkidTruckOnly){
+            await TransSkidTruckOnly.deleteOne({_id : ObjectID(skidTruckID)});
+            res.redirect(`/project/${ProjectID}/skidtruck`)
+        }
+
         
     } catch (error) {
         res.render('error', {
@@ -931,5 +1160,6 @@ module.exports = {
     duplicateTransportationSkidTruckByID,
     deleteTransportationSkidTruckByID,
     updateTransportationSkidTruckByID,
-    editTransportationSkidTruckByID
+    editTransportationSkidTruckByID,
+    createTransportationSkidTruck3
 }
