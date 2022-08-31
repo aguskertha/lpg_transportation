@@ -6,6 +6,7 @@
         </ol>
     </nav>
     <h2 align='center'><%= terminal.terminalName %></h2>
+    <% include ./../partials/messages %> 
     <form method="post" action="/project/<%= ProjectID %>/terminal/<%= terminal._id %>/calculation">
         <% 
             let contractDurationEJS = '';

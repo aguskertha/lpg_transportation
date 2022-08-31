@@ -694,7 +694,7 @@ const deleteTerminalByID = async (req,res,next) => {
 const createTerminalCalculation = async (req, res, next) => {
     try {
         const terminal = await Terminal.findOne({_id: ObjectID(req.params.terminalID)});
-
+        const project = await Project.findOne({_id: ObjectID(req.params.projectID)});
         const disposalPrice = terminal.Capex.disposalPrice;
 
         const capexTotal = terminal.Capex.totalCapex;
@@ -803,13 +803,24 @@ const createTerminalCalculation = async (req, res, next) => {
             iteration++;
         }
         if(next == false){
-            res.json({message: 'Error: Something wrong!'});
+            console.log(req.body.thruput)
+            res.render('Terminal/terminal-optimization', {
+                layout: 'layouts/main-layout',
+                title: 'Form',
+                terminal,
+                ProjectID: req.params.projectID,
+                ProjectName: project.name,
+                thruputDay: req.body.thruput,
+                discountRateBody: req.body.discountRate,
+                priceUSD_IDR: req.body.priceUSD_IDR,
+                contractDuration: req.body.contractDuration,
+                error_msg: 'Adjust the Thruput value!'
+            });
             return false;
         }
         const priceUSD_IDR = req.body.priceUSD_IDR;
         const lastInvest = {invests, totalNPV: Number(sumNPV - capexTotal), LPGCost}
-        const project = await Project.findOne({_id: ObjectID(req.params.projectID)});
-
+        
         res.render('Terminal/terminal-optimization', {
             layout: 'layouts/main-layout',
             title: 'Form',
@@ -823,7 +834,8 @@ const createTerminalCalculation = async (req, res, next) => {
             priceUSD_IDR,
             arrayLabelInvest,
             arrayDataInvest,
-            ProjectName: project.name
+            ProjectName: project.name,
+            success_msg: 'Clear Optimization!'
         });
     } catch (error) {
         res.render('error', {
