@@ -39,6 +39,15 @@ const updateAdminUnitConversion = async (req, res, next) => {
                 break;
             case "USDtoIDR":
                 await UnitConversion.updateOne({ _id: unitConversionID},{$set: {USDtoIDR: value}});
+                break
+            case "MTtoKG":
+                await UnitConversion.updateOne({ _id: unitConversionID},{$set: {MTtoKG: value}});
+                break
+            case "KMtoMILE":
+                await UnitConversion.updateOne({ _id: unitConversionID},{$set: {KMtoMILE: value}});
+                break
+            case "KMtoNauticalMILE":
+                await UnitConversion.updateOne({ _id: unitConversionID},{$set: {KMtoNauticalMILE: value}});
                 break;
         
             default:
@@ -63,6 +72,9 @@ const initUnitConversion = async (req, res, next) => {
             KGtoMMBTU: 0.046452,
             CBMtoMT: 0.56274620146314,
             USDtoIDR: 14500,
+            MTtoKG: 1000,
+            KMtoMILE: 0.6214,
+            KMtoNauticalMILE: 0.5399,
         }
         const newUnitConversion = new UnitConversion(unitConversion)
         await newUnitConversion.save()

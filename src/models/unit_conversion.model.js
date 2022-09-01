@@ -2,25 +2,38 @@ const mongoose = require('mongoose');
 
 const UnitConversion = mongoose.model('UnitConversion', {
     KGtoLitre: {
-        type: "Decimal128",
+        type: Number,
         require: true
     },
     CBMtoLitre:{
-        type: "Decimal128",
+        type: Number,
         require: true
     },
     KGtoMMBTU:{
-        type: "Decimal128",
+        type: Number,
         require: true
     },
     CBMtoMT:{
-        type: "Decimal128",
+        type: Number,
         require: true
     },
     USDtoIDR:{
-        type: "Decimal128",
+        type: Number,
         require: true
-    }
+    },
+    MTtoKG:{
+        type: Number,
+        require: true
+    },
+    KMtoMILE:{
+        type: Number,
+        require: true
+    },
+    KMtoNauticalMILE:{
+        type: Number,
+        require: true
+    },
 });
+
 
 module.exports = UnitConversion;

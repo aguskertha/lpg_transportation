@@ -3,6 +3,8 @@ const Project = require('./../models/project.model')
 const TransSkidTruck = require('./../models/trans-skid-truck.model');
 const TransSkidTruckBarge = require('./../models/trans-skid-truck-barge.model');
 const TransSkidTruckOnly = require('./../models/trans-skid-truck-only.model');
+const UnitConversion = require('./../models/unit_conversion.model');
+
 
 const cases = [
     {
@@ -19,14 +21,17 @@ const cases = [
     },
 ];
 
-const unitConversion = {
-    MTtoKG : 1000,
-    KGtoMMBTU : 0.046452,
-    CBMtoMT: 0.56274620146314,
-    KMtoMILE: 0.6214,
-    KMtoNauticalMILE: 0.5399,
-    USDtoRP: 14500
-}
+let unitConversion = {}
+
+UnitConversion.find().then((data) => {
+    const unit = data[0]
+    unitConversion.MTtoKG = unit.MTtoKG
+    unitConversion.KGtoMMBTU = unit.KGtoMMBTU
+    unitConversion.CBMtoMT = unit.CBMtoMT
+    unitConversion.KMtoMILE = unit.KMtoMILE
+    unitConversion.KMtoNauticalMILE = unit.KMtoNauticalMILE
+    unitConversion.USDtoRP = unit.USDtoIDR
+});
 
 const getProjectSkidTruckByID = async (req, res, next) => {
     try {
@@ -35,7 +40,7 @@ const getProjectSkidTruckByID = async (req, res, next) => {
         const transSkidTruckDatas = await TransSkidTruck.find({ProjectID: ObjectID(ProjectID)});
         const transSkidTruckBarges = await TransSkidTruckBarge.find({ProjectID: ObjectID(ProjectID)});
         const transSkidTruckOnlyDatas = await TransSkidTruckOnly.find({ProjectID: ObjectID(ProjectID)});
-
+        
         let transSkidTrucks = [];
         transSkidTruckDatas.forEach(transSkidTruckData => {
             const transSkidTruck = {
@@ -279,7 +284,6 @@ const createTransportationSkidTruck3 = async (req, res, next) => {
             ProposedFreight
         }
         if(req.body.skidTruckID){
-            console.log("EDIT!")
             await TransSkidTruckOnly.updateOne(
                 { _id: req.body.skidTruckID},
                 {
@@ -289,7 +293,6 @@ const createTransportationSkidTruck3 = async (req, res, next) => {
             res.redirect(`/project/${ProjectID}/skidtruck`)
         }
         else{
-            console.log("CREATE!")
             const newTransSkidTruckOnly = new TransSkidTruckOnly(transSkidTruckOnly);
             await newTransSkidTruckOnly.save();
             res.redirect(`/project/${ProjectID}/skidtruck`)
