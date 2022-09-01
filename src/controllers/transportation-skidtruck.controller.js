@@ -25,12 +25,14 @@ let unitConversion = {}
 
 UnitConversion.find().then((data) => {
     const unit = data[0]
-    unitConversion.MTtoKG = unit.MTtoKG
-    unitConversion.KGtoMMBTU = unit.KGtoMMBTU
-    unitConversion.CBMtoMT = unit.CBMtoMT
-    unitConversion.KMtoMILE = unit.KMtoMILE
-    unitConversion.KMtoNauticalMILE = unit.KMtoNauticalMILE
-    unitConversion.USDtoRP = unit.USDtoIDR
+    if(data.length > 0){
+        unitConversion.MTtoKG = unit.MTtoKG
+        unitConversion.KGtoMMBTU = unit.KGtoMMBTU
+        unitConversion.CBMtoMT = unit.CBMtoMT
+        unitConversion.KMtoMILE = unit.KMtoMILE
+        unitConversion.KMtoNauticalMILE = unit.KMtoNauticalMILE
+        unitConversion.USDtoRP = unit.USDtoIDR
+    }
 });
 
 const getProjectSkidTruckByID = async (req, res, next) => {
