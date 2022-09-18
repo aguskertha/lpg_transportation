@@ -39,7 +39,11 @@ const {
     deleteTransportationSkidTruckByID,
     editTransportationSkidTruckByID,
     updateTransportationSkidTruckByID,
-    createTransportationSkidTruck3
+    createTransportationSkidTruck3,
+    getProjectSkidTruckV2ByID,
+    getFormSkidTruckV2,
+    getFormSkidTruckV2ByCase,
+    createTransportationSkidTruckV2_1
 } = require('./../controllers/transportation-skidtruck.controller');
 
 router.post('/', createProject);
@@ -68,6 +72,12 @@ router.get('/:projectID/delete', deleteProjectByID);
 
 router.get('/:projectID/transportation/:transportationID/summary', getSummaryTransportationBunkerPriceSensitivity);
 router.get('/create/costShipAge', createCostShipAge);
+
+router.get('/:projectID/skidtruckv2', getProjectSkidTruckV2ByID);
+router.get('/:projectID/skidtruckv2/form', getFormSkidTruckV2);
+router.get('/:projectID/skidtruckv2/form/:typeCase', getFormSkidTruckV2ByCase);
+router.post('/:projectID/skidtruckv2/form/case-1', createTransportationSkidTruckV2_1);
+
 
 router.get('/:projectID/skidtruck', getProjectSkidTruckByID);
 router.get('/:projectID/skidtruck/:skidTruckID/duplicate', duplicateTransportationSkidTruckByID);

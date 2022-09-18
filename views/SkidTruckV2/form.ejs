@@ -1,0 +1,47 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/project/<%= ProjectID %>/skidtruckv2"><%= projectName %></a></li>
+        <li class="breadcrumb-item active" aria-current="page">Form</li>
+    </ol>
+</nav>
+<br>
+<h3 class="mt-3">Select Type of Case</h3>
+<input type="hidden" value="<%= ProjectID %>" class="form-control" id="ProjectID" name="ProjectID">
+<div class="row mt-2">
+<div class="col-md-5">
+    <select class="form-control" name="select1" id="type_case">
+        <option value="" selected disabled>Select a Type of Cases</option>
+        <% for( let index = 0; index < cases.length; index++ ) { %>
+            <% const data = cases[index] %> 
+            <option value="<%= data.slug %>"><%= data.name %></option>
+        <% } %>
+    </select>
+</div>
+</div>
+<% if (typeof typeCase != 'undefined'){ %>
+    <% if (typeCase.slug === 'case-1') { %>
+        <% include ./../SkidTruckV2/form-case-1 %> 
+    <% } %> 
+<% } %> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    $(function(){
+        // bind change event to select
+        var type_case_slug = '';
+        var ProjectID = $('#ProjectID').val();
+        $('#type_case').on('change', function () {
+            type_case_slug = $(this).val();
+            console.log('jaa')
+            doit();
+        });
+        function doit(){
+            if(type_case_slug !== '' && ProjectID !== ''){
+                window.location = `/project/${ProjectID}/skidtruckv2/form/${type_case_slug}`; 
+            }
+            return false;
+        }
+
+    });
+</script>
+  
+  
