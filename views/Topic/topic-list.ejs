@@ -1,0 +1,93 @@
+<div class="container">
+    <div class="forms-container"  align="center">
+        <h1 class="text-info mt-3">Topic List</h1>
+        <div class="position-relative mb-5 mx-4">
+            <div class="position-absolute top-0 end-0">
+                <!-- <a href="/topic/admin/create" class="text-end ms-5 h4 text-decoration-none" role="button"><i class="bi bi-plus-square-fill"></i> Topic</a> -->
+                <a role="button" class="btn btn-primary btn-lg w-auto" id="btn-topic-create" data-bs-toggle="modal" data-bs-target="#modalTopicEdit" onclick=""><i class="bi bi-plus-square-fill"></i> Topic</a>
+            </div>
+        </div>
+        <!-- <br> -->
+        <a href="/topic" class="float-start ms-5 h1" style="color:crimson;" role="button"><i class="bi bi-arrow-left-circle-fill"></i></a>
+        <div class="row">
+            <div class="col-md-12 mt-3" >
+              <table class="table caption-top" cellspacing="0" width="100%">
+                <thead>
+                    <tr class="text-center">
+                        <th scope="col">No</th>
+                        <th scope="col">_id</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Slug</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="">
+                    <% for( let index = 0; index < topics.length; index++ ) { %>
+                        <% const topic = topics[index] %> 
+                        <tr style="white-space: nowrap;" class="align-middle text-center">
+                        <th scope="row"><%= index+1 %></th>
+                        <td><%= topic._id %></td>
+                        <td><%= topic.name %></td>
+                        <td><%= topic.slug %></td>
+                        <td>
+                            <a role="button" class="btn btn-warning btn-lg w-auto" id="btn-topic-edit" data-bs-toggle="modal" data-bs-target="#modalTopicEdit" onclick="editTopic('<%- encodeURIComponent(JSON.stringify(topic)) %>')"><i class="bi bi-pencil-square"></i></a>
+                            <a href="/topic/admin/delete/<%= topic._id %>" onclick="return confirm('Are you sure to delete?')" role="button" class="btn btn-danger btn-lg w-auto"><i class="bi bi-trash-fill"></i></a>
+                        </td>
+                    <% } %>
+                </tbody>
+              </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalTopicEdit" role="dialog">
+    <div class="modal-dialog modal-lg bg-light rounded">
+        <div class="modal-content" align="center">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Topic</h4>
+            </div>
+            
+            <!-- Modal Body -->
+                <form action="/topic/admin/edit" method="post" class="p-5">
+                    <input type="hidden" class="form-control" id="topicID" name="topicID" value="" aria-describedby="">
+                    <div class="mb-3">
+                        <label for="" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" aria-describedby="" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="" class="form-label">Slug</label>
+                        <input type="text" class="form-control" id="slug" name="slug" aria-describedby="" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.5.0/js/plugins/buffer.min.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.5.0/js/plugins/filetype.min.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.5.0/js/plugins/piexif.min.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.5.0/js/plugins/sortable.min.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.5.0/js/fileinput.min.js"></script>
+<script>
+    // function createTopic(){
+
+    // }
+    function editTopic(topic){
+        var topic = JSON.parse(decodeURIComponent(topic))
+        var topicID = $('#topicID');
+        var name = $('#name');
+        var slug = $('#slug');
+        topicID.val(topic._id)
+        name.val(topic.name)
+        slug.val(topic.slug)
+    }
+</script>

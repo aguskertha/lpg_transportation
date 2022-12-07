@@ -31,7 +31,7 @@
 <h1 class="mt-3" align="center"><%= title %></h1>
 <h3 class="mt-3" align="center"><%= project.name %></h3>
 <div class="container-fluid mt-4">
-<a class="btn btn-primary" href="/project/<%= project._id %>/skidtruck/form " role="button"><i class="fa fa-plus"></i> LPG Transportation + Skid Truck</a>
+<a class="btn btn-primary" href="/project/<%= project._id %>/skidtruckv2/form " role="button"><i class="fa fa-plus"></i> LPG Transportation + Skid Truck</a>
 <% var file_name = (project.name); %> 
 <button onclick="ExportToExcel('<%= file_name %>','.xlsx')" class="btn btn-success">Export Excel</button>
 <table id="table_data" class="table table-condensed table-hover table-bordered table-hideable">
@@ -46,57 +46,30 @@
                     <i class="fa fa-eye-slash"></i>  
                 </button>
             </th>
-            <th>Area
+            <th>Distribution Rute
                 <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
                     <i class="fa fa-eye-slash"></i>  
                 </button>
             </th>
-            <th>Origin
+            <th>Tarrif Vessel + Trucking 
+                (Dependent)
                 <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
                     <i class="fa fa-eye-slash"></i>  
                 </button>
             </th>
-            <th>Destination
+            <th>Tarrif Vessel 
+                ITS
                 <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
                     <i class="fa fa-eye-slash"></i>  
                 </button>
             </th>
-            <th>Calculated Real Freight
-                USD/kg/nm
+            <th>Tarrif Trucking 
+                ITS
                 <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
                     <i class="fa fa-eye-slash"></i>  
                 </button>
             </th>
-            <th>Calculated Real Freight
-                IDR/kg/nm
-                <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
-                    <i class="fa fa-eye-slash"></i>  
-                </button>
-            </th>
-            <th>Proposed Freight
-                USD/kg/nm
-                <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
-                    <i class="fa fa-eye-slash"></i>  
-                </button>
-            </th>
-            <th>Proposed Freight
-                IDR/kg/nm
-                <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
-                    <i class="fa fa-eye-slash"></i>  
-                </button>
-            </th>
-            <th>Comparison Freight
-                USD/kg/nm
-                <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
-                    <i class="fa fa-eye-slash"></i>  
-                </button>
-            </th>
-            <th>Comparison Freight
-                IDR/kg/nm
-                <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
-                    <i class="fa fa-eye-slash"></i>  
-                </button>
-            </th>
+           
             <th>Action
                 <button class="btn btn-default btn-condensed hide-column" data-toggle="tooltip" data-placement="bottom" title="Hide Column">
                     <i class="fa fa-eye-slash"></i>  
@@ -106,25 +79,15 @@
     </thead>
     <tbody>
         <% for( let index = 0; index < transSkidTrucks.length; index++ ) { %>
-        <% const transSkidTruck = transSkidTrucks[index] %> 
-        <tr style="white-space: nowrap;" >
-            <th scope="row"><%= index+1 %></th>
-            <td><%= transSkidTruck.TypeCase %></td>
-            <td><%= transSkidTruck.DistributionArea.distArea %></td>
-            <td><%= transSkidTruck.DistributionArea.distOrigin %></td>
-            <td><%= transSkidTruck.DistributionArea.distDestination %></td>
-            <td>$<%= transSkidTruck.RealFreightRate.unitCostMassCargo_USD_KG_NM.toFixed(7) %></td>
-            <td>Rp<%= transSkidTruck.RealFreightRate.unitCostMassCargo_IDR_KG_NM.toFixed(4) %></td>
-            <td>$<%= transSkidTruck.ProposedFreight.proposedFreight_USD_KG_NM.toFixed(7) %></td>
-            <td>Rp<%= transSkidTruck.ProposedFreight.proposedFreight_IDR_KG_NM.toFixed(4) %></td>
-            <td>$<%= transSkidTruck.ProposedFreight.proposedFreight_USD_MT.toFixed(4) %></td>
-            <td>Rp<%= transSkidTruck.ProposedFreight.proposedFreight_IDR_MT.toFixed(4) %></td>
-            <td>
-                <a class="btn btn-warning btn-sm" href="/project/<%= project._id %>/skidtruck/<%= transSkidTruck._id %>/edit" role="button"><i class="fa fa-edit"></i> Edit</a>
-                <a class="btn btn-info btn-sm" onclick="return confirm('Are you sure to duplicate?')" href="/project/<%= project._id %>/skidtruck/<%= transSkidTruck._id %>/duplicate" role="button"><i class="fa fa-files-o"></i> Duplicate</a>
-                <a class="btn btn-danger btn-sm" onclick="confirmDelete('<%= project._id %>','<%= transSkidTruck._id %>')" role="button"><i class="fa fa-trash"></i> Delete</a>
-            </td>
-        </tr>
+            <% const transSkidTruck = transSkidTrucks[index] %> 
+            <tr style="white-space: nowrap;" >
+                <th scope="row"><%= index+1 %></th>
+                <td><%= transSkidTruck.TypeCase %></td>
+                <td><%= transSkidTruck.DistributionRute %></td>
+                <td>Rp<%= transSkidTruck.SummaryPrice.vesselTruckFreightCostProposed.toFixed(2) %></td>
+                <td>Rp<%= transSkidTruck.SummaryPrice.vesselFreightCostProposed.toFixed(2) %></td>
+                <td>Rp<%= transSkidTruck.SummaryPrice.truckFreightCostProposed.toFixed(2) %></td>
+            </tr>
         <% } %>
     </tbody>
 </table>
@@ -157,9 +120,9 @@ function ExportToExcel(file_name, type, fn, dl) {
         if (result) {
             $.ajax({
                 type:'GET',
-                url:`/project/${projectID}/skidtruck/${skidtruckID}/delete`,
+                url:`/project/${projectID}/skidtruckv2/${skidtruckID}/delete`,
             });
-            window.location = `/project/${projectID}/skidtruck`;
+            window.location = `/project/${projectID}/skidtruckv2`;
         }
     }
 $(function() {

@@ -17,6 +17,8 @@
   <input type="hidden" value="<%= transportation.ProjectID %>" class="form-control" name="ProjectID">
   <input type="hidden" value="<%= currentYear %>" class="form-control" id="currentYear">
   <input type="hidden" value="<%= CBMtoMT %>" class="form-control" id="CBMtoMT">
+  <input type="hidden" value="<%= unitCBMtoLitre %>" class="form-control" id="unitCBMtoLitre">
+  <input type="hidden" value="<%= unitKGtoLitre %>" class="form-control" id="unitKGtoLitre">
   <input type="hidden" value="<%= transportation.id %>" class="form-control" name="TransportationID">
   
   <div class="row">
@@ -34,6 +36,10 @@
         
         <div class="mb-3">
           <label class="form-label">Ship Capacity</label>
+          <div class="popup" onclick="showPopUp('shipCapacityPop')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="shipCapacityPop">Data from Q88</span>
+          </div>
           <div class="input-group mb-3">
             <input type="number" step="any" class="form-control" id="shipCapacityCBM" name="shipCapacityCBM" value="<%= transportation.Ship.shipCapacityCBM %>" required>
             <div class="input-group-append">
@@ -60,16 +66,28 @@
         
         <div class="mb-3">
           <label class="form-label">MMSI Number</label>
+          <div class="popup" onclick="showPopUp('MMSINumberPop')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="MMSINumberPop">Data from Q88</span>
+          </div>
           <input type="text" class="form-control" id="MMSINumber" name="MMSINumber" value="<%= transportation.Ship.MMSINumber %>">
         </div>
         
         <div class="mb-3">
           <label class="form-label">Call Sign</label>
+          <div class="popup" onclick="showPopUp('callSignPop')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="callSignPop">Data from Q88</span>
+          </div>
           <input type="text" class="form-control" id="callSign" name="callSign" value="<%= transportation.Ship.callSign %>">
         </div>
         
         <div class="mb-3">
           <label class="form-label">Gross Tonnage</label>
+          <div class="popup" onclick="showPopUp('grossTonnagePop')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="grossTonnagePop">Data from Q88</span>
+          </div>
           <div class="input-group mb-3">
             <input type="number" step="any" class="form-control" id="grossTonnage" name="grossTonnage" value="<%= transportation.Ship.grossTonnage %>">
             <div class="input-group-append">
@@ -80,6 +98,10 @@
         
         <div class="mb-3">
           <label class="form-label">Summer DWT</label>
+          <div class="popup" onclick="showPopUp('summerDWTPop')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="summerDWTPop">Data from Q88</span>
+          </div>
           <div class="input-group mb-3">
             <input type="number" step="any" class="form-control" id="summerDWT" name="summerDWT" value="<%= transportation.Ship.summerDWT %>">
             <div class="input-group-append">
@@ -90,6 +112,10 @@
         
         <div class="mb-3">
           <label class="form-label">Length Overall x Breadth Extreme:</label>
+          <div class="popup" onclick="showPopUp('lengthOverallPop')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="lengthOverallPop">Data from Q88</span>
+          </div>
           <div class="input-group mb-3">
             <input type="text" class="form-control" id="lengthOverall" name="lengthOverall" value="<%= transportation.Ship.lengthOverall %>">
             <div class="input-group-append">
@@ -100,11 +126,19 @@
         
         <div class="mb-3">
           <label class="form-label">Year Built</label>
+          <div class="popup" onclick="showPopUp('yearBuiltPop')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="yearBuiltPop">Data from Q88</span>
+          </div>
           <input type="number" step="any" class="form-control" id="yearBuilt" name="yearBuilt" value="<%= transportation.Ship.yearBuilt %>">
         </div>
         
         <div class="mb-3">
           <label class="form-label">Ship Age</label>
+          <div class="popup" onclick="showPopUp('shipAgePop')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="shipAgePop">Data from Q88</span>
+          </div>
           <div class="input-group mb-3">
             <input type="number" step="any" class="form-control" id="shipAge" name="shipAge" value="<%= transportation.Ship.shipAge %>" required>
             <div class="input-group-append">
@@ -114,7 +148,11 @@
         </div>
         
         <div class="mb-3">
-          <label class="form-label">crewNumber</label>
+          <label class="form-label"> Crew Number</label>
+          <div class="popup" onclick="showPopUp('crewNumberPop')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="crewNumberPop">Data from Q88 or Generate from <a href="/public/images/Crew.jpg" target="_blank">KM 70 1998</a></span>
+          </div>
           <div class="input-group mb-3">
             <input type="number" step="any" class="form-control" id="crewNumber" name="crewNumber" value="<%= transportation.Ship.crewNumber %>" required>
             <div class="input-group-append">
@@ -125,6 +163,10 @@
         
         <div class="mb-3">
           <label class="form-label">SFOC</label>
+          <div class="popup" onclick="showPopUp('SFOCPop')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="SFOCPop">Data from engine maker or generated from <a href="/public/images/SFOC.jpg" target="_blank">estimation</a></span>
+          </div>
           <div class="input-group mb-3">
             <input type="number" step="any" class="form-control" id="SFOC" name="SFOC" value="<%= transportation.Ship.SFOC %>" required>
             <div class="input-group-append">
@@ -153,16 +195,28 @@
         
         <div class="mb-3">
           <label class="form-label">MMSI Number</label>
+          <div class="popup" onclick="showPopUp('MMSINumber_tugboatPop')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="MMSINumber_tugboatPop">Data from Q88</span>
+          </div>
           <input type="text" class="form-control" id="MMSINumber_tugboat" value="<%= transportation.Tugboat.MMSINumber %>" name="MMSINumber_tugboat">
         </div>
         
         <div class="mb-3">
           <label class="form-label">Call Sign</label>
+          <div class="popup" onclick="showPopUp('callSign_tugboatPop')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="callSign_tugboatPop">Data from Q88</span>
+          </div>
           <input type="text" class="form-control" id="callSign_tugboat" value="<%= transportation.Tugboat.callSign %>" name="callSign_tugboat">
         </div>
         
         <div class="mb-3">
           <label class="form-label">Gross Tonnage</label>
+          <div class="popup" onclick="showPopUp('grossTonnage_tugboatPop')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="grossTonnage_tugboatPop">Data from Q88</span>
+          </div>
           <div class="input-group mb-3">
             <input type="number" step="any" class="form-control" value="0" id="grossTonnage_tugboat" value="<%= transportation.Tugboat.grossTonnage %>" name="grossTonnage_tugboat">
             <div class="input-group-append">
@@ -173,6 +227,10 @@
         
         <div class="mb-3">
           <label class="form-label">Summer DWT</label>
+          <div class="popup" onclick="showPopUp('summerDWT_tugboatPop')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="summerDWT_tugboatPop">Data from Q88</span>
+          </div>
           <div class="input-group mb-3">
             <input type="number" step="any" class="form-control" value="0" id="summerDWT_tugboat" value="<%= transportation.Tugboat.summerDWT %>" name="summerDWT_tugboat">
             <div class="input-group-append">
@@ -183,6 +241,10 @@
         
         <div class="mb-3">
           <label class="form-label">Length Overall x Breadth Extreme:</label>
+          <div class="popup" onclick="showPopUp('lengthOverall_tugboatPop')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="lengthOverall_tugboatPop">Data from Q88</span>
+          </div>
           <div class="input-group mb-3">
             <input type="text" class="form-control" value="0" id="lengthOverall_tugboat" value="<%= transportation.Tugboat.lengthOverall %>" name="lengthOverall_tugboat">
             <div class="input-group-append">
@@ -193,11 +255,19 @@
         
         <div class="mb-3">
           <label class="form-label">Year Built</label>
+          <div class="popup" onclick="showPopUp('yearBuilt_tugboatPop')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="yearBuilt_tugboatPop">Data from Q88</span>
+          </div>
           <input type="number" step="any" class="form-control" value="0" id="yearBuilt_tugboat" value="<%= transportation.Tugboat.yearBuilt %>" name="yearBuilt_tugboat">
         </div>
         
         <div class="mb-3">
           <label class="form-label">Ship Age</label>
+          <div class="popup" onclick="showPopUp('shipAge_tugboatPop')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="shipAge_tugboatPop">Data from Q88</span>
+          </div>
           <div class="input-group mb-3">
             <input type="number" step="any" class="form-control" id="shipAge_tugboat" value="<%= transportation.Tugboat.shipAge %>" name="shipAge_tugboat" required>
             <div class="input-group-append">
@@ -208,6 +278,10 @@
         
         <div class="mb-3">
           <label class="form-label">crewNumber</label>
+          <div class="popup" onclick="showPopUp('crewNumber_tugboatPop')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="crewNumber_tugboatPop">Data from Q88 or Generate from <a href="/public/images/Crew.jpg" target="_blank">KM 70 1998</a></span>
+          </div>
           <div class="input-group mb-3">
             <input type="number" step="any" class="form-control" id="crewNumber_tugboat" value="<%= transportation.Tugboat.crewNumber %>" name="crewNumber_tugboat" required>
             <div class="input-group-append">
@@ -218,6 +292,10 @@
         
         <div class="mb-3">
           <label class="form-label">SFOC</label>
+          <div class="popup" onclick="showPopUp('SFOC_tugboatPop')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="SFOC_tugboatPop">Data from engine maker or generated from <a href="/public/images/SFOC.jpg" target="_blank">estimation</a></span>
+          </div>
           <div class="input-group mb-3">
             <input type="number" step="any" class="form-control" id="SFOC_tugboat" value="<%= transportation.Tugboat.SFOC %>" name="SFOC_tugboat" required>
             <div class="input-group-append">
@@ -250,6 +328,10 @@
       
       <div class="mb-3">
         <label class="form-label">Distance in Nautical Miles</label>
+        <div class="popup" onclick="showPopUp('distancePop')">
+          <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+          <span class="popuptext" id="distancePop">Generated using find ports button or estimating the route manually</span>
+        </div>
         <div class="input-group mb-3">
           <input type="number" step="any" class="form-control" id="distance" name="distance" value="<%= transportation.Voyage.distance %>" required>
           <div class="input-group-append">
@@ -260,6 +342,10 @@
       
       <div class="mb-3">
         <label class="form-label">Service Speed of Vessel</label>
+        <div class="popup" onclick="showPopUp('serviceSpeedVesselPop')">
+          <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+          <span class="popuptext" id="serviceSpeedVesselPop">Data from Q88</span>
+        </div>
         <div class="input-group mb-3">
           <input type="number" step="any" class="form-control" id="serviceSpeedVessel" name="serviceSpeedVessel" value="<%= transportation.Voyage.serviceSpeedVessel %>" required>
           <div class="input-group-append">
@@ -283,6 +369,10 @@
           var cargoTankJS = '<%- JSON.stringify(transportation.ShipCargoTankFullCapacity.cargoTank) %>'; // test is now a valid js object
         </script>
         <label class="form-label">Number of cargo tank</label>
+        <div class="popup" onclick="showPopUp('numberOfCargoTankPop')">
+          <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+          <span class="popuptext" id="numberOfCargoTankPop">Data from Q88</span>
+        </div>
         <div class="input-group mb-3">
           <input type="number" step="any" class="form-control" id="numberOfCargoTank" name="numberOfCargoTank" value="<%= transportation.ShipCargoTankFullCapacity.numberOfCargoTank %>" required>
           <div class="input-group-append">
@@ -298,12 +388,16 @@
   <br>
   <div class="row">
     <div class="col-md-12">
-      <h2>TURNAROUND VOYAGE</h2>
+      <a class="h2 text-black" style="text-decoration:none;">TURNAROUND VOYAGE</a>
     </div>
   </div>
   <div class="row">
     <div class="col-md-5">
-      <h5>LOADING RATE</h5>
+      <a class="h5 text-black" style="text-decoration:none;">LOADING RATE</a>
+      <div class="popup" onclick="showPopUp('turnAroundVoyagePop')">
+        <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+        <span class="popuptext" id="turnAroundVoyagePop">Data from Q88 or generated from <a href="/public/images/TurnAroundVoyage.jpg" target="_blank">estimation</a></span>
+      </div>
       <script>
         var pumpLoadingRateJS = '<%- JSON.stringify(transportation.TurnAroundVoyage.pumpLoadingRate) %>'; // test is now a valid js object
       </script>
@@ -315,13 +409,44 @@
       </script>
       <div class="pumpDischareRateWrapper">
       </div>
+      <h5>NUMBER OF VOYAGE</h5>
+      <% if (transportation.isNegotiation == "true") { %>
+        <input type="hidden" name="isNegotiation" id="isNegotiation" value="true">
+      <% }else{ %>
+        <input type="hidden" name="isNegotiation" id="isNegotiation" value="false">
+      <% } %>
+      <button type="button" class="btn btn-primary" onclick="confirmNegotiation()" id="">Negotiation</button>
+      <div class="mb-3">
+        <div class="numberOfVoyageWrapper">
+          <% if (transportation.isNegotiation == "true") { %>
+            <label class="form-label">Number of Round Trip per Year</label>
+            <div class="input-group mb-3">
+              <input type="number" step="any" class="form-control" id="numberRoundTripYearNego" name="numberRoundTripYearNego" onchange="changeTotalCargoCarryCapacity()" value="<%= transportation.TurnAroundVoyage.numberRoundTripYear %>" required>
+              <div class="input-group-append">
+                <span class="input-group-text">days</span>
+              </div>
+            </div>
+            <label class="form-label">Total Cargo Carrying Capacity per Year</label>
+            <div class="input-group mb-3">
+              <input type="number" step="any" class="form-control" id="totalCargoCarryCapacityYearKGNego" name="totalCargoCarryCapacityYearKGNego" value="<%= transportation.TurnAroundVoyage.totalCargoCarryCapacityYearKG %>" required>
+              <div class="input-group-append">
+                <span class="input-group-text">KG</span>
+              </div>
+            </div>
+          <% } %>
+        </div>
+      </div>
     </div>
   </div>
 
   <br>
   <div class="row">
     <div class="col-md-5">
-      <h2>BUNKERING CALCULATION</h2>
+      <a class="h2 text-black" style="text-decoration:none;">BUNKERING CALCULATION</a>
+      <div class="popup" onclick="showPopUp('bunkeringPop')">
+        <i class="fa fa-info-circle fa-2x" aria-hidden="true" style="color:turquoise"></i>
+        <span class="popuptext" id="bunkeringPop">Bunker can be estimated or input by actual bunker consumption</span>
+      </div>
     </div>
   </div>
   <div class="row">
@@ -452,7 +577,11 @@
   <br>
   <div class="row">
     <div class="col-md-6">
-      <h2>MANNING/CREW COST</h2>
+      <a class="h2 text-black" style="text-decoration:none;">MANNING CREW COST</a>
+      <div class="popup" onclick="showPopUp('crewCostPop')">
+        <i class="fa fa-info-circle fa-2x" aria-hidden="true" style="color:turquoise"></i>
+        <span class="popuptext" id="crewCostPop">Data from Q88 or Generate from <a href="/public/images/Crew.jpg" target="_blank">KM 70 1998</a></span>
+      </div>
     </div>
   </div>
   <div class="row mt-3">
@@ -486,25 +615,25 @@
           <tr>
             <th scope="row">Loading Master</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="bargeLoadingMasterQty" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.Barge.bargeLoadingMaster.qty %>" id="bargeLoadingMasterQty" name="bargeLoadingMasterQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="bargeLoadingMasterPrice" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.Barge.bargeLoadingMaster.price %>" id="bargeLoadingMasterPrice" name="bargeLoadingMasterPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.Barge.bargeLoadingMaster %>" id="bargeLoadingMaster" name="bargeLoadingMaster"  required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.Barge.bargeLoadingMaster.total %>" id="bargeLoadingMaster" name="bargeLoadingMaster"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Boatswain</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="bargeBoatswainQty" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.Barge.bargeBoatswain.qty %>" id="bargeBoatswainQty" name="bargeBoatswainQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="bargeBoatswainPrice" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.Barge.bargeBoatswain.price %>" id="bargeBoatswainPrice" name="bargeBoatswainPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.Barge.bargeBoatswain %>" id="bargeBoatswain" name="bargeBoatswain"  required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.Barge.bargeBoatswain.total %>" id="bargeBoatswain" name="bargeBoatswain"  required>
             </td>
           </tr>
           
@@ -529,121 +658,121 @@
           <tr>
             <th scope="row">Master</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckMasterQty" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckMaster.qty %>" id="deckMasterQty" name="deckMasterQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckMasterPrice" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckMaster.price %>" id="deckMasterPrice" name="deckMasterPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckMaster %>" id="deckMaster" name="deckMaster" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckMaster.total %>" id="deckMaster" name="deckMaster" required>
             </td>
           </tr>
           <tr>
             <th scope="row">Chief Officer</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckChiefOfficerQty"  required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckChiefOfficer.qty %>" id="deckChiefOfficerQty" name="deckChiefOfficerQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckChiefOfficerPrice"  required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckChiefOfficer.price %>" id="deckChiefOfficerPrice" name="deckChiefOfficerPrice"  required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckChiefOfficer %>" id="deckChiefOfficer" name="deckChiefOfficer" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckChiefOfficer.total %>" id="deckChiefOfficer" name="deckChiefOfficer" required>
             </td>
           </tr>
           <tr>
             <th scope="row">Deck Officer</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckOfficerQty" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckOfficer.qty %>" id="deckOfficerQty" name="deckOfficerQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckOfficerPrice" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckOfficer.price %>" id="deckOfficerPrice" name="deckOfficerPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckOfficer %>" id="deckOfficer" name="deckOfficer"  required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckOfficer.total %>" id="deckOfficer" name="deckOfficer"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Radio Operator</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckRadioOperatorQty" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckRadioOperator.qty %>" id="deckRadioOperatorQty" name="deckRadioOperatorQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckRadioOperatorPrice" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckRadioOperator.price %>" id="deckRadioOperatorPrice" name="deckRadioOperatorPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckRadioOperator %>" id="deckRadioOperator" name="deckRadioOperator"  required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckRadioOperator.total %>" id="deckRadioOperator" name="deckRadioOperator"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Boatswain</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckBoatswainQty" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckBoatswain.qty %>" id="deckBoatswainQty" name="deckBoatswainQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckBoatswainPrice" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckBoatswain.price %>" id="deckBoatswainPrice" name="deckBoatswainPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckBoatswain %>" id="deckBoatswain" name="deckBoatswain"  required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckBoatswain.total %>" id="deckBoatswain" name="deckBoatswain"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Able Bodied</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckAbleBodiedQty" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckAbleBodied.qty %>" id="deckAbleBodiedQty" name="deckAbleBodiedQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckAbleBodiedPrice" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckAbleBodied.price %>" id="deckAbleBodiedPrice" name="deckAbleBodiedPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckAbleBodied %>" id="deckAbleBodied" name="deckAbleBodied"  required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckAbleBodied.total %>" id="deckAbleBodied" name="deckAbleBodied"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Ordinary Seamen</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckOrdinarySeamenQty" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckOrdinarySeamen.qty %>" id="deckOrdinarySeamenQty" name="deckOrdinarySeamenQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckOrdinarySeamenPrice" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckOrdinarySeamen.price %>" id="deckOrdinarySeamenPrice" name="deckOrdinarySeamenPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckOrdinarySeamen %>" id="deckOrdinarySeamen" name="deckOrdinarySeamen"  required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckOrdinarySeamen.total %>" id="deckOrdinarySeamen" name="deckOrdinarySeamen"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Chef</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckChefQty" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckChef.qty %>" id="deckChefQty" name="deckChefQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckChefPrice" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckChef.price %>" id="deckChefPrice" name="deckChefPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckChef %>" id="deckChef" name="deckChef"  required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckChef.total %>" id="deckChef" name="deckChef"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Assistant Chef</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckAssistantChefQty" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckAssistantChef.qty %>" id="deckAssistantChefQty" name="deckAssistantChefQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckAssistantChefPrice" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckAssistantChef.price %>" id="deckAssistantChefPrice" name="deckAssistantChefPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckAssistantChef %>" id="deckAssistantChef" name="deckAssistantChef"  required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckAssistantChef.total %>" id="deckAssistantChef" name="deckAssistantChef"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Others</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckOthersQty" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckOthers.qty %>" id="deckOthersQty" name="deckOthersQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="deckOthersPrice" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckOthers.price %>" id="deckOthersPrice" name="deckOthersPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckOthers %>" id="deckOthers" name="deckOthers"  required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.DeckDept.deckOthers.total %>" id="deckOthers" name="deckOthers"  required>
             </td>
           </tr>
           
@@ -667,85 +796,85 @@
           <tr>
             <th scope="row">Chief Engineer</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineChiefEngineerQty" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineChiefEngineer.qty %>" id="engineChiefEngineerQty" name="engineChiefEngineerQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineChiefEngineerPrice" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineChiefEngineer.price %>" id="engineChiefEngineerPrice" name="engineChiefEngineerPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineChiefEngineer %>" id="engineChiefEngineer" name="engineChiefEngineer"  required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineChiefEngineer.total %>" id="engineChiefEngineer" name="engineChiefEngineer"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Chief Machinist</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineChiefMachinistQty" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineChiefMachinist.qty %>" id="engineChiefMachinistQty" name="engineChiefMachinistQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineChiefMachinistPrice" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineChiefMachinist.price %>" id="engineChiefMachinistPrice" name="engineChiefMachinistPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineChiefMachinist %>" id="engineChiefMachinist" name="engineChiefMachinist"  required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineChiefMachinist.total %>" id="engineChiefMachinist" name="engineChiefMachinist"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Machinist</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineMachinistQty" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineMachinist.qty %>" id="engineMachinistQty" name="engineMachinistQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineMachinistPrice" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineMachinist.price %>" id="engineMachinistPrice" name="engineMachinistPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineMachinist %>" id="engineMachinist" name="engineMachinist"  required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineMachinist.total %>" id="engineMachinist" name="engineMachinist"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Foremen</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineForemenQty" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineForemen.qty %>" id="engineForemenQty" name="engineForemenQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineForemenPrice" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineForemen.price %>" id="engineForemenPrice" name="engineForemenPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineForemen %>" id="engineForemen" name="engineForemen"  required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineForemen.total %>" id="engineForemen" name="engineForemen"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Oiler</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineOilerQty" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineOiler.qty %>" id="engineOilerQty" name="engineOilerQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineOilerPrice" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineOiler.price %>" id="engineOilerPrice" name="engineOilerPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineOiler %>" id="engineOiler" name="engineOiler"  required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineOiler.total %>" id="engineOiler" name="engineOiler"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Wiper</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineWiperQty" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineWiper.qty %>" id="engineWiperQty" name="engineWiperQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineWiperPrice" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineWiper.price %>" id="engineWiperPrice" name="engineWiperPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineWiper %>" id="engineWiper" name="engineWiper"  required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineWiper.total %>" id="engineWiper" name="engineWiper"  required>
             </td>
           </tr>
           <tr>
             <th scope="row">Others</th>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineOthersQty" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineOthers.qty %>" id="engineOthersQty" name="engineOthersQty" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="0" id="engineOthersPrice" required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineOthers.price %>" id="engineOthersPrice" name="engineOthersPrice" required>
             </td>
             <td>
-              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineOthers %>" id="engineOthers" name="engineOthers"  required>
+              <input type="number" step="any" class="form-control" value="<%= transportation.CrewCost.EngineDept.engineOthers.total %>" id="engineOthers" name="engineOthers"  required>
             </td>
           </tr>
           
@@ -757,7 +886,11 @@
   <br>
   <div class="row">
     <div class="col-md-5">
-      <h2>Port Cost</h2>
+      <a class="h2 text-black" style="text-decoration:none;">Port Cost</a>
+      <div class="popup" onclick="showPopUp('portChargesRoundTripPop')">
+        <i class="fa fa-info-circle fa-2x" aria-hidden="true" style="color:turquoise"></i>
+        <span class="popuptext" id="portChargesRoundTripPop">Fee charged for Berthing, Pilotting, and Tug of Ship</span>
+      </div>
     </div>
   </div>
   <div class="row">
@@ -779,7 +912,11 @@
   <br>
   <div class="row">
     <div class="col-md-5">
-      <h2>Cargo Handling Cost</h2>
+      <a class="h2 text-black" style="text-decoration:none;">Cargo Handling Cost</a>
+      <div class="popup" onclick="showPopUp('cargoHandlingPop')">
+        <i class="fa fa-info-circle fa-2x" aria-hidden="true" style="color:turquoise"></i>
+        <span class="popuptext" id="cargoHandlingPop">Fee charged if there is any third party invlovement during cargo handling operation</span>
+      </div>
     </div>
   </div>
   <div class="row">
@@ -810,7 +947,11 @@
   <br>
   <div class="row">
     <div class="col-md-5">
-      <h2>Vessel's Charter Cost</h2>
+      <a class="h2 text-black" style="text-decoration:none;">Vessel's Charter Cost</a>
+      <div class="popup" onclick="showPopUp('vesselCharterCostPop')">
+        <i class="fa fa-info-circle fa-2x" aria-hidden="true" style="color:turquoise"></i>
+        <span class="popuptext" id="vesselCharterCostPop">Fee charged if the operator is charter third party vessel</span>
+      </div>
     </div>
   </div>
   <div class="row">
@@ -831,7 +972,11 @@
   <br>
   <div class="row">
     <div class="col-md-8">
-      <h2>Insurance Cost (if relevant with charter scheme)</h2>
+      <a class="h2 text-black" style="text-decoration:none;">Insurance Cost (if relevant with charter scheme)</a>
+      <div class="popup" onclick="showPopUp('insuranceCostPop')">
+        <i class="fa fa-info-circle fa-2x" aria-hidden="true" style="color:turquoise"></i>
+        <span class="popuptext" id="insuranceCostPop">Insurance cost for ship, barge (if any), and crew</span>
+      </div>
     </div>
   </div>
   <div class="row">
@@ -869,6 +1014,10 @@
       
       <div class="mb-3">
         <label class="form-label">Docking Cost</label>
+        <div class="popup" onclick="showPopUp('dockingCostPop')">
+          <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+          <span class="popuptext" id="dockingCostPop">Docking cost per year </span>
+        </div>
         <div class="input-group mb-3">
           <input type="number" step="any" class="form-control" id="dockingCost" name="dockingCost" value="<%= transportation.DockingRepairMaintenanceCost.dockingCost %>" required>
           <div class="input-group-append">
@@ -878,6 +1027,10 @@
       </div>
       <div class="mb-3">
         <label class="form-label">Repair and Stores Cost</label>
+        <div class="popup" onclick="showPopUp('repairStoreCostPop')">
+          <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+          <span class="popuptext" id="repairStoreCostPop">Repair and spare parts cost</span>
+        </div>
         <div class="input-group mb-3">
           <input type="number" step="any" class="form-control" id="repairStoreCost" name="repairStoreCost" value="<%= transportation.DockingRepairMaintenanceCost.repairStoreCost %>" required>
           <div class="input-group-append">
@@ -887,6 +1040,10 @@
       </div>
       <div class="mb-3">
         <label class="form-label">Lube Oil Cost</label>
+        <div class="popup" onclick="showPopUp('lubeOilCostPop')">
+          <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+          <span class="popuptext" id="lubeOilCostPop">Lube oil cost for main engine and auxilliary engine</span>
+        </div>
         <div class="input-group mb-3">
           <input type="number" step="any" class="form-control" id="lubeOilCost" name="lubeOilCost" value="<%= transportation.DockingRepairMaintenanceCost.lubeOilCost %>" required>
           <div class="input-group-append">
@@ -901,7 +1058,11 @@
   <br>
   <div class="row">
     <div class="col-md-8">
-      <h2>Other Cost</h2>
+      <a class="h2 text-black" style="text-decoration:none;">Other Cost</a>
+      <div class="popup" onclick="showPopUp('otherCostPop')">
+        <i class="fa fa-info-circle fa-2x" aria-hidden="true" style="color:turquoise"></i>
+        <span class="popuptext" id="otherCostPop">Provision for food, fresh water, supplies, etc</span>
+      </div>
     </div>
   </div>
   <div class="row">
@@ -982,7 +1143,60 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
+  function changeTotalCargoCarryCapacity(){
+    var unitCBMtoLitre = $('#unitCBMtoLitre').val()
+    var unitKGtoLitre = $('#unitKGtoLitre').val()
+    var numberRoundTripYearNego = $("#numberRoundTripYearNego").val();
+    var totalCargoCarryCapacityYearKGNego = $("#totalCargoCarryCapacityYearKGNego");
+    var numberOfCargoTank = $("#numberOfCargoTank").val();
+    var loadingFactor = 100;
+    let totalCapacityOpCBM = 0;
+    for (let index = 1; index <= numberOfCargoTank; index++) {
+      var cargoTank = $(`#cargoTank${index}`).val()
+      var cargoTankOp = loadingFactor / 100 * Number(cargoTank)
+      totalCapacityOpCBM += Number(cargoTankOp);
+    }
+    const totalCapacityOpLitre = totalCapacityOpCBM / Number(unitCBMtoLitre)
+    const totalCapacityOpKG = totalCapacityOpLitre / Number(unitKGtoLitre)
+    totalCargoCarryCapacityYearKGNego.val(Number(numberRoundTripYearNego * totalCapacityOpKG))
+  }
+
+  function confirmNegotiation(){
+    var numberOfVoyageWrapper = $(".numberOfVoyageWrapper");
+    var isNegotiation = $("#isNegotiation");
+    var result = confirm('Are you sure to negotiation?');
+    if (result) {
+      $(numberOfVoyageWrapper).empty();
+      $(isNegotiation).val("true");
+      $(numberOfVoyageWrapper).append(
+        `
+        <label class="form-label">Number of Round Trip per Year</label>
+        <div class="input-group mb-3">
+          <input type="number" step="any" class="form-control" id="numberRoundTripYearNego" name="numberRoundTripYearNego" onchange="changeTotalCargoCarryCapacity()" value="0" required>
+          <div class="input-group-append">
+            <span class="input-group-text">days</span>
+          </div>
+        </div>
+        <label class="form-label">Total Cargo Carrying Capacity per Year</label>
+        <div class="input-group mb-3">
+          <input type="number" step="any" class="form-control" id="totalCargoCarryCapacityYearKGNego" name="totalCargoCarryCapacityYearKGNego" value="0" required>
+          <div class="input-group-append">
+            <span class="input-group-text">KG</span>
+          </div>
+        </div>
+        `
+      )
+    }
+    else{
+      $(numberOfVoyageWrapper).empty();
+      $(isNegotiation).val("false");
+    }
+  }
   $(function() {
+    function showPopUp(pop) {
+      var popup = document.getElementById(pop);
+      popup.classList.toggle("show");
+    }
     function convert(value) {
         return value && value['$numberDecimal'] ? value['$numberDecimal'] : 0;
     }
@@ -1000,6 +1214,10 @@
         $(wrapperCargoTank).append(
             `<div class="mb-3">
           <label class="form-label">No ${i+1} Cargo Tank full capacity</label>
+          <div class="popup" onclick="showPopUp('cargoTankPop${i}')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="cargoTankPop${i}">Data from Q88</span>
+          </div>
           <div class="input-group mb-3">
             <input type="number" step="any" class="form-control" id="cargoTank${i+1}" name="cargoTank${i+1}" value="${JSON.stringify(Number(convert(cargoTankJSON[i])))}" required>
             <div class="input-group-append">
@@ -1011,6 +1229,10 @@
           $(wrapperPumpLoadingRate).append(
             `<div class="mb-3">
           <label class="form-label">No ${i+1} Pump</label>
+          <div class="popup" onclick="showPopUp('pumpLoadingRatePop${i}')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="pumpLoadingRatePop${i}">Data from Q88</span>
+          </div>
           <div class="input-group mb-3">
             <input type="number" step="any" class="form-control" id="pumpLoadingRate${i+1}" name="pumpLoadingRate${i+1}" value="${JSON.stringify(Number(convert(pumpLoadingRateJSON[i])))}" required>
             <div class="input-group-append">
@@ -1022,6 +1244,10 @@
           $(wrapperPumpDischareRate).append(
             `<div class="mb-3">
           <label class="form-label">No ${i+1} Pump</label>
+          <div class="popup" onclick="showPopUp('pumpDischargeRatePop${i}')">
+            <i class="fa fa-info-circle fa-1x" aria-hidden="true" style="color:turquoise"></i>
+            <span class="popuptext" id="pumpDischargeRatePop${i}">Data from Q88</span>
+          </div>
           <div class="input-group mb-3">
             <input type="number" step="any" class="form-control" id="pumpDischargeRate${i+1}" name="pumpDischargeRate${i+1}" value="${JSON.stringify(Number(convert(pumpDischargeRateJSON[i])))}" required>
             <div class="input-group-append">

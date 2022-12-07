@@ -25,7 +25,8 @@ const {
     createCostShipAge,
     createCustom,
     editTerminalByID,
-    updateTerminal
+    updateTerminal,
+    transferTransportation
 } = require('./../controllers/project.controller');
 
 const { 
@@ -37,7 +38,12 @@ const {
     duplicateTransportationSkidTruckByID,
     deleteTransportationSkidTruckByID,
     editTransportationSkidTruckByID,
-    updateTransportationSkidTruckByID
+    updateTransportationSkidTruckByID,
+    createTransportationSkidTruck3,
+    getProjectSkidTruckV2ByID,
+    getFormSkidTruckV2,
+    getFormSkidTruckV2ByCase,
+    createTransportationSkidTruckV2_1
 } = require('./../controllers/transportation-skidtruck.controller');
 
 router.post('/', createProject);
@@ -58,6 +64,7 @@ router.get('/:projectID/terminal/:terminalID/edit', editTerminalByID);
 router.post('/:projectID/terminal/:terminalID/update', updateTerminal);
 router.get('/:projectID/terminal/form', getFormTerminal);
 router.get('/:projectID/transportation', getProjectTransportationByID);
+router.post('/:projectID/transportation/transfer', transferTransportation);
 router.get('/:projectID/transportation/:transportationID/edit', editTransportationByID);
 router.get('/:projectID/transportation/:transportationID/duplicate', duplicateTransportationByID);
 router.get('/:projectID/transportation/:transportationID/delete', deleteTransportationByID);
@@ -65,6 +72,12 @@ router.get('/:projectID/delete', deleteProjectByID);
 
 router.get('/:projectID/transportation/:transportationID/summary', getSummaryTransportationBunkerPriceSensitivity);
 router.get('/create/costShipAge', createCostShipAge);
+
+router.get('/:projectID/skidtruckv2', getProjectSkidTruckV2ByID);
+router.get('/:projectID/skidtruckv2/form', getFormSkidTruckV2);
+router.get('/:projectID/skidtruckv2/form/:typeCase', getFormSkidTruckV2ByCase);
+router.post('/:projectID/skidtruckv2/form/case-1', createTransportationSkidTruckV2_1);
+
 
 router.get('/:projectID/skidtruck', getProjectSkidTruckByID);
 router.get('/:projectID/skidtruck/:skidTruckID/duplicate', duplicateTransportationSkidTruckByID);
@@ -75,6 +88,7 @@ router.get('/:projectID/skidtruck/form', getFormSkidTruck);
 router.get('/:projectID/skidtruck/form/:typeCase', getFormSkidTruckByCase);
 router.post('/:projectID/skidtruck/form/case-1', createTransportationSkidTruck);
 router.post('/:projectID/skidtruck/form/case-2', createTransportationSkidTruck2);
+router.post('/:projectID/skidtruck/form/case-3', createTransportationSkidTruck3);
 
 router.get('/custom', createCustom);
 module.exports = router;

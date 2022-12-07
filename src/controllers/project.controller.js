@@ -23,11 +23,11 @@ const createProject = async (req, res, next) => {
         const newProject = new Project(project);
         await newProject.save();
         res.redirect('/topic/'+topicID);
-        res.render('Topic/topic',{
-            layout: 'layouts/main-layout',
-            topicID,
-            topics
-        })
+        // res.render('Topic/topic',{
+        //     layout: 'layouts/main-layout',
+        //     topicID,
+        //     topics
+        // })
 
     } catch (error) {
         res.render('error', {
@@ -694,7 +694,7 @@ const deleteTerminalByID = async (req,res,next) => {
 const createTerminalCalculation = async (req, res, next) => {
     try {
         const terminal = await Terminal.findOne({_id: ObjectID(req.params.terminalID)});
-
+        const project = await Project.findOne({_id: ObjectID(req.params.projectID)});
         const disposalPrice = terminal.Capex.disposalPrice;
 
         const capexTotal = terminal.Capex.totalCapex;
@@ -803,13 +803,24 @@ const createTerminalCalculation = async (req, res, next) => {
             iteration++;
         }
         if(next == false){
-            res.json({message: 'Error: Something wrong!'});
+            console.log(req.body.thruput)
+            res.render('Terminal/terminal-optimization', {
+                layout: 'layouts/main-layout',
+                title: 'Form',
+                terminal,
+                ProjectID: req.params.projectID,
+                ProjectName: project.name,
+                thruputDay: req.body.thruput,
+                discountRateBody: req.body.discountRate,
+                priceUSD_IDR: req.body.priceUSD_IDR,
+                contractDuration: req.body.contractDuration,
+                error_msg: 'Adjust the Thruput value!'
+            });
             return false;
         }
         const priceUSD_IDR = req.body.priceUSD_IDR;
         const lastInvest = {invests, totalNPV: Number(sumNPV - capexTotal), LPGCost}
-        const project = await Project.findOne({_id: ObjectID(req.params.projectID)});
-
+        
         res.render('Terminal/terminal-optimization', {
             layout: 'layouts/main-layout',
             title: 'Form',
@@ -823,7 +834,8 @@ const createTerminalCalculation = async (req, res, next) => {
             priceUSD_IDR,
             arrayLabelInvest,
             arrayDataInvest,
-            ProjectName: project.name
+            ProjectName: project.name,
+            success_msg: 'Clear Optimization!'
         });
     } catch (error) {
         res.render('error', {
@@ -927,11 +939,17 @@ const getProjectTransportationByID = async (req, res, next) => {
             }
             filteredTransportations.push(filteredTransportation);
         });
+
+        const topic = await Topic.findOne({slug: "transportation"})
+        const projects = await Project.find({topicID: topic._id, _id: {$ne: ProjectID}})
+
         res.render('Transportation/summary', {
             layout: 'layouts/main-layout',
             title: 'Summary LPG Transportation',
             filteredTransportations,
-            project
+            project,
+            topic,
+            projects
         });
     } catch (error) {
         res.render('error', {
@@ -1020,6 +1038,8 @@ const getFormTransportationFreightVoyage = async (req, res, next) => {
         const unitConversion = await UnitConversion.find();
         const crewDatas = await CrewData.find().sort({'total':1});
         const project = await Project.findOne({_id: ObjectID(ProjectID)});
+        const unitKGtoLitre = convertToFloat(unitConversion[0].KGtoLitre);
+        const unitCBMtoLitre = convertToFloat(unitConversion[0].CBMtoLitre);
         if(!project){
             throw "project not found!";
         }
@@ -1038,7 +1058,9 @@ const getFormTransportationFreightVoyage = async (req, res, next) => {
             currentYear: new Date().getFullYear(),
             CBMtoMT : convertToFloat(unitConversion[0].CBMtoMT),
             crewDatas,
-            projectName: project.name
+            projectName: project.name,
+            unitKGtoLitre,
+            unitCBMtoLitre
         });
     } catch (error) {
         res.render('error', {
@@ -1051,6 +1073,7 @@ const getFormTransportationFreightVoyage = async (req, res, next) => {
 
 const createTransportation = async (req, res, next) => {
     try {
+
         const unitConversion = await UnitConversion.find();
         const transportation = {};
 
@@ -1200,10 +1223,22 @@ const createTransportation = async (req, res, next) => {
         const docking = 30;
         const mobilization = 0;
         const effectiveDays = calendarDaysYear-docking;
-        const numberRoundTripYear = Number(Math.floor(effectiveDays/totalTurnRoundTime));
+        let numberRoundTripYear = Number(Math.floor(effectiveDays/totalTurnRoundTime));
+
+        if(req.body.isNegotiation == "true")
+        {
+            numberRoundTripYear = req.body.numberRoundTripYearNego;
+        }
+
         const idleDaysYear = effectiveDays - (totalTurnRoundTime*numberRoundTripYear);
         const totalCargoCarryCapacityYearCBM = numberRoundTripYear * shipCargoTankOperationalCapacity.totalCapacityOpCBM;
-        const totalCargoCarryCapacityYearKG = numberRoundTripYear * shipCargoTankOperationalCapacity.totalCapacityOpKG;
+        let totalCargoCarryCapacityYearKG = numberRoundTripYear * shipCargoTankOperationalCapacity.totalCapacityOpKG;
+        
+        if(req.body.isNegotiation == "true")
+        {
+            totalCargoCarryCapacityYearKG = req.body.totalCargoCarryCapacityYearKGNego;
+        }
+
         const totalCargoCarryCapacityYearMMBTU = totalCargoCarryCapacityYearKG * convertToFloat(unitConversion[0].KGtoMMBTU);
 
         const turnAroundVoyage = {
@@ -1288,27 +1323,96 @@ const createTransportation = async (req, res, next) => {
         transportation.BunkeringCalculation = bunkeringCalculation;
         
         //CREW COST
-        const deckMaster = Number(req.body.deckMaster);
-        const deckChiefOfficer = Number(req.body.deckChiefOfficer);
-        const deckOfficer = Number(req.body.deckOfficer);
-        const deckRadioOperator = Number(req.body.deckRadioOperator);
-        const deckBoatswain = Number(req.body.deckBoatswain);
-        const deckAbleBodied = Number(req.body.deckAbleBodied);
-        const deckOrdinarySeamen = Number(req.body.deckOrdinarySeamen);
-        const deckChef = Number(req.body.deckChef);
-        const deckAssistantChef = Number(req.body.deckAssistantChef);
-        const deckOthers = Number(req.body.deckOthers);
+        const deckMaster = {
+            qty: Number(req.body.deckMasterQty),
+            price: Number(req.body.deckMasterPrice),
+            total: Number(req.body.deckMaster)
+        }
+        const deckChiefOfficer = {
+            qty: Number(req.body.deckChiefOfficerQty),
+            price: Number(req.body.deckChiefOfficerPrice),
+            total: Number(req.body.deckChiefOfficer)
+        }
+        const deckOfficer = {
+            qty: Number(req.body.deckOfficerQty),
+            price: Number(req.body.deckOfficerPrice),
+            total: Number(req.body.deckOfficer)
+        }
+        const deckRadioOperator = {
+            qty: Number(req.body.deckRadioOperatorQty),
+            price: Number(req.body.deckRadioOperatorPrice),
+            total: Number(req.body.deckRadioOperator)
+        }
+        const deckBoatswain = {
+            qty: Number(req.body.deckBoatswainQty),
+            price: Number(req.body.deckBoatswainPrice),
+            total: Number(req.body.deckBoatswain)
+        }
+        const deckAbleBodied = {
+            qty: Number(req.body.deckAbleBodiedQty),
+            price: Number(req.body.deckAbleBodiedPrice),
+            total: Number(req.body.deckAbleBodied)
+        }
+        const deckOrdinarySeamen = {
+            qty: Number(req.body.deckOrdinarySeamenQty),
+            price: Number(req.body.deckOrdinarySeamenPrice),
+            total: Number(req.body.deckOrdinarySeamen)
+        }
+        const deckChef = {
+            qty: Number(req.body.deckChefQty),
+            price: Number(req.body.deckChefPrice),
+            total: Number(req.body.deckChef)
+        }
+        const deckAssistantChef = {
+            qty: Number(req.body.deckAssistantChefQty),
+            price: Number(req.body.deckAssistantChefPrice),
+            total: Number(req.body.deckAssistantChef)
+        }
+        const deckOthers = {
+            qty: Number(req.body.deckOthersQty),
+            price: Number(req.body.deckOthersPrice),
+            total: Number(req.body.deckOthers)
+        }
         const deckDept = {deckMaster, deckChiefOfficer, deckOfficer, deckRadioOperator, deckBoatswain, deckAbleBodied, deckOrdinarySeamen, deckChef, deckAssistantChef, deckOthers};
-        const engineChiefEngineer = Number(req.body.engineChiefEngineer);
-        const engineChiefMachinist = Number(req.body.engineChiefMachinist);
-        const engineMachinist = Number(req.body.engineMachinist);
-        const engineForemen = Number(req.body.engineForemen);
-        const engineOiler = Number(req.body.engineOiler);
-        const engineWiper = Number(req.body.engineWiper);
-        const engineOthers = Number(req.body.engineOthers);
+        
+        const engineChiefEngineer = {
+            qty: Number(req.body.engineChiefEngineerQty),
+            price: Number(req.body.engineChiefEngineerPrice),
+            total: Number(req.body.engineChiefEngineer)
+        }
+        const engineChiefMachinist = {
+            qty: Number(req.body.engineChiefMachinistQty),
+            price: Number(req.body.engineChiefMachinistPrice),
+            total: Number(req.body.engineChiefMachinist)
+        }
+        const engineMachinist = {
+            qty: Number(req.body.engineMachinistQty),
+            price: Number(req.body.engineMachinistPrice),
+            total: Number(req.body.engineMachinist)
+        }
+        const engineForemen = {
+            qty: Number(req.body.engineForemenQty),
+            price: Number(req.body.engineForemenPrice),
+            total: Number(req.body.engineForemen)
+        }
+        const engineOiler = {
+            qty: Number(req.body.engineOilerQty),
+            price: Number(req.body.engineOilerPrice),
+            total: Number(req.body.engineOiler)
+        }
+        const engineWiper = {
+            qty: Number(req.body.engineWiperQty),
+            price: Number(req.body.engineWiperPrice),
+            total: Number(req.body.engineWiper)
+        }
+        const engineOthers = {
+            qty: Number(req.body.engineOthersQty),
+            price: Number(req.body.engineOthersPrice),
+            total: Number(req.body.engineOthers)
+        }
         const engineDept = {engineChiefEngineer, engineChiefMachinist, engineMachinist, engineForemen, engineOiler, engineWiper, engineOthers};
-        const sumDeckDept = (deckMaster+deckChiefOfficer+deckOfficer+deckRadioOperator+deckBoatswain+deckAbleBodied+deckOrdinarySeamen+deckChef+deckAssistantChef+deckOthers);
-        const sumEngineDept = (engineChiefEngineer+ engineChiefMachinist+ engineMachinist+ engineForemen+ engineOiler+ engineWiper+ engineOthers);
+        const sumDeckDept = (deckMaster.total+deckChiefOfficer.total+deckOfficer.total+deckRadioOperator.total+deckBoatswain.total+deckAbleBodied.total+deckOrdinarySeamen.total+deckChef.total+deckAssistantChef.total+deckOthers.total);
+        const sumEngineDept = (engineChiefEngineer.total+ engineChiefMachinist.total+ engineMachinist.total+ engineForemen.total+ engineOiler.total+ engineWiper.total+ engineOthers.total);
         const totalCrewCostMonth = sumDeckDept + sumEngineDept;
         const totalCrewCostYear = totalCrewCostMonth * 13;
 
@@ -1320,11 +1424,19 @@ const createTransportation = async (req, res, next) => {
         };
         if(req.params.typeFreightSlug === 'barge' && req.params.typeVoyageSlug === 'single_trip'){
             const barge = {
-                bargeLoadingMaster: req.body.bargeLoadingMaster,
-                bargeBoatswain: req.body.bargeBoatswain
+                bargeLoadingMaster: {
+                    qty: req.body.bargeLoadingMasterQty,
+                    price: req.body.bargeLoadingMasterPrice,
+                    total: req.body.bargeLoadingMaster,
+                },
+                bargeBoatswain: {
+                    qty: req.body.bargeBoatswainQty,
+                    price: req.body.bargeBoatswainPrice,
+                    total: req.body.bargeBoatswain,
+                }
             }
             crewCost.Barge = barge;
-            crewCost.totalCrewCostMonth += (Number(barge.bargeLoadingMaster) + Number(barge.bargeBoatswain));
+            crewCost.totalCrewCostMonth += (Number(barge.bargeLoadingMaster.total) + Number(barge.bargeBoatswain.total));
             crewCost.totalCrewCostYear = crewCost.totalCrewCostMonth * 13;
         }
         transportation.CrewCost = crewCost;
@@ -1428,8 +1540,7 @@ const createTransportation = async (req, res, next) => {
             ratioRevenue
         }
         transportation.ProposedFreight = proposedFreight;
-        // console.log(transportation.ProposedFreight)
-        console.log(transportation.BunkeringCalculation)
+        transportation.isNegotiation = req.body.isNegotiation;
         const newTransportation = new Transportation(transportation);
         await newTransportation.save();
         res.redirect(`/project/${req.body.ProjectID}/form/${newTransportation._id}/bunker-price-sensitivity`);
@@ -1449,6 +1560,8 @@ const editTransportationByID = async (req, res, next) => {
         const crewDatas = await CrewData.find().sort({'total':1});
         const ProjectID = req.params.projectID;
         const project = await Project.findOne({_id: ObjectID(ProjectID)});
+        const unitKGtoLitre = convertToFloat(unitConversion[0].KGtoLitre);
+        const unitCBMtoLitre = convertToFloat(unitConversion[0].CBMtoLitre);
         if(!project){
             throw "project not found!";
         }
@@ -1465,7 +1578,9 @@ const editTransportationByID = async (req, res, next) => {
             crewDatas,
             ProjectID,
             projectName: project.name,
-            transportationName: transportation.Ship.shipName
+            transportationName: transportation.Ship.shipName,
+            unitKGtoLitre,
+            unitCBMtoLitre
         });
     } catch (error) {
         console.log(error)
@@ -1479,18 +1594,21 @@ const editTransportationByID = async (req, res, next) => {
 
 const updateTransportationByID = async (req, res, next) => {
     try {
+
+        console.log(req.body)
+
         const transportationID = req.body.TransportationID;
         const transportationDB = await Transportation.findOne({_id: ObjectID(transportationID)});
         if(!transportationDB){
             throw "Transportation not found!"
         }
-        if(transportationDB.bunkerPriceSensitivityID){
-            const bunkerPriceSensitivity = await BunkerPriceSensitivity.findOne({_id: ObjectID(transportationDB.bunkerPriceSensitivityID)});
-            if(!bunkerPriceSensitivity){
-                throw "Bunker not found!"
-            }
-            await BunkerPriceSensitivity.deleteOne({_id : ObjectID(transportationDB.bunkerPriceSensitivityID)});
-        }
+        // if(transportationDB.bunkerPriceSensitivityID){
+        //     const bunkerPriceSensitivity = await BunkerPriceSensitivity.findOne({_id: ObjectID(transportationDB.bunkerPriceSensitivityID)});
+        //     if(!bunkerPriceSensitivity){
+        //         throw "Bunker not found!"
+        //     }
+        //     await BunkerPriceSensitivity.deleteOne({_id : ObjectID(transportationDB.bunkerPriceSensitivityID)});
+        // }
         const unitConversion = await UnitConversion.find();
         const transportation = {};
 
@@ -1641,10 +1759,22 @@ const updateTransportationByID = async (req, res, next) => {
         const docking = 30;
         const mobilization = 0;
         const effectiveDays = calendarDaysYear-docking;
-        const numberRoundTripYear = Number(Math.floor(effectiveDays/totalTurnRoundTime));
+        let numberRoundTripYear = Number(Math.floor(effectiveDays/totalTurnRoundTime));
+
+        if(req.body.isNegotiation == "true")
+        {
+            numberRoundTripYear = req.body.numberRoundTripYearNego;
+        }
+
         const idleDaysYear = effectiveDays - (totalTurnRoundTime*numberRoundTripYear);
         const totalCargoCarryCapacityYearCBM = numberRoundTripYear * shipCargoTankOperationalCapacity.totalCapacityOpCBM;
-        const totalCargoCarryCapacityYearKG = numberRoundTripYear * shipCargoTankOperationalCapacity.totalCapacityOpKG;
+        let totalCargoCarryCapacityYearKG = numberRoundTripYear * shipCargoTankOperationalCapacity.totalCapacityOpKG;
+        
+        if(req.body.isNegotiation == "true")
+        {
+            totalCargoCarryCapacityYearKG = req.body.totalCargoCarryCapacityYearKGNego;
+        }
+
         const totalCargoCarryCapacityYearMMBTU = totalCargoCarryCapacityYearKG * convertToFloat(unitConversion[0].KGtoMMBTU);
        
         const turnAroundVoyage = {
@@ -1683,12 +1813,6 @@ const updateTransportationByID = async (req, res, next) => {
         const bunkerPriceIDRMFO = 0;
         const bunkerPriceIDRMDO = 0;
         const bunkerPriceIDRMGO = 0;
-        console.log(portIdleMDO)
-        console.log(portWorkingMDO)
-        console.log(atSeaMDO)
-        // const bunkerPriceIDRMFO = Number(req.body.bunkerPriceIDRMFO);
-        // const bunkerPriceIDRMDO = Number(req.body.bunkerPriceIDRMDO);
-        // const bunkerPriceIDRMGO = Number(req.body.bunkerPriceIDRMGO);
         const bunkerConsumeTripMFO = (turnAroundVoyage.totalTurnRoundTime*atSeaMFO) + ((turnAroundVoyage.totalLoadingTime+turnAroundVoyage.totalDischargeTime)*portWorkingMFO) + ((turnAroundVoyage.enterWaitTimePOD+turnAroundVoyage.enterWaitTimePOL)*portIdleMFO);
         const bunkerConsumeTripMDO = (turnAroundVoyage.totalTurnRoundTime*atSeaMDO) + ((turnAroundVoyage.totalLoadingTime+turnAroundVoyage.totalDischargeTime)*portWorkingMDO) + ((turnAroundVoyage.enterWaitTimePOD+turnAroundVoyage.enterWaitTimePOL)*portIdleMDO);
         const bunkerConsumeTripMGO = (turnAroundVoyage.totalTurnRoundTime*atSeaMGO) + ((turnAroundVoyage.totalLoadingTime+turnAroundVoyage.totalDischargeTime)*portWorkingMGO) + ((turnAroundVoyage.enterWaitTimePOD+turnAroundVoyage.enterWaitTimePOL)*portIdleMGO);
@@ -1732,27 +1856,96 @@ const updateTransportationByID = async (req, res, next) => {
         transportation.BunkeringCalculation = bunkeringCalculation;
         
         //CREW COST
-        const deckMaster = Number(req.body.deckMaster);
-        const deckChiefOfficer = Number(req.body.deckChiefOfficer);
-        const deckOfficer = Number(req.body.deckOfficer);
-        const deckRadioOperator = Number(req.body.deckRadioOperator);
-        const deckBoatswain = Number(req.body.deckBoatswain);
-        const deckAbleBodied = Number(req.body.deckAbleBodied);
-        const deckOrdinarySeamen = Number(req.body.deckOrdinarySeamen);
-        const deckChef = Number(req.body.deckChef);
-        const deckAssistantChef = Number(req.body.deckAssistantChef);
-        const deckOthers = Number(req.body.deckOthers);
+        const deckMaster = {
+            qty: Number(req.body.deckMasterQty),
+            price: Number(req.body.deckMasterPrice),
+            total: Number(req.body.deckMaster)
+        }
+        const deckChiefOfficer = {
+            qty: Number(req.body.deckChiefOfficerQty),
+            price: Number(req.body.deckChiefOfficerPrice),
+            total: Number(req.body.deckChiefOfficer)
+        }
+        const deckOfficer = {
+            qty: Number(req.body.deckOfficerQty),
+            price: Number(req.body.deckOfficerPrice),
+            total: Number(req.body.deckOfficer)
+        }
+        const deckRadioOperator = {
+            qty: Number(req.body.deckRadioOperatorQty),
+            price: Number(req.body.deckRadioOperatorPrice),
+            total: Number(req.body.deckRadioOperator)
+        }
+        const deckBoatswain = {
+            qty: Number(req.body.deckBoatswainQty),
+            price: Number(req.body.deckBoatswainPrice),
+            total: Number(req.body.deckBoatswain)
+        }
+        const deckAbleBodied = {
+            qty: Number(req.body.deckAbleBodiedQty),
+            price: Number(req.body.deckAbleBodiedPrice),
+            total: Number(req.body.deckAbleBodied)
+        }
+        const deckOrdinarySeamen = {
+            qty: Number(req.body.deckOrdinarySeamenQty),
+            price: Number(req.body.deckOrdinarySeamenPrice),
+            total: Number(req.body.deckOrdinarySeamen)
+        }
+        const deckChef = {
+            qty: Number(req.body.deckChefQty),
+            price: Number(req.body.deckChefPrice),
+            total: Number(req.body.deckChef)
+        }
+        const deckAssistantChef = {
+            qty: Number(req.body.deckAssistantChefQty),
+            price: Number(req.body.deckAssistantChefPrice),
+            total: Number(req.body.deckAssistantChef)
+        }
+        const deckOthers = {
+            qty: Number(req.body.deckOthersQty),
+            price: Number(req.body.deckOthersPrice),
+            total: Number(req.body.deckOthers)
+        }
         const deckDept = {deckMaster, deckChiefOfficer, deckOfficer, deckRadioOperator, deckBoatswain, deckAbleBodied, deckOrdinarySeamen, deckChef, deckAssistantChef, deckOthers};
-        const engineChiefEngineer = Number(req.body.engineChiefEngineer);
-        const engineChiefMachinist = Number(req.body.engineChiefMachinist);
-        const engineMachinist = Number(req.body.engineMachinist);
-        const engineForemen = Number(req.body.engineForemen);
-        const engineOiler = Number(req.body.engineOiler);
-        const engineWiper = Number(req.body.engineWiper);
-        const engineOthers = Number(req.body.engineOthers);
+        
+        const engineChiefEngineer = {
+            qty: Number(req.body.engineChiefEngineerQty),
+            price: Number(req.body.engineChiefEngineerPrice),
+            total: Number(req.body.engineChiefEngineer)
+        }
+        const engineChiefMachinist = {
+            qty: Number(req.body.engineChiefMachinistQty),
+            price: Number(req.body.engineChiefMachinistPrice),
+            total: Number(req.body.engineChiefMachinist)
+        }
+        const engineMachinist = {
+            qty: Number(req.body.engineMachinistQty),
+            price: Number(req.body.engineMachinistPrice),
+            total: Number(req.body.engineMachinist)
+        }
+        const engineForemen = {
+            qty: Number(req.body.engineForemenQty),
+            price: Number(req.body.engineForemenPrice),
+            total: Number(req.body.engineForemen)
+        }
+        const engineOiler = {
+            qty: Number(req.body.engineOilerQty),
+            price: Number(req.body.engineOilerPrice),
+            total: Number(req.body.engineOiler)
+        }
+        const engineWiper = {
+            qty: Number(req.body.engineWiperQty),
+            price: Number(req.body.engineWiperPrice),
+            total: Number(req.body.engineWiper)
+        }
+        const engineOthers = {
+            qty: Number(req.body.engineOthersQty),
+            price: Number(req.body.engineOthersPrice),
+            total: Number(req.body.engineOthers)
+        }
         const engineDept = {engineChiefEngineer, engineChiefMachinist, engineMachinist, engineForemen, engineOiler, engineWiper, engineOthers};
-        const sumDeckDept = (deckMaster+deckChiefOfficer+deckOfficer+deckRadioOperator+deckBoatswain+deckAbleBodied+deckOrdinarySeamen+deckChef+deckAssistantChef+deckOthers);
-        const sumEngineDept = (engineChiefEngineer+ engineChiefMachinist+ engineMachinist+ engineForemen+ engineOiler+ engineWiper+ engineOthers);
+        const sumDeckDept = (deckMaster.total+deckChiefOfficer.total+deckOfficer.total+deckRadioOperator.total+deckBoatswain.total+deckAbleBodied.total+deckOrdinarySeamen.total+deckChef.total+deckAssistantChef.total+deckOthers.total);
+        const sumEngineDept = (engineChiefEngineer.total+ engineChiefMachinist.total+ engineMachinist.total+ engineForemen.total+ engineOiler.total+ engineWiper.total+ engineOthers.total);
         const totalCrewCostMonth = sumDeckDept + sumEngineDept;
         const totalCrewCostYear = totalCrewCostMonth * 13;
         const crewCost = {
@@ -1763,11 +1956,19 @@ const updateTransportationByID = async (req, res, next) => {
         };
         if(transportation.TypeFreight.slug === 'barge' && transportation.TypeVoyage.slug === 'single_trip'){
             const barge = {
-                bargeLoadingMaster: req.body.bargeLoadingMaster,
-                bargeBoatswain: req.body.bargeBoatswain
+                bargeLoadingMaster: {
+                    qty: req.body.bargeLoadingMasterQty,
+                    price: req.body.bargeLoadingMasterPrice,
+                    total: req.body.bargeLoadingMaster,
+                },
+                bargeBoatswain: {
+                    qty: req.body.bargeBoatswainQty,
+                    price: req.body.bargeBoatswainPrice,
+                    total: req.body.bargeBoatswain,
+                }
             }
             crewCost.Barge = barge;
-            crewCost.totalCrewCostMonth += (Number(barge.bargeLoadingMaster) + Number(barge.bargeBoatswain));
+            crewCost.totalCrewCostMonth += (Number(barge.bargeLoadingMaster.total) + Number(barge.bargeBoatswain.total));
             crewCost.totalCrewCostYear = crewCost.totalCrewCostMonth * 13;
         }
         transportation.CrewCost = crewCost;
@@ -1878,9 +2079,10 @@ const updateTransportationByID = async (req, res, next) => {
             ratioRevenue
         }
         transportation.ProposedFreight = proposedFreight;
-        transportation.status = 0;
+        transportation.isNegotiation = req.body.isNegotiation;
+        transportation.status = transportationDB.status;
+        transportation.bunkerPriceSensitivityID = transportationDB.bunkerPriceSensitivityID
 
-        // console.log(transportation.BunkeringCalculation)
         await Transportation.updateOne(
             { _id: req.body.TransportationID},
             {
@@ -1903,9 +2105,21 @@ const duplicateTransportationByID = async (req, res, next) => {
         const TransportationID = req.params.transportationID;
         const transportation = await Transportation.findOne({_id: ObjectID(TransportationID)});
         transportation._id = ObjectID();
-        Transportation.insertMany(transportation, (error, result)=>{
-            res.redirect(`/project/${ProjectID}/transportation`);
-        });
+        
+        if(transportation.status == 1){
+            const bunkerPriceSensitivity = await BunkerPriceSensitivity.findOne({_id: transportation.bunkerPriceSensitivityID})
+            if(bunkerPriceSensitivity == null) throw 'Bunker not found!'
+            bunkerPriceSensitivity._id = ObjectID();
+            await BunkerPriceSensitivity.insertMany(bunkerPriceSensitivity)
+            transportation.bunkerPriceSensitivityID = bunkerPriceSensitivity._id
+        }
+
+        await Transportation.insertMany(transportation)
+
+        // await BunkerPriceSensitivity.inse (bunkerPriceSensitivity);
+        res.redirect(`/project/${ProjectID}/transportation`);
+        // Transportation.insertMany(transportation, (error, result)=>{
+        // });
     } catch (error) {
         res.render('error', {
             layout: 'layouts/main-layout',
@@ -1919,8 +2133,41 @@ const deleteTransportationByID = async (req, res, next) => {
     try {
         const ProjectID = req.params.projectID;
         const TransportationID = req.params.transportationID;
+        const transportation = await Transportation.findOne({_id: ObjectID(TransportationID)})
+        if(!transportation) throw 'Transportation not found!'
         await Transportation.deleteOne({_id : ObjectID(TransportationID)});
+        if(transportation.status == 1)
+        {
+            const bunkerPriceSensitivity = await BunkerPriceSensitivity.findOne({_id: ObjectID(transportation.bunkerPriceSensitivityID)})
+            if(!bunkerPriceSensitivity) throw 'Bunker not found!'
+            await BunkerPriceSensitivity.deleteOne({_id: ObjectID(bunkerPriceSensitivity._id)});
+        }
         res.redirect(`/project/${ProjectID}/transportation`);
+    } catch (error) {
+        res.render('error', {
+            layout: 'layouts/main-layout',
+            message: error,
+            status: 400
+        });
+    }
+}
+
+const transferTransportation = async (req, res, next) => {
+    try {
+        const {projectID, transportationID, transferProjectID} = req.body
+        const transportation = await Transportation.findOne({_id: ObjectID(transportationID)})
+        if(!transportation) throw 'Transportation not found!'
+        const anotherProject = await Project.findOne({_id: ObjectID(transferProjectID)})
+        if(!anotherProject) throw 'Route not found!'
+        await Transportation.updateOne(
+            { _id: transportationID},
+            {
+                $set: {
+                    ProjectID: transferProjectID
+                }
+            }
+        );
+        res.redirect(`/project/${projectID}/transportation`);
     } catch (error) {
         res.render('error', {
             layout: 'layouts/main-layout',
@@ -1935,15 +2182,22 @@ const getFormTransportationBunkerPriceSensitivity = async (req, res, next) => {
         const transportationID = req.params.transportationID;
         const projectID = req.params.projectID;
         const project = await Project.findOne({_id: ObjectID(projectID)});
+        const transportation = await Transportation.findOne({_id: ObjectID(transportationID)})
         if(!project){
             throw "project not found!";
+        }
+        if(!transportation) throw 'Transportation not found!'
+        let bunkerPriceSensitivity = null
+        if(transportation.status == 1){
+            bunkerPriceSensitivity = await BunkerPriceSensitivity.findOne({_id: ObjectID(transportation.bunkerPriceSensitivityID)})
         }
         res.render('Transportation/form-bunker-price-sensitivity', {
             layout: 'layouts/main-layout',
             title: 'Form Bunker Price Sensitivity',
             transportationID,
             projectID,
-            projectName: project.name
+            projectName: project.name,
+            bunkerPriceSensitivity
         })
     }
     catch(error){
@@ -2153,10 +2407,15 @@ const getSummaryTransportationBunkerPriceSensitivity = async (req, res, next) =>
         //     break
         // }
 
+        const POL = transportationBunkerPriceSensitivitys[0].Voyage.POL;
+        const POD = transportationBunkerPriceSensitivitys[0].Voyage.POD;
+
         res.render('Transportation/summary-transportation',{
             layout: 'layouts/main-layout',
             transportationBunkerPriceSensitivitys,
             project,
+            POL,
+            POD,
             title: 'Bunker Price Sensitivity'
         })
     } catch (error) {
@@ -2299,5 +2558,6 @@ module.exports = {
     createCostShipAge,
     createCustom,
     editTerminalByID,
-    updateTerminal
+    updateTerminal,
+    transferTransportation
 }

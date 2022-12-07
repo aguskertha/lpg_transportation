@@ -34,8 +34,14 @@
                                 else if(topic.slug == 'terminal'){
                                     link = `/project/${projects[i]._id}/terminal`;
                                 }
-                                else if(topicID == '61f52f76f7c18127007285a2'){
+                                else if(topic.slug == 'skidtruck'){
                                     link = `/project/${projects[i]._id}/skidtruck`;
+                                }
+                                else if(topic.slug == 'skidtruckv2'){
+                                    link = `/project/${projects[i]._id}/skidtruckv2`;
+                                }
+                                else{
+                                    link = `/topic`;
                                 }
                             %> 
                             <a class="btn btn-info btn-sm" href="<%= link %>" role="button"><i class="fa fa-list"></i> Info</a>
@@ -84,10 +90,9 @@
     </div>
 </div>
 
-<!-- Modal -->
 <div class="modal fade" id="modalFormCreate" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
+    <div class="modal-dialog modal-lg bg-light rounded">
+        <div class="modal-content" align="center">
             <!-- Modal Header -->
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel">New Project</h4>
@@ -96,22 +101,23 @@
             <!-- Modal Body -->
             <div class="modal-body">
                 <p class="statusMsg"></p>
-                <form role="form">
+                <form action="/project" method="post">
                     <div class="form-group">
+                        <input type="hidden" name="topicID" id="" value="<%= topicID %>">
                         <label for="inputName">Name</label>
                         <input type="text" class="form-control" id="inputNameCreate" name="projectName" placeholder="Enter your name" required>
                     </div>
+                    <input type="submit" class="btn btn-primary">
                 </form>
-            </div>
             
+            </div>
             <!-- Modal Footer -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary submitBtn" onclick="submitContactFormCreate()">SUBMIT</button>
             </div>
         </div>
     </div>
 </div>
+
 
 <script>
 
@@ -159,20 +165,21 @@
             window.location = `/topic/${topicID}`; 
         }
     }
-    function submitContactFormCreate(){
-        var name = $('#inputNameCreate').val();
-        var topicID = $('#topicID').val();
-        if(name.trim() == '' ){
-            alert('Please enter your name.');
-            $('#inputNameCreate').focus();
-            return false;
-        }else{
-            $.ajax({
-                type:'POST',
-                url:'/project',
-                data:'projectName='+name+'&topicID='+topicID,
-            });
-            window.location = `/topic/${topicID}`; 
-        }
-    }
+    // function submitContactFormCreate(){
+    //     var name = $('#inputNameCreate').val();
+    //     var topicID = $('#topicID').val();
+    //     if(name.trim() == '' ){
+    //         alert('Please enter your name.');
+    //         $('#inputNameCreate').focus();
+    //         return false;
+    //     }else{
+    //         $.ajax({
+    //             type:'POST',
+    //             url:'/project',
+    //             data:'projectName='+name+'&topicID='+topicID,
+    //         });
+    //         // window.location = `/topic/${topicID}`; 
+    //         // window.location.reload()
+    //     }
+    // }
 </script>

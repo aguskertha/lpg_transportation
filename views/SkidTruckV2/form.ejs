@@ -1,6 +1,6 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/project/<%= ProjectID %>/skidtruck"><%= projectName %></a></li>
+        <li class="breadcrumb-item"><a href="/project/<%= ProjectID %>/skidtruckv2"><%= projectName %></a></li>
         <li class="breadcrumb-item active" aria-current="page">Form</li>
     </ol>
 </nav>
@@ -20,11 +20,7 @@
 </div>
 <% if (typeof typeCase != 'undefined'){ %>
     <% if (typeCase.slug === 'case-1') { %>
-        <% include ./../SkidTruck/form-case-1 %> 
-    <% } else if (typeCase.slug === 'case-2') {%>
-        <% include ./../SkidTruck/form-case-2 %> 
-    <% } else {%>
-        <% include ./../SkidTruck/form-case-3 %> 
+        <% include ./../SkidTruckV2/form-case-1 %> 
     <% } %> 
 <% } %> 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -40,7 +36,7 @@
         });
         function doit(){
             if(type_case_slug !== '' && ProjectID !== ''){
-                window.location = `/project/${ProjectID}/skidtruck/form/${type_case_slug}`; 
+                window.location = `/project/${ProjectID}/skidtruckv2/form/${type_case_slug}`; 
             }
             return false;
         }
