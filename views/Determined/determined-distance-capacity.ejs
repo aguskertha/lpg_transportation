@@ -1,0 +1,167 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">Determined Distance and Capacity</li>
+    </ol>
+</nav>
+<div class="container-fluid mt-1">
+<br>
+<br>
+<% 
+const rupiah = (number, min, max)=>{
+    return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        minimumFractionDigits: min,
+        maximumFractionDigits: max,
+    }).format(number);
+}
+
+const usd = (number, min, max)=>{
+    return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: min,
+        maximumFractionDigits: max,
+    }).format(number);
+}
+
+%> 
+
+<h2 class="mb-3" align="center">Summary LPG <a class="text-decoration-none text-warning"><%= paramCapacity %> MT</a></h2>
+
+<div>
+    <select id="mySelect" class="form-select" aria-label="Default select example">
+        <option selected>Select an option</option>
+        <% for( let i = LOWER_CAPACITY ; i <= UPPER_CAPACITY; i+=INTERVAL_CAPACITY ) { %>
+            <option value="/determine-distance-capacity?capacity=<%= i %>"><%= i %></option>
+        <% } %>
+    </select>
+
+</div>
+<hr>
+<button onclick="ExportToExcel('Summary LPG <%= paramCapacity %> MT','.xlsx')" class="btn btn-success"><i class="fa fa-file-excel-o" aria-hidden="true"></i></button>
+<br>
+<br>
+<table id="table_data" width="100%" style="font-size:11px;" class="table table-condensed table-hover table-bordered table-hideable">
+    <thead>
+        <tr>
+            <th rowspan="2" class="align-middle text-center">Distance (NM)
+            </th>
+            <th rowspan="2" class="align-middle text-center">Type of Freight
+            </th>
+            <th rowspan="2" class="align-middle text-center">Type of Voyage
+            </th>
+            <th colspan="2" class="align-middle text-center">Calculated Real Freight
+            </th>
+            <th colspan="2" class="align-middle text-center">Proposed Freight (Adjusted to 20% Profit Margin)	
+            </th>
+            <th colspan="2" class="align-middle text-center">Comparison Freight (Adjusted to 20% Profit Margin)
+            </th>
+            <th>Total Operating Cost
+            </th>
+        </tr>
+        <tr>
+            <th class="align-middle text-center">USD/kg/nm
+            </th>
+            <th class="align-middle text-center">IDR/kg/nm
+            </th>
+            <th class="align-middle text-center">USD/kg/nm
+            </th>
+            <th class="align-middle text-center">IDR/kg/nm
+            </th>
+            <th class="align-middle text-center">USD/MT
+            </th>
+            <th class="align-middle text-center">IDR/MT
+            </th>
+            <th class="align-middle text-center">USD
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <% for( let i = 0; i < transportations.length; i++ ) { %>
+        <% const transportation = transportations[i]; %> 
+        <tr style="white-space: nowrap;" class="align-middle text-center">
+            <td><%= transportation.distance %></td>
+            <td>Ship</td>
+            <td>Single Trip</td>
+            <td><%= usd(transportation.unitCostMassCargo_USD_KG_NM, 9, 9) %></td>
+            <td><%= rupiah(transportation.unitCostMassCargo_IDR_KG_NM, 5, 5) %></td>
+            <td><%= usd(transportation.proposedFreight_USD_KG_NM, 9, 9) %></td>
+            <td><%= rupiah(transportation.proposedFreight_IDR_KG_NM, 5, 5) %></td>
+            <td><%= usd(transportation.proposedFreight_USD_MT, 3, 3) %></td>
+            <td><%= rupiah(transportation.proposedFreight_IDR_MT, 2, 2) %></td>
+            <td><%= usd(transportation.totalCostAfterTax, 2, 2) %></td>
+        </tr>
+        <% } %>
+    </tbody>
+</table>
+</div>
+
+<script>
+    const selectElement = document.getElementById('mySelect');
+    selectElement.addEventListener('change', function() {
+      const selectedOption = this.value;
+      if (selectedOption !== '') {
+        window.location.href = selectedOption;
+      }
+    });
+</script>
+
+<script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
+
+<script>
+    
+    
+function ExportToExcel(file_name, type, fn, dl) {
+    var name = `${file_name}`
+    var elt = document.getElementById('table_data');
+    var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
+    return dl ?
+        XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }):
+        XLSX.writeFile(wb, fn || (name + (type || 'xlsx')));
+}
+</script>
+<script>
+$(function() {
+  // on init
+  $(".table-hideable .hide-col").each(HideColumnIndex);
+
+  // on click
+  $('.hide-column').click(HideColumnIndex)
+
+  function HideColumnIndex() {
+    var $el = $(this);
+    var $cell = $el.closest('th,td')
+    var $table = $cell.closest('table')
+
+    // get cell location - https://stackoverflow.com/a/4999018/1366033
+    var colIndex = $cell[0].cellIndex + 1;
+
+    // find and hide col index
+    $table.find("tbody tr, thead tr")
+      .children(":nth-child(" + colIndex + ")")
+      .addClass('hide-col');
+      
+    // show restore footer
+    $table.find(".footer-restore-columns").show()
+  }
+
+  // restore columns footer
+  $(".restore-columns").click(function(e) {
+    var $table = $(this).closest('table')
+    $table.find(".footer-restore-columns").hide()
+    $table.find("th, td")
+      .removeClass('hide-col');
+
+  })
+
+  $('[data-toggle="tooltip"]').tooltip({
+    trigger: 'hover'
+  })
+
+})
+</script>
