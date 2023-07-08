@@ -58,6 +58,9 @@ app.use('/', routers)
 // app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
+app.use('/.netlify/functions', routers)
+app.use('/.netlify/functions/users', usersRouter)
+
 // catch 404 and forward to error handler
 // app.use(function(req, res, next) {
 //   next(createError(404));
