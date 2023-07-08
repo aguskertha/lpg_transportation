@@ -4,8 +4,8 @@ services:
     container_name: lpg-app
     restart: always
     build: .
-    links:
-      - lpg-mongo
+    # links:
+    #   - lpg-mongo
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -16,19 +16,20 @@ services:
       # - DB_SERVICE=lpg-mongo
       # - DB_PORT=385
       # - DB_NAME=lpgDB
-      - MONGO_URI=mongodb://lpg-mongo:385/lpgDB
+      # - MONGO_URI=mongodb://lpg-mongo:385/lpgDB
+      - MONGO_URI=mongodb+srv://lpgroute:lpgroute123@clusterlpg.ikk8g.mongodb.net/lpgDB?retryWrites=true&w=majority
       # - NODE_ENV=dev
-  lpg-mongo:
-    image: mongo:latest # use the latest image.
-    container_name: lpg-mongo
-    restart: always
-    environment: # set required env variables to access mongo
-      MONGO_INITDB_DATABASE: lpgDB
-    command: mongod --port 385
-    ports:
-      - 385:385
-    volumes: # optional to preserve database after container is deleted.
-      - ./data/db:/data/db
+  # lpg-mongo:
+  #   image: mongo:latest # use the latest image.
+  #   container_name: lpg-mongo
+  #   restart: always
+  #   environment: # set required env variables to access mongo
+  #     MONGO_INITDB_DATABASE: lpgDB
+  #   command: mongod --port 385
+  #   ports:
+  #     - 385:385
+  #   volumes: # optional to preserve database after container is deleted.
+  #     - ./data/db:/data/db
 # volumes:
 #   mongo-volume:
   
