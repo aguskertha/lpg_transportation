@@ -1,0 +1,108 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">Determined Distance and Capacity</li>
+    </ol>
+</nav>
+<div class="container-fluid mt-1">
+<br>
+<br>
+
+<h2 class="mb-3" align="center">Graph All Summary</h2>
+<hr>
+
+<div>
+    <br>
+    <div>
+        <canvas id="chart"></canvas>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            const ctx = document.getElementById('chart').getContext('2d');
+        
+            // Chart data
+            const chartData = {
+                labels: <%- JSON.stringify(distances) %>,
+                datasets: <%- JSON.stringify(datasets) %>
+            };
+        
+            // Chart options
+            const chartOptions = {
+              responsive: true,
+              scales: {
+                y: {
+                  beginAtZero: true
+                }
+              }
+            };
+        
+            // Create the chart
+            new Chart(ctx, {
+              type: 'line',
+              data: chartData,
+              options: chartOptions
+            });
+          </script>
+    </div>
+</div>
+
+</div>
+
+<script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+<script>
+        // const arrayDataInvest = $('#arrayDataInvest').val();
+        // const arrayDataInvestJSON = $.parseJSON(arrayDataInvest);
+        // const arrayLabelInvest = $('#arrayLabelInvest').val();
+        // const arrayLabelInvestJSON = $.parseJSON(arrayLabelInvest);
+        // const data = {
+        //   labels: ['haha', 'hihi'],
+        //   datasets: [{
+        //     label: 'Unreturned Investment / Year',
+        //     borderColor: 'rgb(0, 0, 255)',
+        //     borderWidth: 5,
+        //     data: [1,2],
+        //   }]
+        // };
+
+        // const chartData = {
+        //     labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+        //     datasets: [
+        //         {
+        //         label: 'Dataset 1',
+        //         data: [10, 20, 30, 40, 50, 60],
+        //         borderColor: 'red',
+        //         fill: false
+        //         },
+        //         {
+        //         label: 'Dataset 2',
+        //         data: [15, 25, 35, 45, 55, 65],
+        //         borderColor: 'blue',
+        //         fill: false
+        //         }
+        //     ]
+        // };
+
+        // // Chart options
+        // const chartOptions = {
+        //     responsive: true,
+        //     scales: {
+        //         y: {
+        //         beginAtZero: true
+        //         }
+        //     }
+        // };
+      
+        // const config = {
+        //     type: 'line',
+        //     data: chartData,
+        //     options: chartOptions
+        // };
+      
+        // const myChart = new Chart(
+        //   document.getElementById('myChart'),
+        //   config
+        // );
+    // });
+</script>

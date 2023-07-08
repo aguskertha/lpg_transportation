@@ -56,7 +56,7 @@ const initialVariable = (increment, current) => {
     return value
 }
 
-const generateDistanceCapacity = async (capacity, distance) =>
+const generateDistanceCapacity = async (capacity, distance, flag=0) =>
 {
     const CURRENT_CAPACITY = capacity
     const CURRENT_DISTANCE = distance
@@ -544,6 +544,16 @@ const generateDistanceCapacity = async (capacity, distance) =>
     }
     transportation.ProposedFreight = proposedFreight;
 
+    if(flag != 0)
+    {
+        let newTransportation = {
+            ProposedFreight : {
+                proposedFreight_IDR_KG_NM : transportation.ProposedFreight.proposedFreight_IDR_KG_NM
+            }
+        }
+        return newTransportation;
+    }
+
     return transportation
 }
 
@@ -589,6 +599,48 @@ const renderDistanceCapacity = async (req, res, next) => {
     }
 }
 
+const renderAllGraph = async (req, res, next) => {
+    try {
+        let datasets = []
+        for (let i = LOWER_CAPACITY; i <= UPPER_CAPACITY; i+=INTERVAL_CAPACITY) {
+            console.log("Do... "+i)
+            let dataset = {
+                label : i
+            }
+            let datas = []
+            for (let j = LOWER_DISTANCE; j <= UPPER_DISTANCE; j+=INTERVAL_DISTANCE) {
+                let transportation = await generateDistanceCapacity(i, j, 1)
+                datas.push(transportation.ProposedFreight.proposedFreight_IDR_KG_NM)
+            }
+            dataset.data = datas
+            datasets.push(dataset)
+            console.log("PASSED!")
+        }
+        
+        res.render('Determined/graph-all-summary', {
+            layout: 'layouts/main-layout',
+            datasets,
+            distances: labelGenerator()
+        })
+    } catch (error) {
+        res.render('error', {
+            layout: 'layouts/main-layout',
+            message: error,
+            status: 400
+        });
+    }
+}
+
+const labelGenerator = () => {
+    let distances = []
+    for (let i = LOWER_DISTANCE; i <= UPPER_DISTANCE; i+=INTERVAL_DISTANCE) {
+        distances.push(i)
+    }
+    return distances
+}
+
+
 module.exports = {
-    renderDistanceCapacity
+    renderDistanceCapacity,
+    renderAllGraph
 }
