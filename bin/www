@@ -7,7 +7,6 @@
 var app = require('../app');
 var debug = require('debug')('lpg-transportation:server');
 var http = require('http');
-var serverless = require('serverless-http')
 require('dotenv').config();
 require('./../src/utils/db');
 
@@ -31,8 +30,6 @@ var server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
-
-module.exports.handler = serverless(app)
 
 /**
  * Normalize a port into a number, string, or false.
