@@ -1,0 +1,154 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">Parameter Distance and Capacity</li>
+    </ol>
+</nav>
+<div class="container-fluid mt-1">
+<br>
+<br>
+
+<h2 class="mb-3" align="center">Parameter Distance and Capacity</h2>
+<hr>
+
+    <div>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <h3>Increment FOC</h3>
+                    <form method="post" action="/determine-distance-capacity/parameter">
+                        <div id="dynamicRanges" class="d-flex flex-wrap"></div>
+                        <!-- <button class="btn btn-info mt-3 btn-sm" id="addRangeBtn">Add Range</button> -->
+                        <a role="button" class="btn btn-info mt-3 btn-sm" id="addRangeBtn">Add Range</a>
+                        <hr>
+                        <div class="position-relative">
+                            <button type="submit" class="btn btn-primary position-absolute top-0 end-0">Submit</button>
+                            <br>
+                            <br>
+                            <hr>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+<script>
+// Define the range values
+const minValue = 300;
+const maxValue = 2600;
+const rangeSize = 500;
+
+// Function to create a new range input
+function createRangeInput(startValue) {
+    const rangeInput = document.createElement('div');
+    rangeInput.className = 'form-group m-2';
+    rangeInput.innerHTML = `
+        <input type="number" name="lower" step="any" min="0" class="form-control" placeholder="From" value="${startValue}" readonly>
+        <input type="number" name="upper" step="any" min="0" class="form-control" placeholder="To" required>
+        <input type="number" name="foc" step="any" min="0" class="form-control" placeholder="FOC" required>
+        <a role="button" class="btn btn-danger btn-sm mt-1 removeRangeBtn">Remove</a>
+    `;
+    return rangeInput;
+}
+
+// Function to handle adding a new range
+function addRange() {
+    const dynamicRangesContainer = document.getElementById('dynamicRanges');
+    const rangeInputs = dynamicRangesContainer.getElementsByClassName('form-group');
+    const lastRangeInput = rangeInputs[rangeInputs.length - 1];
+
+    let startValue = minValue;
+    if (lastRangeInput) {
+        let lastRangeToInput = lastRangeInput.querySelector('input[type="number"][placeholder="To"]');
+        let FOCInput = lastRangeInput.querySelector('input[type="number"][placeholder="FOC"]');
+        if(lastRangeToInput.value == 0)
+        {
+            return alert("Field To required!")
+        }
+        if(FOCInput.value == 0)
+        {
+            return alert("Field FOC required!")
+        }
+        startValue = Number(lastRangeToInput.value) + 10;
+    }
+    else
+    {
+        initDatas()
+    }
+
+    if (startValue <= maxValue) {
+        if(lastRangeInput)
+        {
+            const rangeInput = createRangeInput(startValue);
+            dynamicRangesContainer.appendChild(rangeInput);
+        }
+    }
+    else
+    {
+        return alert("Field To Max is 2600!")
+    }
+}
+
+const createObj = (lower, upper, value) => {
+    return {
+        lower,
+        upper,
+        value
+    }
+}
+
+function initDatas() {
+
+    let incrementShipCapacity = 
+    [
+        createObj(300, 640, 5.7),
+        createObj(650, 990, 9.8),
+        createObj(1000, 1190, 12),
+        createObj(1200, 1590, 13.5),
+        createObj(1600, 2090, 32),
+        createObj(2100, 2600, 40),
+    ]
+
+    const dynamicRangesContainer = document.getElementById('dynamicRanges');
+
+    for (let i = 0; i < incrementShipCapacity.length; i++) {
+        const element = incrementShipCapacity[i];
+        
+        const rangeInput = document.createElement('div');
+        rangeInput.className = 'form-group m-2';
+        rangeInput.innerHTML = `
+            <input type="number" name="lower" step="any" min="0" class="form-control" placeholder="From" value="${element.lower}" readonly>
+            <input type="number" name="upper" step="any" min="0" class="form-control" placeholder="To" value="${element.upper}" required>
+            <input type="number" name="foc" step="any" min="0" class="form-control" placeholder="FOC" value="${element.value}" required>
+            <a role="button" class="btn btn-danger btn-sm mt-1 removeRangeBtn">Remove</a>
+        `;
+        dynamicRangesContainer.appendChild(rangeInput);
+    }
+
+}
+
+// Function to handle removing a range
+function removeRange(event) {
+    const rangeInput = event.target.parentNode;
+    rangeInput.parentNode.removeChild(rangeInput);
+}
+
+// Add event listener for the add range button
+const addRangeBtn = document.getElementById('addRangeBtn');
+addRangeBtn.addEventListener('click', addRange);
+
+// Add event listener for dynamically created remove range buttons
+document.addEventListener('click', function (event) {
+    if (event.target && event.target.className === 'btn btn-danger btn-sm mt-1 removeRangeBtn') {
+        removeRange(event);
+    }
+});
+
+</script>

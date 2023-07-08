@@ -20,15 +20,15 @@ const createObj = (lower, upper, value) => {
     }
 }
 
-const incrementShipCapacity = 
-[
-    createObj(300, 640, 5.7),
-    createObj(650, 990, 9.8),
-    createObj(1000, 1190, 12),
-    createObj(1200, 1590, 13.5),
-    createObj(1600, 2090, 32),
-    createObj(2100, 2600, 40),
-]
+// let incrementShipCapacity = 
+// [
+//     createObj(300, 640, 5.7),
+//     createObj(650, 990, 9.8),
+//     createObj(1000, 1190, 12),
+//     createObj(1200, 1590, 13.5),
+//     createObj(1600, 2090, 32),
+//     createObj(2100, 2600, 40),
+// ]
 
 const incrementCrew = 
 [
@@ -56,7 +56,7 @@ const initialVariable = (increment, current) => {
     return value
 }
 
-const generateDistanceCapacity = async (capacity, distance, flag=0) =>
+const generateDistanceCapacity = async (capacity, distance, incrementShipCapacity, flag=0) =>
 {
     const CURRENT_CAPACITY = capacity
     const CURRENT_DISTANCE = distance
@@ -557,8 +557,46 @@ const generateDistanceCapacity = async (capacity, distance, flag=0) =>
     return transportation
 }
 
+const renderParameterDistanceCapacity = async (req, res, next) => {
+    try {
+        res.render('Determined/parameter-distance-capacity', {
+            layout: 'layouts/main-layout'
+        })
+
+    } catch (error) {
+        res.render('error', {
+            layout: 'layouts/main-layout',
+            message: error,
+            status: 400
+        });
+    }
+}
+
 const renderDistanceCapacity = async (req, res, next) => {
     try {
+        let queryString = ''
+        let incrementShipCapacitys = []
+        if(typeof req.query.upper != 'undefined' && typeof req.query.lower != 'undefined' && typeof req.query.foc != 'undefined')
+        {
+            const uppers = JSON.parse(decodeURIComponent(req.query.upper))
+            const lowers = JSON.parse(decodeURIComponent(req.query.lower))
+            const focs = JSON.parse(decodeURIComponent(req.query.foc))
+
+            const encodedUppers = encodeURIComponent(JSON.stringify(uppers));
+            const encodedLowers = encodeURIComponent(JSON.stringify(lowers));
+            const encodedFOCs = encodeURIComponent(JSON.stringify(focs));
+
+            queryString = `upper=${encodedUppers}&lower=${encodedLowers}&foc=${encodedFOCs}`
+
+            for (let i = 0; i < uppers.length; i++) {
+                const upper = uppers[i];
+                const lower = lowers[i];
+                const foc = focs[i];
+                
+                incrementShipCapacitys.push(createObj(Number(lower), Number(upper), Number(foc)))
+            }
+        }
+
         let paramCapacity = LOWER_CAPACITY
         if(typeof req.query.capacity != 'undefined')
         {
@@ -573,7 +611,7 @@ const renderDistanceCapacity = async (req, res, next) => {
         }
         let datas = []
         for (let i = LOWER_DISTANCE; i <= UPPER_DISTANCE; i+=INTERVAL_DISTANCE) {
-            let transportation = await generateDistanceCapacity(CURRENT_CAPACITY, i)
+            let transportation = await generateDistanceCapacity(CURRENT_CAPACITY, i, incrementShipCapacitys)
             transportations.push({
                 distance : i,
                 unitCostMassCargo_USD_KG_NM : transportation.RealFreightRate.unitCostMassCargo_USD_KG_NM,
@@ -597,7 +635,8 @@ const renderDistanceCapacity = async (req, res, next) => {
             paramCapacity,
             transportations,
             datasets,
-            distances : labelGenerator()
+            distances : labelGenerator(),
+            queryString
         })
 
     } catch (error) {
@@ -611,6 +650,30 @@ const renderDistanceCapacity = async (req, res, next) => {
 
 const renderAllGraph = async (req, res, next) => {
     try {
+
+        let queryString = ''
+        let incrementShipCapacitys = []
+        if(typeof req.query.upper != 'undefined' && typeof req.query.lower != 'undefined' && typeof req.query.foc != 'undefined')
+        {
+            const uppers = JSON.parse(decodeURIComponent(req.query.upper))
+            const lowers = JSON.parse(decodeURIComponent(req.query.lower))
+            const focs = JSON.parse(decodeURIComponent(req.query.foc))
+
+            const encodedUppers = encodeURIComponent(JSON.stringify(uppers));
+            const encodedLowers = encodeURIComponent(JSON.stringify(lowers));
+            const encodedFOCs = encodeURIComponent(JSON.stringify(focs));
+
+            queryString = `upper=${encodedUppers}&lower=${encodedLowers}&foc=${encodedFOCs}`
+
+            for (let i = 0; i < uppers.length; i++) {
+                const upper = uppers[i];
+                const lower = lowers[i];
+                const foc = focs[i];
+                
+                incrementShipCapacitys.push(createObj(Number(lower), Number(upper), Number(foc)))
+            }
+        }
+
         let datasets = []
         for (let i = LOWER_CAPACITY; i <= UPPER_CAPACITY; i+=INTERVAL_CAPACITY) {
             console.log("Do... "+i)
@@ -619,7 +682,7 @@ const renderAllGraph = async (req, res, next) => {
             }
             let datas = []
             for (let j = LOWER_DISTANCE; j <= UPPER_DISTANCE; j+=INTERVAL_DISTANCE) {
-                let transportation = await generateDistanceCapacity(i, j, 1)
+                let transportation = await generateDistanceCapacity(i, j, incrementShipCapacitys, 1)
                 datas.push(transportation.ProposedFreight.proposedFreight_IDR_KG_NM)
             }
             dataset.data = datas
@@ -649,8 +712,32 @@ const labelGenerator = () => {
     return distances
 }
 
+const createParameterCapacityDistance = async (req, res, next) => {
+    try {
+        if(typeof req.body =='undefined') throw "Bad Request!"
+        
+        const uppers = req.body.upper
+        const lowers = req.body.lower
+        const focs = req.body.foc
+
+        const encodedUppers = encodeURIComponent(JSON.stringify(uppers));
+        const encodedLowers = encodeURIComponent(JSON.stringify(lowers));
+        const encodedFOCs = encodeURIComponent(JSON.stringify(focs));
+
+        res.redirect(`/determine-distance-capacity?capacity=300&upper=${encodedUppers}&lower=${encodedLowers}&foc=${encodedFOCs}`)
+    } catch (error) {
+        res.render('error', {
+            layout: 'layouts/main-layout',
+            message: error,
+            status: 400
+        });
+    }
+}
+
 
 module.exports = {
     renderDistanceCapacity,
-    renderAllGraph
+    renderAllGraph,
+    renderParameterDistanceCapacity,
+    createParameterCapacityDistance
 }

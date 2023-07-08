@@ -33,7 +33,7 @@ const usd = (number, min, max)=>{
     <select id="mySelect" class="form-select" aria-label="Default select example">
         <option selected>Select an option</option>
         <% for( let i = LOWER_CAPACITY ; i <= UPPER_CAPACITY; i+=INTERVAL_CAPACITY ) { %>
-            <option value="/determine-distance-capacity?capacity=<%= i %>"><%= i %></option>
+            <option value="/determine-distance-capacity?capacity=<%= i %>&<%- queryString %>"><%= i %></option>
         <% } %>
     </select>
 
@@ -81,7 +81,7 @@ const usd = (number, min, max)=>{
 </div>
 <hr>
 <div class="position-relative">
-    <a href="/determine-distance-capacity/all-graph" class="btn btn-primary position-absolute top-0 end-0">Graph All Summary</a>
+    <a href="/determine-distance-capacity/all-graph?<%- queryString %>" class="btn btn-primary position-absolute top-0 end-0">Graph All Summary</a>
 </div>
 <button onclick="ExportToExcel('Summary LPG <%= paramCapacity %> MT','.xlsx')" class="btn btn-success"><i class="fa fa-file-excel-o" aria-hidden="true"></i></button>
 <br>
