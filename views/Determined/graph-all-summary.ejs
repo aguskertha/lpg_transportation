@@ -26,12 +26,22 @@
         
             // Chart options
             const chartOptions = {
-              responsive: true,
-              scales: {
-                y: {
-                  beginAtZero: true
+                responsive: true,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Jarak (nm)'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Tarif (Rp)'
+                        },
+                        beginAtZero: true
+                    }
                 }
-              }
             };
         
             // Create the chart

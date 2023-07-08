@@ -567,6 +567,11 @@ const renderDistanceCapacity = async (req, res, next) => {
         const CURRENT_CAPACITY = paramCapacity
 
         let transportations = [];
+        let datasets = []
+        let dataset = {
+            label : CURRENT_CAPACITY
+        }
+        let datas = []
         for (let i = LOWER_DISTANCE; i <= UPPER_DISTANCE; i+=INTERVAL_DISTANCE) {
             let transportation = await generateDistanceCapacity(CURRENT_CAPACITY, i)
             transportations.push({
@@ -579,7 +584,10 @@ const renderDistanceCapacity = async (req, res, next) => {
                 proposedFreight_IDR_MT : transportation.ProposedFreight.proposedFreight_IDR_MT,
                 totalCostAfterTax : transportation.TotalCost.totalCostAfterTax
             })
+            datas.push(transportation.ProposedFreight.proposedFreight_IDR_KG_NM)
         }
+        dataset.data = datas
+        datasets.push(dataset)
 
         res.render('Determined/determined-distance-capacity', {
             layout: 'layouts/main-layout',
@@ -587,7 +595,9 @@ const renderDistanceCapacity = async (req, res, next) => {
             LOWER_CAPACITY,
             INTERVAL_CAPACITY,
             paramCapacity,
-            transportations
+            transportations,
+            datasets,
+            distances : labelGenerator()
         })
 
     } catch (error) {
