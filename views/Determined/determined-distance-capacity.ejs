@@ -9,8 +9,8 @@
 <% 
 const rupiah = (number, min, max)=>{
     return new Intl.NumberFormat("id-ID", {
-        style: "currency",
-        currency: "IDR",
+        // style: "currency",
+        // currency: "IDR",
         minimumFractionDigits: min,
         maximumFractionDigits: max,
     }).format(number);
@@ -18,8 +18,8 @@ const rupiah = (number, min, max)=>{
 
 const usd = (number, min, max)=>{
     return new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
+        // style: "currency",
+        // currency: "USD",
         minimumFractionDigits: min,
         maximumFractionDigits: max,
     }).format(number);
