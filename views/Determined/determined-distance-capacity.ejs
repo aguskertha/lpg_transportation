@@ -81,11 +81,66 @@ const usd = (number, min, max)=>{
 </div>
 <hr>
 <div class="position-relative">
-    <a href="/determine-distance-capacity/all-graph?<%- queryString %>" class="btn btn-primary position-absolute top-0 end-0">Graph All Summary</a>
+    <button type="button" class="btn btn-primary position-absolute top-0 end-0" data-bs-toggle="modal" data-bs-target="#myModal">
+        Combine Graph
+    </button>
 </div>
 <button onclick="ExportToExcel('Summary LPG <%= paramCapacity %> MT','.xlsx')" class="btn btn-success"><i class="fa fa-file-excel-o" aria-hidden="true"></i></button>
 <br>
 <br>
+<!-- Dialog -->
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Conbine Graph</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <form id="myForm" method="post" action="/determine-distance-capacity/all-graph?<%- queryString %>">
+        <div class="mb-3">
+            <label for="startinput" class="form-label">Start</label>
+            <input type="number" step="1" class="form-control" id="startInput" value="<%= LOWER_CAPACITY %>" name="start" required>
+        </div>
+        <div class="mb-3">
+            <label for="endInput" class="form-label">End</label>
+            <input type="number" step="1" class="form-control" id="endInput" value="<%= UPPER_CAPACITY %>" name="end" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    </div>
+</div>
+</div>
+<script>
+    // Validasi saat form disubmit
+    document.getElementById("myForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Mencegah form dari pengiriman default
+
+        const JS_UPPER_CAPACITY = parseInt(<%- UPPER_CAPACITY %>)
+        const JS_LOWER_CAPACITY = parseInt(<%- LOWER_CAPACITY %>)
+        const JS_INTERVAL_CAPACITY = parseInt(<%- INTERVAL_CAPACITY %>)
+
+        // Ambil nilai Start dan End dari input
+        var startValue = parseInt(document.getElementById("startInput").value);
+        var endValue = parseInt(document.getElementById("endInput").value);
+
+        // Validasi nilai Start dan End
+        if(startValue < JS_LOWER_CAPACITY || endValue > JS_UPPER_CAPACITY){
+            alert("Invalid input! Start must be greater than or equal to "+JS_LOWER_CAPACITY+", End must be greater than "+JS_UPPER_CAPACITY);
+        } else {
+            if(startValue % JS_INTERVAL_CAPACITY != 0 || endValue % JS_INTERVAL_CAPACITY != 0)
+            {
+                alert("Invalid input! Both must be multiples of "+JS_INTERVAL_CAPACITY+".");
+            }
+            else
+            {
+                // Lanjutkan pengiriman form jika validasi berhasil
+                this.submit();
+            }
+        }
+    });
+</script>
 <table id="table_data" width="100%" style="font-size:11px;" class="table table-condensed table-hover table-bordered table-hideable">
     <thead>
         <tr>

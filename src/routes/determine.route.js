@@ -6,6 +6,6 @@ const { renderDistanceCapacity, renderParameterDistanceCapacity, renderAllGraph,
 router.post('/parameter', createParameterCapacityDistance);
 router.get('/', renderDistanceCapacity);
 router.get('/parameter', renderParameterDistanceCapacity);
-router.get('/all-graph', renderAllGraph);
+router.post('/all-graph', renderAllGraph);
 
 module.exports = router;

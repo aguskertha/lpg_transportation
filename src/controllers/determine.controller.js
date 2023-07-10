@@ -1,7 +1,7 @@
 const UnitConversion = require('./../models/unit_conversion.model');
 
-const UPPER_CAPACITY = 2600
-const LOWER_CAPACITY = 300
+// const UPPER_CAPACITY = 2600
+// const LOWER_CAPACITY = 300
 const INTERVAL_CAPACITY = 10
 
 const UPPER_DISTANCE = 720
@@ -576,17 +576,27 @@ const renderDistanceCapacity = async (req, res, next) => {
     try {
         let queryString = ''
         let incrementShipCapacitys = []
-        if(typeof req.query.upper != 'undefined' && typeof req.query.lower != 'undefined' && typeof req.query.foc != 'undefined')
+        let UPPER_CAPACITY = 0
+        let LOWER_CAPACITY = 0
+        if(
+            typeof req.query.upper != 'undefined' && 
+            typeof req.query.lower != 'undefined' && 
+            typeof req.query.foc != 'undefined' &&
+            typeof req.query.start != 'undefined' &&
+            typeof req.query.end != 'undefined'
+            )
         {
             const uppers = JSON.parse(decodeURIComponent(req.query.upper))
             const lowers = JSON.parse(decodeURIComponent(req.query.lower))
             const focs = JSON.parse(decodeURIComponent(req.query.foc))
+            const start = req.query.start
+            const end = req.query.end
 
             const encodedUppers = encodeURIComponent(JSON.stringify(uppers));
             const encodedLowers = encodeURIComponent(JSON.stringify(lowers));
             const encodedFOCs = encodeURIComponent(JSON.stringify(focs));
 
-            queryString = `upper=${encodedUppers}&lower=${encodedLowers}&foc=${encodedFOCs}`
+            queryString = `start=${start}&end=${end}&upper=${encodedUppers}&lower=${encodedLowers}&foc=${encodedFOCs}`
 
             for (let i = 0; i < uppers.length; i++) {
                 const upper = uppers[i];
@@ -595,6 +605,9 @@ const renderDistanceCapacity = async (req, res, next) => {
                 
                 incrementShipCapacitys.push(createObj(Number(lower), Number(upper), Number(foc)))
             }
+
+            UPPER_CAPACITY = parseInt(end)
+            LOWER_CAPACITY = parseInt(start)
         }
 
         let paramCapacity = LOWER_CAPACITY
@@ -626,7 +639,6 @@ const renderDistanceCapacity = async (req, res, next) => {
         }
         dataset.data = datas
         datasets.push(dataset)
-
         res.render('Determined/determined-distance-capacity', {
             layout: 'layouts/main-layout',
             UPPER_CAPACITY,
@@ -652,8 +664,21 @@ const renderAllGraph = async (req, res, next) => {
     try {
 
         let queryString = ''
+        let UPPER_CAPACITY = 0
+        let LOWER_CAPACITY = 0
         let incrementShipCapacitys = []
-        if(typeof req.query.upper != 'undefined' && typeof req.query.lower != 'undefined' && typeof req.query.foc != 'undefined')
+
+        if(typeof req.body.start == 'undefined' || typeof req.body.end == 'undefined') throw 'Bad Request!'
+        LOWER_CAPACITY = parseInt(req.body.start)
+        UPPER_CAPACITY = parseInt(req.body.end)
+        if(
+            typeof req.query.upper != 'undefined' && 
+            typeof req.query.lower != 'undefined' && 
+            typeof req.query.foc != 'undefined' &&
+            typeof req.query.start != 'undefined' &&
+            typeof req.query.end != 'undefined'
+            
+            )
         {
             const uppers = JSON.parse(decodeURIComponent(req.query.upper))
             const lowers = JSON.parse(decodeURIComponent(req.query.lower))
@@ -663,7 +688,10 @@ const renderAllGraph = async (req, res, next) => {
             const encodedLowers = encodeURIComponent(JSON.stringify(lowers));
             const encodedFOCs = encodeURIComponent(JSON.stringify(focs));
 
-            queryString = `upper=${encodedUppers}&lower=${encodedLowers}&foc=${encodedFOCs}`
+            const start = req.query.start
+            const end = req.query.end
+
+            queryString = `start=${start}&end=${end}&upper=${encodedUppers}&lower=${encodedLowers}&foc=${encodedFOCs}`
 
             for (let i = 0; i < uppers.length; i++) {
                 const upper = uppers[i];
@@ -672,6 +700,9 @@ const renderAllGraph = async (req, res, next) => {
                 
                 incrementShipCapacitys.push(createObj(Number(lower), Number(upper), Number(foc)))
             }
+
+            // UPPER_CAPACITY = parseInt(end)
+            // LOWER_CAPACITY = parseInt(start)
         }
 
         let datasets = []
@@ -693,7 +724,9 @@ const renderAllGraph = async (req, res, next) => {
         res.render('Determined/graph-all-summary', {
             layout: 'layouts/main-layout',
             datasets,
-            distances: labelGenerator()
+            distances: labelGenerator(),
+            LOWER_CAPACITY,
+            UPPER_CAPACITY
         })
     } catch (error) {
         res.render('error', {
@@ -715,16 +748,20 @@ const labelGenerator = () => {
 const createParameterCapacityDistance = async (req, res, next) => {
     try {
         if(typeof req.body =='undefined') throw "Bad Request!"
+        if(req.body.start == '' || req.body.end == '') throw "Bad Request!"
+
+        const start = req.body.start
+        const end = req.body.end
         
         const uppers = req.body.upper
         const lowers = req.body.lower
         const focs = req.body.foc
 
-        const encodedUppers = encodeURIComponent(JSON.stringify(uppers));
-        const encodedLowers = encodeURIComponent(JSON.stringify(lowers));
-        const encodedFOCs = encodeURIComponent(JSON.stringify(focs));
+        const encodedUppers = encodeURIComponent(JSON.stringify(Array.isArray(uppers) ? uppers : [uppers] ));
+        const encodedLowers = encodeURIComponent(JSON.stringify(Array.isArray(lowers) ? lowers : [lowers]));
+        const encodedFOCs = encodeURIComponent(JSON.stringify(Array.isArray(focs) ? focs : [focs]));
 
-        res.redirect(`/determine-distance-capacity?capacity=300&upper=${encodedUppers}&lower=${encodedLowers}&foc=${encodedFOCs}`)
+        res.redirect(`/determine-distance-capacity?start=${start}&end=${end}&capacity=${start}&upper=${encodedUppers}&lower=${encodedLowers}&foc=${encodedFOCs}`)
     } catch (error) {
         res.render('error', {
             layout: 'layouts/main-layout',

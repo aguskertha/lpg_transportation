@@ -13,9 +13,23 @@
     <div>
         <div class="container">
             <div class="row">
+                <h3>Capacity Ranges</h3>
+                <div class="col">
+                    <label for="start">Start:</label>
+                    <input type="number" step="1" id="start" class="form-control" onchange="fillRanges()">
+                  </div>
+                  <div class="col">
+                    <label for="end">End:</label>
+                    <input type="number" step="1" id="end" class="form-control" onchange="fillRanges()">
+                  </div>
+            </div>
+            <hr>
+            <div class="row">
                 <div class="col">
                     <h3>Increment FOC</h3>
                     <form method="post" action="/determine-distance-capacity/parameter">
+                        <input type="hidden" name="start" id="inputStart" required>
+                        <input type="hidden" name="end" id="inputEnd" required>
                         <div id="dynamicRanges" class="d-flex flex-wrap"></div>
                         <!-- <button class="btn btn-info mt-3 btn-sm" id="addRangeBtn">Add Range</button> -->
                         <a role="button" class="btn btn-info mt-3 btn-sm" id="addRangeBtn">Add Range</a>
@@ -41,9 +55,22 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 <script>
 // Define the range values
-const minValue = 300;
-const maxValue = 2600;
-const rangeSize = 500;
+// const minValue = 300;
+// const maxValue = 2600;
+const interval = 10;
+
+function fillRanges(){
+    var start = document.getElementById("start").value;
+    var end = document.getElementById("end").value;
+    
+    var inputEnd = document.getElementById("inputEnd");
+    var inputStart = document.getElementById("inputStart");
+
+    inputEnd.value = end
+    inputStart.value = start
+
+
+}
 
 // Function to create a new range input
 function createRangeInput(startValue) {
@@ -60,9 +87,15 @@ function createRangeInput(startValue) {
 
 // Function to handle adding a new range
 function addRange() {
+    var minValue = document.getElementById("inputStart").value;
+    var maxValue = document.getElementById("inputEnd").value;
     const dynamicRangesContainer = document.getElementById('dynamicRanges');
     const rangeInputs = dynamicRangesContainer.getElementsByClassName('form-group');
     const lastRangeInput = rangeInputs[rangeInputs.length - 1];
+
+    if(minValue == '' || maxValue == '') return alert('Start or End required!')
+    minValue = parseInt(minValue)
+    maxValue = parseInt(maxValue)
 
     let startValue = minValue;
     if (lastRangeInput) {
@@ -80,19 +113,20 @@ function addRange() {
     }
     else
     {
-        initDatas()
-    }
-
-    if (startValue <= maxValue) {
-        if(lastRangeInput)
+        if(minValue == 300 && maxValue == 2600)
         {
-            const rangeInput = createRangeInput(startValue);
-            dynamicRangesContainer.appendChild(rangeInput);
+            initDatas()
+            return
         }
+    }
+    
+    if (startValue+interval <= maxValue) {
+        const rangeInput = createRangeInput(startValue);
+        dynamicRangesContainer.appendChild(rangeInput);
     }
     else
     {
-        return alert("Field To Max is 2600!")
+        return alert("Field To Max is "+maxValue+" with Interval 10")
     }
 }
 
