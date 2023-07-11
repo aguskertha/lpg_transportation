@@ -1,4 +1,6 @@
 const UnitConversion = require('./../models/unit_conversion.model');
+const regression = require('regression');
+
 
 // const UPPER_CAPACITY = 2600
 // const LOWER_CAPACITY = 300
@@ -574,6 +576,7 @@ const renderParameterDistanceCapacity = async (req, res, next) => {
 
 const renderDistanceCapacity = async (req, res, next) => {
     try {
+
         let queryString = ''
         let incrementShipCapacitys = []
         let UPPER_CAPACITY = 0
@@ -639,6 +642,13 @@ const renderDistanceCapacity = async (req, res, next) => {
         }
         dataset.data = datas
         datasets.push(dataset)
+        distances = labelGenerator()
+
+        const xData = distances
+        const yData = datas
+        const result = regression.power(xData.map((x, i) => [x, yData[i]]));
+        const equation = result.string
+
         res.render('Determined/determined-distance-capacity', {
             layout: 'layouts/main-layout',
             UPPER_CAPACITY,
@@ -647,8 +657,9 @@ const renderDistanceCapacity = async (req, res, next) => {
             paramCapacity,
             transportations,
             datasets,
-            distances : labelGenerator(),
-            queryString
+            distances,
+            queryString,
+            equation
         })
 
     } catch (error) {
