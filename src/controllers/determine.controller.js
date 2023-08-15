@@ -1,4 +1,5 @@
 const UnitConversion = require('./../models/unit_conversion.model');
+const DistanceCapacityParam = require('./../models/distance-capacity-param');
 const regression = require('regression');
 
 
@@ -14,11 +15,12 @@ const convertToFloat = (num) => {
     return Number(num.toString());
 }
 
-const createObj = (lower, upper, value) => {
+const createObj = (lower, upper, foc, roundtrip) => {
     return {
         lower,
         upper,
-        value
+        foc,
+        roundtrip
     }
 }
 
@@ -48,21 +50,36 @@ const sumCrew =
 ]
 
 const initialVariable = (increment, current) => {
-    let value = 0
+    let foc = 0
+    let roundtrip = 0
     increment.forEach(element => {
         if(current >= element.lower && current <= element.upper){
-            value = element.value
+            foc = element.foc
+            roundtrip = element.roundtrip
         }
     });
 
-    return value
+    return {foc, roundtrip}
+}
+
+const getAllDistanceCapacityParam = async (req, res, next) => 
+{
+    try {
+        const distanceCapacityParam = await DistanceCapacityParam.find().sort({lower: 1});
+        
+        res.json(distanceCapacityParam);
+    } catch (error) {
+        throw error
+    }
 }
 
 const generateDistanceCapacity = async (capacity, distance, incrementShipCapacity, flag=0) =>
 {
     const CURRENT_CAPACITY = capacity
     const CURRENT_DISTANCE = distance
-    const CURRENT_FOC = initialVariable(incrementShipCapacity, CURRENT_CAPACITY)
+    const INIT_VAR = initialVariable(incrementShipCapacity, CURRENT_CAPACITY)
+    const CURRENT_FOC = INIT_VAR.foc
+    const CURRENT_ROUNDTRIP = INIT_VAR.roundtrip
 
     const unitConversion = await UnitConversion.find();
     const transportation = {};
@@ -76,9 +93,7 @@ const generateDistanceCapacity = async (capacity, distance, incrementShipCapacit
     const unitKMtoMILE = convertToFloat(unitConversion[0].KMtoMILE);
     const unitKMtoNauticalMILE = convertToFloat(unitConversion[0].KMtoNauticalMILE);
 
-    let crewFlag = initialVariable(incrementCrew, CURRENT_CAPACITY)
-
-    
+    let crewFlag = initialVariable(incrementCrew, CURRENT_CAPACITY).foc
 
     //ship
     let ship = {
@@ -184,6 +199,10 @@ const generateDistanceCapacity = async (capacity, distance, incrementShipCapacit
     const mobilization = 0;
     const effectiveDays = calendarDaysYear-docking;
     let numberRoundTripYear = Number(Math.floor(effectiveDays/totalTurnRoundTime));
+    if(typeof CURRENT_ROUNDTRIP != 'undefined' && CURRENT_ROUNDTRIP != 0)
+    {
+        numberRoundTripYear = CURRENT_ROUNDTRIP;
+    }
 
     const idleDaysYear = effectiveDays - (totalTurnRoundTime*numberRoundTripYear);
     const totalCargoCarryCapacityYearCBM = numberRoundTripYear * shipCargoTankOperationalCapacity.totalCapacityOpCBM;
@@ -582,36 +601,42 @@ const renderDistanceCapacity = async (req, res, next) => {
         let UPPER_CAPACITY = 0
         let LOWER_CAPACITY = 0
         if(
-            typeof req.query.upper != 'undefined' && 
-            typeof req.query.lower != 'undefined' && 
-            typeof req.query.foc != 'undefined' &&
+            // typeof req.query.upper != 'undefined' && 
+            // typeof req.query.lower != 'undefined' && 
+            // typeof req.query.foc != 'undefined' &&
             typeof req.query.start != 'undefined' &&
             typeof req.query.end != 'undefined'
             )
         {
-            const uppers = JSON.parse(decodeURIComponent(req.query.upper))
-            const lowers = JSON.parse(decodeURIComponent(req.query.lower))
-            const focs = JSON.parse(decodeURIComponent(req.query.foc))
+            // const uppers = JSON.parse(decodeURIComponent(req.query.upper))
+            // const lowers = JSON.parse(decodeURIComponent(req.query.lower))
+            // const focs = JSON.parse(decodeURIComponent(req.query.foc))
             const start = req.query.start
             const end = req.query.end
 
-            const encodedUppers = encodeURIComponent(JSON.stringify(uppers));
-            const encodedLowers = encodeURIComponent(JSON.stringify(lowers));
-            const encodedFOCs = encodeURIComponent(JSON.stringify(focs));
+            // const encodedUppers = encodeURIComponent(JSON.stringify(uppers));
+            // const encodedLowers = encodeURIComponent(JSON.stringify(lowers));
+            // const encodedFOCs = encodeURIComponent(JSON.stringify(focs));
 
-            queryString = `start=${start}&end=${end}&upper=${encodedUppers}&lower=${encodedLowers}&foc=${encodedFOCs}`
+            // queryString = `start=${start}&end=${end}&upper=${encodedUppers}&lower=${encodedLowers}&foc=${encodedFOCs}`
+            queryString = `start=${start}&end=${end}`
 
-            for (let i = 0; i < uppers.length; i++) {
-                const upper = uppers[i];
-                const lower = lowers[i];
-                const foc = focs[i];
+            // for (let i = 0; i < uppers.length; i++) {
+            //     const upper = uppers[i];
+            //     const lower = lowers[i];
+            //     const foc = focs[i];
                 
-                incrementShipCapacitys.push(createObj(Number(lower), Number(upper), Number(foc)))
-            }
+            //     incrementShipCapacitys.push(createObj(Number(lower), Number(upper), Number(foc)))
+            // }
 
             UPPER_CAPACITY = parseInt(end)
             LOWER_CAPACITY = parseInt(start)
         }
+
+        const distanceCapacityParams = await DistanceCapacityParam.find().sort({lower: 1});
+        distanceCapacityParams.forEach(element => {
+            incrementShipCapacitys.push(createObj(Number(element.lower), Number(element.upper), Number(element.foc), Number(element.roundtrip)))
+        });
 
         let paramCapacity = LOWER_CAPACITY
         if(typeof req.query.capacity != 'undefined')
@@ -683,38 +708,44 @@ const renderAllGraph = async (req, res, next) => {
         LOWER_CAPACITY = parseInt(req.body.start)
         UPPER_CAPACITY = parseInt(req.body.end)
         if(
-            typeof req.query.upper != 'undefined' && 
-            typeof req.query.lower != 'undefined' && 
-            typeof req.query.foc != 'undefined' &&
+            // typeof req.query.upper != 'undefined' && 
+            // typeof req.query.lower != 'undefined' && 
+            // typeof req.query.foc != 'undefined' &&
             typeof req.query.start != 'undefined' &&
             typeof req.query.end != 'undefined'
             
             )
         {
-            const uppers = JSON.parse(decodeURIComponent(req.query.upper))
-            const lowers = JSON.parse(decodeURIComponent(req.query.lower))
-            const focs = JSON.parse(decodeURIComponent(req.query.foc))
+            // const uppers = JSON.parse(decodeURIComponent(req.query.upper))
+            // const lowers = JSON.parse(decodeURIComponent(req.query.lower))
+            // const focs = JSON.parse(decodeURIComponent(req.query.foc))
 
-            const encodedUppers = encodeURIComponent(JSON.stringify(uppers));
-            const encodedLowers = encodeURIComponent(JSON.stringify(lowers));
-            const encodedFOCs = encodeURIComponent(JSON.stringify(focs));
+            // const encodedUppers = encodeURIComponent(JSON.stringify(uppers));
+            // const encodedLowers = encodeURIComponent(JSON.stringify(lowers));
+            // const encodedFOCs = encodeURIComponent(JSON.stringify(focs));
 
             const start = req.query.start
             const end = req.query.end
 
-            queryString = `start=${start}&end=${end}&upper=${encodedUppers}&lower=${encodedLowers}&foc=${encodedFOCs}`
+            // queryString = `start=${start}&end=${end}&upper=${encodedUppers}&lower=${encodedLowers}&foc=${encodedFOCs}`
+            queryString = `start=${start}&end=${end}`
 
-            for (let i = 0; i < uppers.length; i++) {
-                const upper = uppers[i];
-                const lower = lowers[i];
-                const foc = focs[i];
+            // for (let i = 0; i < uppers.length; i++) {
+            //     const upper = uppers[i];
+            //     const lower = lowers[i];
+            //     const foc = focs[i];
                 
-                incrementShipCapacitys.push(createObj(Number(lower), Number(upper), Number(foc)))
-            }
+            //     incrementShipCapacitys.push(createObj(Number(lower), Number(upper), Number(foc)))
+            // }
 
             // UPPER_CAPACITY = parseInt(end)
             // LOWER_CAPACITY = parseInt(start)
         }
+
+        const distanceCapacityParams = await DistanceCapacityParam.find().sort({lower: 1});
+        distanceCapacityParams.forEach(element => {
+            incrementShipCapacitys.push(createObj(Number(element.lower), Number(element.upper), Number(element.foc), Number(element.roundtrip)))
+        });
 
         let datasets = []
         for (let i = LOWER_CAPACITY; i <= UPPER_CAPACITY; i+=INTERVAL_CAPACITY) {
@@ -764,15 +795,92 @@ const createParameterCapacityDistance = async (req, res, next) => {
         const start = req.body.start
         const end = req.body.end
         
+        const ids = req.body.id
         const uppers = req.body.upper
         const lowers = req.body.lower
         const focs = req.body.foc
+        const roundtrips = req.body.roundtrip
 
-        const encodedUppers = encodeURIComponent(JSON.stringify(Array.isArray(uppers) ? uppers : [uppers] ));
-        const encodedLowers = encodeURIComponent(JSON.stringify(Array.isArray(lowers) ? lowers : [lowers]));
-        const encodedFOCs = encodeURIComponent(JSON.stringify(Array.isArray(focs) ? focs : [focs]));
+        let paramCreates = []
+        let paramEdits = []
 
-        res.redirect(`/determine-distance-capacity?start=${start}&end=${end}&capacity=${start}&upper=${encodedUppers}&lower=${encodedLowers}&foc=${encodedFOCs}`)
+        for (let i = 0; i < uppers.length; i++) {
+            const id = ids[i];
+            const upper = uppers[i];
+            const lower = lowers[i];
+            const foc = focs[i];
+            const roundtrip = roundtrips[i];
+            
+            const newData = {
+                upper: upper,
+                lower: lower,
+                foc: foc,
+                roundtrip: roundtrip
+            };
+        
+            if (id === '') {
+                // Jika id kosong, buat data baru
+                paramCreates.push(newData);
+            } else {
+                // Jika id tidak kosong, perbarui data yang sudah ada
+                paramEdits.push({ id, newData });
+            }
+        }
+
+        if (paramEdits.length > 0) {
+            paramEdits.forEach(edit => {
+                const id = edit.id;
+                const newData = edit.newData;
+        
+                DistanceCapacityParam.findByIdAndUpdate(id, newData)
+                    .then(updatedParam => {
+                        console.log('Updated param:', updatedParam);
+                        // Lakukan tindakan lanjutan setelah berhasil memperbarui data
+                    })
+                    .catch(error => {
+                        console.error('Error updating param:', error);
+                        // Handle error jika terjadi kesalahan saat memperbarui data
+                    });
+            });
+        }
+
+        const updatedIds = paramEdits.map(param => param.id);
+        const deletedParams = await DistanceCapacityParam.find({ _id: { $nin: updatedIds } });
+        const deletedIds = deletedParams.map(param => param._id)
+        if(deletedIds.length > 0)
+        {
+            deletedIds.forEach(async (id) => {
+                DistanceCapacityParam.findByIdAndDelete(id)
+                .then(updatedParam => {
+                    console.log('Updated param:', updatedParam);
+                    // Lakukan tindakan lanjutan setelah berhasil memperbarui data
+                })
+                .catch(error => {
+                    console.error('Error updating param:', error);
+                    // Handle error jika terjadi kesalahan saat memperbarui data
+                }); 
+            });
+        }
+
+        // Lakukan operasi create untuk data baru
+        if (paramCreates.length > 0) {
+            DistanceCapacityParam.create(paramCreates)
+                .then(createdParams => {
+                    console.log('Created params:', createdParams);
+                    // Lakukan tindakan lanjutan setelah berhasil membuat data baru
+                })
+                .catch(error => {
+                    console.error('Error creating params:', error);
+                    // Handle error jika terjadi kesalahan saat membuat data baru
+                });
+        }
+
+        // const encodedUppers = encodeURIComponent(JSON.stringify(Array.isArray(uppers) ? uppers : [uppers] ));
+        // const encodedLowers = encodeURIComponent(JSON.stringify(Array.isArray(lowers) ? lowers : [lowers]));
+        // const encodedFOCs = encodeURIComponent(JSON.stringify(Array.isArray(focs) ? focs : [focs]));
+
+        res.redirect(`/determine-distance-capacity?start=${start}&end=${end}&capacity=${start}`)
+        // res.redirect(`/determine-distance-capacity?start=${start}&end=${end}&capacity=${start}&upper=${encodedUppers}&lower=${encodedLowers}&foc=${encodedFOCs}`)
     } catch (error) {
         res.render('error', {
             layout: 'layouts/main-layout',
@@ -787,5 +895,6 @@ module.exports = {
     renderDistanceCapacity,
     renderAllGraph,
     renderParameterDistanceCapacity,
-    createParameterCapacityDistance
+    createParameterCapacityDistance,
+    getAllDistanceCapacityParam
 }

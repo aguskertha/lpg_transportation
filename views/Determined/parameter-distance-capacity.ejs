@@ -77,9 +77,11 @@ function createRangeInput(startValue) {
     const rangeInput = document.createElement('div');
     rangeInput.className = 'form-group m-2';
     rangeInput.innerHTML = `
+        <input type="hidden" name="id" class="form-control" value="">
         <input type="number" name="lower" step="any" min="0" class="form-control" placeholder="From" value="${startValue}" readonly>
         <input type="number" name="upper" step="any" min="0" class="form-control" placeholder="To" required>
         <input type="number" name="foc" step="any" min="0" class="form-control" placeholder="FOC" required>
+        <input type="number" name="roundtrip" step="any" min="0" class="form-control" placeholder="RoundTrip" required>
         <a role="button" class="btn btn-danger btn-sm mt-1 removeRangeBtn">Remove</a>
     `;
     return rangeInput;
@@ -130,41 +132,64 @@ function addRange() {
     }
 }
 
-const createObj = (lower, upper, value) => {
+const createObj = (id, lower, upper, foc, roundtrip) => {
     return {
+        id,
         lower,
         upper,
-        value
+        foc,
+        roundtrip
     }
 }
 
-function initDatas() {
-
-    let incrementShipCapacity = 
-    [
-        createObj(300, 640, 5.7),
-        createObj(650, 990, 9.8),
-        createObj(1000, 1190, 12),
-        createObj(1200, 1590, 13.5),
-        createObj(1600, 2090, 32),
-        createObj(2100, 2600, 40),
-    ]
-
-    const dynamicRangesContainer = document.getElementById('dynamicRanges');
-
-    for (let i = 0; i < incrementShipCapacity.length; i++) {
-        const element = incrementShipCapacity[i];
-        
-        const rangeInput = document.createElement('div');
-        rangeInput.className = 'form-group m-2';
-        rangeInput.innerHTML = `
-            <input type="number" name="lower" step="any" min="0" class="form-control" placeholder="From" value="${element.lower}" readonly>
-            <input type="number" name="upper" step="any" min="0" class="form-control" placeholder="To" value="${element.upper}" required>
-            <input type="number" name="foc" step="any" min="0" class="form-control" placeholder="FOC" value="${element.value}" required>
-            <a role="button" class="btn btn-danger btn-sm mt-1 removeRangeBtn">Remove</a>
-        `;
-        dynamicRangesContainer.appendChild(rangeInput);
+async function fetchData() {
+    const response = await fetch('/determine-distance-capacity/distance-capacity');
+    const data = await response.json();
+    const newData = {
+        data,
+        status: response.status
     }
+    return newData;
+}
+
+function initDatas() {
+    
+    fetchData().then(data => {
+        let incrementShipCapacity =
+        [
+            createObj("", 300, 640, 5.7, 39),
+            createObj("", 650, 990, 9.8, 39),
+            createObj("", 1000, 1190, 12, 39),
+            createObj("", 1200, 1590, 13.5, 39),
+            createObj("", 1600, 2090, 32, 39),
+            createObj("", 2100, 2600, 40, 39),
+        ]
+        if(data.status == 200 && data.data.length > 0)
+        {
+            incrementShipCapacity = []
+            data.data.forEach(element => {
+                incrementShipCapacity.push(createObj(element._id, element.lower, element.upper, element.foc, element.roundtrip))
+            });
+            console.log(data.data)
+        }
+        const dynamicRangesContainer = document.getElementById('dynamicRanges');
+
+        for (let i = 0; i < incrementShipCapacity.length; i++) {
+            const element = incrementShipCapacity[i];
+            
+            const rangeInput = document.createElement('div');
+            rangeInput.className = 'form-group m-2';
+            rangeInput.innerHTML = `
+                <input type="hidden" name="id" class="form-control" value="${element.id}">
+                <input type="number" name="lower" step="any" min="0" class="form-control" placeholder="From" value="${element.lower}" readonly>
+                <input type="number" name="upper" step="any" min="0" class="form-control" placeholder="To" value="${element.upper}" required>
+                <input type="number" name="foc" step="any" min="0" class="form-control" placeholder="FOC" value="${element.foc}" required>
+                <input type="number" name="roundtrip" step="any" min="0" class="form-control" placeholder="RoundTrip" value="${element.roundtrip}" required>
+                <a role="button" class="btn btn-danger btn-sm mt-1 removeRangeBtn">Remove</a>
+            `;
+            dynamicRangesContainer.appendChild(rangeInput);
+        }
+    })
 
 }
 
