@@ -1,5 +1,6 @@
 const UnitConversion = require('./../models/unit_conversion.model');
 const DistanceCapacityParam = require('./../models/distance-capacity-param');
+const CapacityRangeParam = require('./../models/capacity-range-param');
 const regression = require('regression');
 
 
@@ -68,6 +69,26 @@ const getAllDistanceCapacityParam = async (req, res, next) =>
         const distanceCapacityParam = await DistanceCapacityParam.find().sort({lower: 1});
         
         res.json(distanceCapacityParam);
+    } catch (error) {
+        throw error
+    }
+}
+
+const getCapacityRangeParam = async (req, res, next) => 
+{
+    try {
+        const capacityRangeParam = await getCapacityRangeParamByCode("MIN")
+        res.json(capacityRangeParam);
+    } catch (error) {
+        throw error
+    }
+}
+
+const getCapacityRangeParamByCode = async (code) => 
+{
+    try {
+        const capacityRangeParam = await CapacityRangeParam.findOne({code: code});
+        return capacityRangeParam
     } catch (error) {
         throw error
     }
@@ -580,8 +601,10 @@ const generateDistanceCapacity = async (capacity, distance, incrementShipCapacit
 
 const renderParameterDistanceCapacity = async (req, res, next) => {
     try {
+        let capacity = await getCapacityRangeParamByCode("MIN")
         res.render('Determined/parameter-distance-capacity', {
-            layout: 'layouts/main-layout'
+            layout: 'layouts/main-layout',
+            capacity
         })
 
     } catch (error) {
@@ -596,42 +619,16 @@ const renderParameterDistanceCapacity = async (req, res, next) => {
 const renderDistanceCapacity = async (req, res, next) => {
     try {
 
-        let queryString = ''
         let incrementShipCapacitys = []
         let UPPER_CAPACITY = 0
         let LOWER_CAPACITY = 0
-        if(
-            // typeof req.query.upper != 'undefined' && 
-            // typeof req.query.lower != 'undefined' && 
-            // typeof req.query.foc != 'undefined' &&
-            typeof req.query.start != 'undefined' &&
-            typeof req.query.end != 'undefined'
-            )
-        {
-            // const uppers = JSON.parse(decodeURIComponent(req.query.upper))
-            // const lowers = JSON.parse(decodeURIComponent(req.query.lower))
-            // const focs = JSON.parse(decodeURIComponent(req.query.foc))
-            const start = req.query.start
-            const end = req.query.end
+        
+        let capacityRangeParam = await getCapacityRangeParamByCode("MIN");
+        let start = capacityRangeParam.start
+        let end = capacityRangeParam.end
 
-            // const encodedUppers = encodeURIComponent(JSON.stringify(uppers));
-            // const encodedLowers = encodeURIComponent(JSON.stringify(lowers));
-            // const encodedFOCs = encodeURIComponent(JSON.stringify(focs));
-
-            // queryString = `start=${start}&end=${end}&upper=${encodedUppers}&lower=${encodedLowers}&foc=${encodedFOCs}`
-            queryString = `start=${start}&end=${end}`
-
-            // for (let i = 0; i < uppers.length; i++) {
-            //     const upper = uppers[i];
-            //     const lower = lowers[i];
-            //     const foc = focs[i];
-                
-            //     incrementShipCapacitys.push(createObj(Number(lower), Number(upper), Number(foc)))
-            // }
-
-            UPPER_CAPACITY = parseInt(end)
-            LOWER_CAPACITY = parseInt(start)
-        }
+        UPPER_CAPACITY = parseInt(end)
+        LOWER_CAPACITY = parseInt(start)
 
         const distanceCapacityParams = await DistanceCapacityParam.find().sort({lower: 1});
         distanceCapacityParams.forEach(element => {
@@ -683,7 +680,6 @@ const renderDistanceCapacity = async (req, res, next) => {
             transportations,
             datasets,
             distances,
-            queryString,
             equation
         })
 
@@ -708,38 +704,16 @@ const renderAllGraph = async (req, res, next) => {
         LOWER_CAPACITY = parseInt(req.body.start)
         UPPER_CAPACITY = parseInt(req.body.end)
         if(
-            // typeof req.query.upper != 'undefined' && 
-            // typeof req.query.lower != 'undefined' && 
-            // typeof req.query.foc != 'undefined' &&
             typeof req.query.start != 'undefined' &&
             typeof req.query.end != 'undefined'
             
             )
         {
-            // const uppers = JSON.parse(decodeURIComponent(req.query.upper))
-            // const lowers = JSON.parse(decodeURIComponent(req.query.lower))
-            // const focs = JSON.parse(decodeURIComponent(req.query.foc))
-
-            // const encodedUppers = encodeURIComponent(JSON.stringify(uppers));
-            // const encodedLowers = encodeURIComponent(JSON.stringify(lowers));
-            // const encodedFOCs = encodeURIComponent(JSON.stringify(focs));
-
             const start = req.query.start
             const end = req.query.end
 
-            // queryString = `start=${start}&end=${end}&upper=${encodedUppers}&lower=${encodedLowers}&foc=${encodedFOCs}`
             queryString = `start=${start}&end=${end}`
 
-            // for (let i = 0; i < uppers.length; i++) {
-            //     const upper = uppers[i];
-            //     const lower = lowers[i];
-            //     const foc = focs[i];
-                
-            //     incrementShipCapacitys.push(createObj(Number(lower), Number(upper), Number(foc)))
-            // }
-
-            // UPPER_CAPACITY = parseInt(end)
-            // LOWER_CAPACITY = parseInt(start)
         }
 
         const distanceCapacityParams = await DistanceCapacityParam.find().sort({lower: 1});
@@ -803,6 +777,36 @@ const createParameterCapacityDistance = async (req, res, next) => {
 
         let paramCreates = []
         let paramEdits = []
+
+        const newCapacity = {
+            start: Number(start),
+            end: Number(end),
+            code: "MIN"
+        };
+
+        let capacity = await getCapacityRangeParamByCode("MIN")
+        if(capacity == null)
+        {
+            CapacityRangeParam.create(newCapacity)
+                .then(createdParams => {
+                    console.log('Created params:', createdParams);
+                })
+                .catch(error => {
+                    console.error('Error creating params:', error);
+                });
+        }
+        else
+        {
+            capacity.start = start
+            capacity.end = end
+            CapacityRangeParam.findByIdAndUpdate(capacity._id, capacity)
+                    .then(updatedParam => {
+                        console.log('Updated param:', updatedParam);
+                    })
+                    .catch(error => {
+                        console.error('Error updating param:', error);
+                    });
+        }
 
         for (let i = 0; i < uppers.length; i++) {
             const id = ids[i];
@@ -875,12 +879,7 @@ const createParameterCapacityDistance = async (req, res, next) => {
                 });
         }
 
-        // const encodedUppers = encodeURIComponent(JSON.stringify(Array.isArray(uppers) ? uppers : [uppers] ));
-        // const encodedLowers = encodeURIComponent(JSON.stringify(Array.isArray(lowers) ? lowers : [lowers]));
-        // const encodedFOCs = encodeURIComponent(JSON.stringify(Array.isArray(focs) ? focs : [focs]));
-
-        res.redirect(`/determine-distance-capacity?start=${start}&end=${end}&capacity=${start}`)
-        // res.redirect(`/determine-distance-capacity?start=${start}&end=${end}&capacity=${start}&upper=${encodedUppers}&lower=${encodedLowers}&foc=${encodedFOCs}`)
+        res.redirect(`/determine-distance-capacity?capacity=${start}`)
     } catch (error) {
         res.render('error', {
             layout: 'layouts/main-layout',
@@ -896,5 +895,6 @@ module.exports = {
     renderAllGraph,
     renderParameterDistanceCapacity,
     createParameterCapacityDistance,
-    getAllDistanceCapacityParam
+    getAllDistanceCapacityParam,
+    getCapacityRangeParam
 }

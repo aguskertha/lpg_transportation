@@ -33,7 +33,7 @@ const usd = (number, min, max)=>{
     <select id="mySelect" class="form-select" aria-label="Default select example">
         <option selected>Select an option</option>
         <% for( let i = LOWER_CAPACITY ; i <= UPPER_CAPACITY; i+=INTERVAL_CAPACITY ) { %>
-            <option value="/determine-distance-capacity?capacity=<%= i %>&<%- queryString %>"><%= i %></option>
+            <option value="/determine-distance-capacity?capacity=<%= i %>"><%= i %></option>
         <% } %>
     </select>
 
@@ -100,7 +100,7 @@ const usd = (number, min, max)=>{
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body">
-        <form id="myForm" method="post" action="/determine-distance-capacity/all-graph?<%- queryString %>">
+        <form id="myForm" method="post" action="/determine-distance-capacity/all-graph">
         <div class="mb-3">
             <label for="startinput" class="form-label">Start</label>
             <input type="number" step="1" class="form-control" id="startInput" value="<%= LOWER_CAPACITY %>" name="start" required>

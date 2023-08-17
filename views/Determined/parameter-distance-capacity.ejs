@@ -16,11 +16,11 @@
                 <h3>Capacity Ranges</h3>
                 <div class="col">
                     <label for="start">Start:</label>
-                    <input type="number" step="1" id="start" value="300" class="form-control" onchange="fillRanges()">
+                    <input type="number" step="1" id="start" value="<%= capacity != null ? capacity.start : 0 %>" class="form-control" onchange="fillRanges()">
                   </div>
                   <div class="col">
                     <label for="end">End:</label>
-                    <input type="number" step="1" id="end" value="2600" class="form-control" onchange="fillRanges()">
+                    <input type="number" step="1" id="end" value="<%= capacity != null ? capacity.end : 0 %>" class="form-control" onchange="fillRanges()">
                   </div>
             </div>
             <hr>
@@ -28,14 +28,14 @@
                 <div class="col">
                     <h3>Increment FOC</h3>
                     <form method="post" action="/determine-distance-capacity/parameter">
-                        <input type="hidden" name="start" value="300" id="inputStart" required>
-                        <input type="hidden" name="end" value="2600" id="inputEnd" required>
+                        <input type="hidden" name="start" value="<%= capacity != null ? capacity.start : 0 %>" id="inputStart" required>
+                        <input type="hidden" name="end" value="<%= capacity != null ? capacity.end : 0 %>" id="inputEnd" required>
                         <div id="dynamicRanges" class="d-flex flex-wrap"></div>
                         <!-- <button class="btn btn-info mt-3 btn-sm" id="addRangeBtn">Add Range</button> -->
                         <a role="button" class="btn btn-info mt-3 btn-sm" id="addRangeBtn">Add Range</a>
                         <hr>
                         <div class="position-relative">
-                            <button type="submit" class="btn btn-primary position-absolute top-0 end-0">Submit</button>
+                            <button type="submit" class="btn btn-primary position-absolute top-0 end-0" disabled>Submit</button>
                             <br>
                             <br>
                             <hr>
@@ -54,9 +54,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 <script>
-// Define the range values
-// const minValue = 300;
-// const maxValue = 2600;
+
 const interval = 10;
 
 function fillRanges(){
@@ -68,7 +66,6 @@ function fillRanges(){
 
     inputEnd.value = end
     inputStart.value = start
-
 
 }
 
@@ -95,6 +92,9 @@ function addRange() {
     const rangeInputs = dynamicRangesContainer.getElementsByClassName('form-group');
     const lastRangeInput = rangeInputs[rangeInputs.length - 1];
 
+    // Aktifkan tombol submit jika setidaknya satu range ditambahkan
+    document.querySelector('button[type="submit"]').disabled = false;
+
     if(minValue == '' || maxValue == '') return alert('Start or End required!')
     minValue = parseInt(minValue)
     maxValue = parseInt(maxValue)
@@ -115,11 +115,8 @@ function addRange() {
     }
     else
     {
-        if(minValue == 300 && maxValue == 2600)
-        {
-            initDatas()
-            return
-        }
+        initDatas()
+        return
     }
     
     if (startValue+interval <= maxValue) {
